@@ -11,59 +11,76 @@ module.exports = StyleSheet.create({
   // login page Design :
   logoContainer: {
     paddingTop: "15%",
-    paddingBottom: "10%",
     width: "100%",
     alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#FF7F3F",
-    minHeight: "35%",
+    backgroundColor: "#f5f5f5",
+    minHeight: "100%",
   },
   FormContainer: {
     backgroundColor: "#fff",
-    top: -30,
-    zIndex: 10,
-    width: "100%",
+    width: "85%",
     alignItems: "center",
     justifyContent: "center",
-    paddingTop: 40,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    padding: 40,
+    borderRadius: 20,
+    marginTop: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 1.41,
+
+    elevation: 1.5,
   },
   LoginTitle: {
     fontSize: 25,
     margin: 10,
-    fontWeight: "700",
-    color: "#fff",
+    color: "#000",
+    margin: 0,
+    fontFamily: "Amiri-Bold",
   },
   Logo: {
-    width: 100,
-    height: 100,
+    width: 85,
+    height: 125,
   },
-  input: {
-    height: 150,
-    width: 300,
-    marginTop: 10,
-    marginBottom: 10,
-    textAlign: "right",
-    backgroundColor: "red",
-  },
+
   Button: {
     flexDirection: "row-reverse",
     height: 50,
     width: 230,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#FF7F3F",
-    marginTop: 10,
+    backgroundColor: "#348578",
+    marginTop: 25,
     borderRadius: 60,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 1.41,
+    elevation: 6,
+
   },
   LoginSecondTitle: {
     fontSize: 25,
     marginBottom: 10,
     color: "#313552",
+    fontFamily:"Tajawal-Medium"
   },
   ForgotPassword: {
     marginTop: 20,
-    fontSize: 16,
+    fontSize: 15,
+    fontFamily:"Tajawal-Medium"
+
+  },
+  secondTitle: {
+    marginBottom: 25,
+    fontSize: 15,
+    fontFamily:"Tajawal-Medium"
+
   },
 });

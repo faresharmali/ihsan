@@ -25,7 +25,7 @@ export default function DataContainer(props) {
       </View>
       <TouchableOpacity onPress={props.openFamily}>
       <View style={styles.menuBtn}>
-        <Icon as={Entypo} name="dots-three-horizontal" size={6} color="#fff" />
+        <Icon as={Entypo} name="dots-three-horizontal" size={5} color="#fff" />
       </View>
       </TouchableOpacity>
     </View>
@@ -36,25 +36,25 @@ const styles = StyleSheet.create({
   UserPersonal: {
     fontFamily: "Tajawal-Medium",
 
-    fontSize: 16,
+    fontSize: 15,
     color: "#000",
     marginBottom:5
   },
   DataContainer: {
     width: "100%",
-    minHeight: 80,
+    height:60,
     backgroundColor: "#fff",
     marginBottom: 10,
     borderRadius: 7,
     shadowColor: "#000",
-    elevation: 1,
+    elevation: 1.5,
     flexDirection: "row-reverse",
     alignItems: "center",
     padding: 10,
   },
   avatar: {
-    height: 60,
-    width: 60,
+    height: 45,
+    width: 45,
   },
   secondaryInfos: {
     flexDirection: "row-reverse",
@@ -62,11 +62,11 @@ const styles = StyleSheet.create({
   },
   infos: {
     marginRight: 5,
-    width: "69%",
+    width: "75%",
   },
   menuBtn: {
-    width: 35,
-    height: 35,
+    width: 30,
+    height: 30,
     borderRadius: 5,
     backgroundColor: "#348578",
     left: 0,

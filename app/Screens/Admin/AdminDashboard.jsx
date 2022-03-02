@@ -43,7 +43,7 @@ export default function AdminDashboard() {
           component={Families}
         />
         <Stack.Screen
-          options={{ ...TransitionPresets.ModalSlideFromBottomIOS }}
+          options={{ ...TransitionPresets.ScaleFromCenterAndroid }}
           name="Family"
           component={FamilyScreen}
         />

@@ -4,25 +4,45 @@ import {
   Text,
   View,
   Image,
-  TouchableWithoutFeedback,
+  ScrollView,
+  TouchableOpacity,
 } from "react-native";
 import React, { useState } from "react";
-import BottomBar from "../../Navigation/BottomBar";
 import { Icon } from "native-base";
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
-import { useFonts } from "expo-font";
-import DataContainer from "../../Components/DataContainer";
 import Family from "../../../assets/avatars/family.png";
-
+import FamilyInfo from "./FamilyInfo";
+import Kids from "./Kids";
 export default function FamilyScreen({ navigation }) {
-  const [active, setActive] = useState(1);
-  let [fontsLoaded] = useFonts({
-    "Amiri-Bold": require("../../../assets/fonts/Amiri-Bold.ttf"),
-    "Tajawal-Medium": require("../../../assets/fonts/Tajawal-Medium.ttf"),
-  });
-  if (!fontsLoaded) {
-    return <Text>Loading</Text>;
-  }
+  const [section, setSection] = useState("infos");
+const kids=[
+  {
+    name:"الابن الأول",
+    sexe:"ذكر",
+    age:"12"
+  },
+  {
+    name:"الابن الثاني",
+    sexe:"ذكر",
+    age:"9"
+  },
+  {
+    name:"الابن الثالث",
+    sexe:"انثى",
+    age:"13"
+  },
+  {
+    name:"الابن الرابع",
+    sexe:"ذكر",
+    age:"11"
+  },
+  {
+    name:"الابن الخامس",
+    sexe:"أنثى",
+    age:"14"
+  },
+ 
+]
   return (
     <View style={styles.container}>
       <View style={styles.pageEntity}>
@@ -38,20 +58,37 @@ export default function FamilyScreen({ navigation }) {
         <Image style={styles.EntityImage} source={Family} />
         <Text style={styles.EntityTitle}>عائلة فلانة أرملة فلان</Text>
         <View style={styles.Navigation}>
-          <View style={styles.NavigationItem}>
-            <Text style={styles.NavigationItemText}>معلومات</Text>
-          </View>
-          <View style={styles.NavigationItem}>
-            <Text style={styles.NavigationItemText}>الأبناء</Text>
-          </View>
-          <View style={styles.NavigationItem}>
-            <Text style={styles.NavigationItemText}>طلبات</Text>
-          </View>
-          <View style={styles.NavigationItem}>
-            <Text style={styles.NavigationItemText}>استفادات</Text>
-          </View>
+          <TouchableOpacity onPress={() => setSection("infos")}>
+            <View style={styles.NavigationItem}>
+              <Text style={styles.NavigationItemText}>معلومات</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setSection("idk")}>
+            <View style={styles.NavigationItem}>
+              <Text style={styles.NavigationItemText}>الأبناء</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setSection("idk")}>
+            <View style={styles.NavigationItem}>
+              <Text style={styles.NavigationItemText}>طلبات</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setSection("idk")}>
+            <View style={styles.NavigationItem}>
+              <Text style={styles.NavigationItemText}>استفادات</Text>
+            </View>
+          </TouchableOpacity>
         </View>
       </View>
+
+      {section == "infos" && <FamilyInfo />}
+
+      {section != "infos" && (
+        <ScrollView style={styles.Content}>
+          <Kids kids={kids} />
+         
+        </ScrollView>
+      )}
     </View>
   );
 }
@@ -90,18 +127,34 @@ const styles = StyleSheet.create({
   },
   Navigation: {
     width: "90%",
-    justifyContent: "space-between",
     flexDirection: "row-reverse",
-    backgroundColor:"#fff",
-    padding:15,
-    borderRadius:10,
+    backgroundColor: "#fff",
+    borderRadius: 10,
     shadowColor: "#000",
     elevation: 3,
-    height:50,
-    bottom:-25
+    height: 50,
+    bottom: -25,
   },
-  NavigationItemText:{
+  NavigationItemText: {
     fontFamily: "Tajawal-Medium",
- 
-  }
+  },
+  NavigationItem: {
+    height: "100%",
+    justifyContent: "center",
+    width: 80,
+    margin: 5,
+    marginTop: 0,
+    marginBottom: 0,
+    alignItems: "center",
+  },
+
+  Content: {
+    marginTop: 30,
+    width: "100%",
+    maxHeight: "72.5%",
+    display: "flex",
+    paddingTop: 10,
+    paddingLeft: 20,
+    paddingRight: 20,
+  },
 });

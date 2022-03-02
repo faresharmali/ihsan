@@ -25,9 +25,7 @@ export default function Login({ navigation, pageHandler }) {
       <View style={styles.logoContainer}>
         <Image style={styles.Logo} source={Logo} />
 
-        <Text style={styles.LoginTitle }>
-          جمعية إحسان لكفالة الأيتام{" "}
-        </Text>
+        <Text style={styles.LoginTitle}>جمعية إحسان لكفالة الأيتام </Text>
         <View style={styles.FormContainer}>
           <Text style={styles.LoginSecondTitle}> مرحبا بك</Text>
           <Text style={styles.secondTitle}>يرجى ادخال معلومات حسابك</Text>
@@ -78,9 +76,7 @@ export default function Login({ navigation, pageHandler }) {
           >
             <Text style={{ fontSize: 16, marginLeft: 10 }}>تسجيل الدخول</Text>
           </Button>
-          <Text style={styles.ForgotPassword}>
-            نسيت كلمة المرور ؟ اتصل بنا{" "}
-          </Text>
+          <Text style={styles.ForgotPassword}>نسيت كلمة المرور ؟</Text>
         </View>
       </View>
     </View>

@@ -9,10 +9,11 @@ import {
 import React, { useState } from "react";
 import BottomBar from "../../Navigation/BottomBar";
 import { Icon } from "native-base";
-import { MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
+import { MaterialCommunityIcons, Entypo,MaterialIcons } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
 import DataContainer from "../../Components/DataContainer";
 import Family from "../../../assets/avatars/family.png";
+import { Input, Stack } from "native-base";
 
 export default function Families({ navigation }) {
   const [active, setActive] = useState(1);
@@ -22,6 +23,14 @@ export default function Families({ navigation }) {
   });
   if (!fontsLoaded) {
     return <Text>Loading</Text>;
+  }
+  const styling = {
+    backgroundColor:"#fff",
+    marginTop:5,
+
+  };
+  const openModal=()=>{
+    navigation.navigate('Family')
   }
   return (
     <View style={styles.container}>
@@ -39,20 +48,38 @@ export default function Families({ navigation }) {
             color="#348578"
           />
         </View>
+        
       </View>
+      <Input
+          InputRightElement={
+            <Icon
+              style={{ marginRight: 10 }}
+              as={<MaterialIcons name="search" />}
+              size={5}
+              ml="2"
+              color="#348578"
+            />
+          }
+          style={styles.input}
+          w={{
+            base: "90%",
+            md: "50%",
+          }}
+          h={42}
+          textAlign="right"
+          placeholder="البحث عن عائلة"
+          {...styling}
+        />
 
       <ScrollView style={styles.Content}>
-        <DataContainer pic={Family} openFamily={()=>navigation.navigate('Family')} />
-        <DataContainer pic={Family} openFamily={()=>navigation.navigate('Family')}/>
-
-        <DataContainer pic={Family} openFamily={()=>navigation.navigate('Family')}/>
-        <DataContainer pic={Family} openFamily={()=>navigation.navigate('Family')}/>
-
-        <DataContainer pic={Family} openFamily={()=>navigation.navigate('Family')}/>
-        <DataContainer pic={Family} openFamily={()=>navigation.navigate('Family')}/>
-
-        <DataContainer pic={Family} openFamily={()=>navigation.navigate('Family')}/>
-        <DataContainer pic={Family} openFamily={()=>navigation.navigate('Family')}/>
+        <DataContainer pic={Family} openFamily={openModal} />
+        <DataContainer pic={Family} openFamily={openModal} />
+        <DataContainer pic={Family} openFamily={openModal} />
+        <DataContainer pic={Family} openFamily={openModal} />
+        <DataContainer pic={Family} openFamily={openModal} />
+        <DataContainer pic={Family} openFamily={openModal} />
+        <DataContainer pic={Family} openFamily={openModal} />
+        <DataContainer pic={Family} openFamily={openModal} />
       </ScrollView>
       <BottomBar
         navigation={navigation}
@@ -102,8 +129,6 @@ const styles = StyleSheet.create({
   ScreenEntity: {
     flexDirection: "row",
     width: "100%",
-    backgroundColor: "#f5f5f5",
-    backgroundColor: "#f5f5f5",
     marginTop: "15%",
     alignItems: "center",
     justifyContent: "space-between",

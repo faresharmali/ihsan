@@ -9,40 +9,44 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { Icon } from "native-base";
-import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
+import {
+  MaterialCommunityIcons,
+  Ionicons,
+  AntDesign,
+} from "@expo/vector-icons";
 import Family from "../../../assets/avatars/family.png";
 import FamilyInfo from "./FamilyInfo";
 import Kids from "./Kids";
+import { Box, Fab } from "native-base";
 export default function FamilyScreen({ navigation }) {
   const [section, setSection] = useState("infos");
-const kids=[
-  {
-    name:"الابن الأول",
-    sexe:"ذكر",
-    age:"12"
-  },
-  {
-    name:"الابن الثاني",
-    sexe:"ذكر",
-    age:"9"
-  },
-  {
-    name:"الابن الثالث",
-    sexe:"انثى",
-    age:"13"
-  },
-  {
-    name:"الابن الرابع",
-    sexe:"ذكر",
-    age:"11"
-  },
-  {
-    name:"الابن الخامس",
-    sexe:"أنثى",
-    age:"14"
-  },
- 
-]
+  const kids = [
+    {
+      name: "الابن الأول",
+      sexe: "ذكر",
+      age: "12",
+    },
+    {
+      name: "الابن الثاني",
+      sexe: "ذكر",
+      age: "9",
+    },
+    {
+      name: "الابن الثالث",
+      sexe: "انثى",
+      age: "13",
+    },
+    {
+      name: "الابن الرابع",
+      sexe: "ذكر",
+      age: "11",
+    },
+    {
+      name: "الابن الخامس",
+      sexe: "أنثى",
+      age: "14",
+    },
+  ];
   return (
     <View style={styles.container}>
       <View style={styles.pageEntity}>
@@ -86,7 +90,17 @@ const kids=[
       {section != "infos" && (
         <ScrollView style={styles.Content}>
           <Kids kids={kids} />
-         
+          <Box position="relative" h={100} w="100%">
+            <Fab
+              onPress={() => alert("wassuup")}
+              position="absolute"
+              size="sm"
+              backgroundColor="#348578"
+              icon={
+                <Icon color="#fff" as={<AntDesign name="plus" />} size="sm" />
+              }
+            />
+          </Box>
         </ScrollView>
       )}
     </View>

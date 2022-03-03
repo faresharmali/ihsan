@@ -7,67 +7,40 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import React, { useState } from "react";
-import BottomBar from "../../Navigation/BottomBar";
 import { Icon } from "native-base";
 import { MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
-import DataContainer from "../../Components/DataContainer";
-import Man from "../../../assets/avatars/man.png";
-import Man2 from "../../../assets/avatars/man2.png";
-import Woman from "../../../assets/avatars/user.png";
-import Woman2 from "../../../assets/avatars/woman.png";
-import User from "../../../assets/avatars/woman2.png";
-import Gamer from "../../../assets/avatars/gamer.png";
+import DataContainer from "../../../Components/DataContainer";
+import BottomBar from "../../../Navigation/BottomBar";
+import icon from "../../../../assets/icons/information.png";
 
-export default function Users({navigation}) {
-  const [active, setActive] = useState(1);
+export default function Informations({ navigation }) {
+  const [active, setActive] = useState(5);
   let [fontsLoaded] = useFonts({
-    "Amiri-Bold": require("../../../assets/fonts/Amiri-Bold.ttf"),
-    "Tajawal-Medium": require("../../../assets/fonts/Tajawal-Medium.ttf"),
+    "Amiri-Bold": require("../../../../assets/fonts/Amiri-Bold.ttf"),
+    "Tajawal-Medium": require("../../../../assets/fonts/Tajawal-Medium.ttf"),
   });
   if (!fontsLoaded) {
     return <Text>Loading</Text>;
   }
-  const pics=[Man,Man2,Woman,Woman2,User,Gamer]
   const users = [
     {
-      0: "فارس حرمالي",
-      1: "ادارة",
-      icon1
-      :"phone"
-
-    },
-
-    {
-      0: "عبد المجيد اسماعيل",
-      1: "رئيس قسم",
-      icon1:"رئيس قسم"
-
-    },
-
-    {
-      0: "سماعيل دحماني",
-      1: "وسيط اجتماعي",
-      icon1:"phone"
-
-    },
-
-    {
-      0: "اسلام مقران",
-      1: "وسيط اجتماعي",
-      icon1:"phone"
-
+      0: "عائلة تحتاج ثلاجة",
     },
     {
-      0: "عيسى بن مبارك",
-      1: "موزع القفة",
-      icon1:"phone"
-
+      0: "عائلة تحتاج ثلاجة",
     },
     {
-      0: "حسين أمزيان",
-      1: "موزع القفة",
-      icon1:"phone"
+      0: "عائلة تحتاج ثلاجة",
+    },
+    {
+      0: "عائلة تحتاج ثلاجة",
+    },
+    {
+      0: "عائلة تحتاج ثلاجة",
+    },
+    {
+      0: "عائلة تحتاج ثلاجة",
     },
   ];
   return (
@@ -78,9 +51,9 @@ export default function Users({navigation}) {
         </View>
 
         <View style={styles.containerTitle}>
-          <Text style={styles.ScreenEntityTitle}>الأعضاء </Text>
+          <Text style={styles.ScreenEntityTitle}>معلومات </Text>
           <MaterialCommunityIcons
-            name="account-group"
+            name="information"
             size={30}
             color="black"
             color="#348578"
@@ -101,7 +74,7 @@ export default function Users({navigation}) {
                 color: active == 1 ? "#fff" : "#000",
               }}
             >
-              ادراة
+              الكفالة
             </Text>
           </View>
         </TouchableWithoutFeedback>
@@ -118,7 +91,7 @@ export default function Users({navigation}) {
                 color: active == 2 ? "#fff" : "#000",
               }}
             >
-              وسطاء{" "}
+              القفة{" "}
             </Text>
           </View>
         </TouchableWithoutFeedback>
@@ -135,7 +108,7 @@ export default function Users({navigation}) {
                 color: active == 3 ? "#fff" : "#000",
               }}
             >
-              موزعين{" "}
+              التعليم
             </Text>
           </View>
         </TouchableWithoutFeedback>
@@ -152,7 +125,7 @@ export default function Users({navigation}) {
                 color: active == 4 ? "#fff" : "#000",
               }}
             >
-              كفال
+              الصحة
             </Text>
           </View>
         </TouchableWithoutFeedback>
@@ -169,18 +142,20 @@ export default function Users({navigation}) {
                 color: active == 5 ? "#fff" : "#000",
               }}
             >
-              رؤساء الأقسام
+              الكل
             </Text>
           </View>
         </TouchableWithoutFeedback>
       </View>
       <ScrollView style={styles.Content}>
-              {users.map((u)=>(
-                <DataContainer AvatarSize={40}  data={u} pic={pics[users.indexOf(u)]}/>
-              ))}
-      
+        {users.map((u) => (
+          <DataContainer AvatarSize={28} data={u} pic={icon} />
+        ))}
       </ScrollView>
-      <BottomBar navigation={navigation} adduser={()=>navigation.navigate('AddUser')} />
+      <BottomBar
+        navigation={navigation}
+        adduser={() => navigation.navigate("AddFamily")}
+      />
     </View>
   );
 }
@@ -208,7 +183,7 @@ const styles = StyleSheet.create({
     padding: 6,
     backgroundColor: "#fff",
     borderRadius: 5,
-    minWidth: 55,
+    minWidth: 65,
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
@@ -244,10 +219,10 @@ const styles = StyleSheet.create({
     width: "100%",
     maxHeight: "72.5%",
     backgroundColor: "#f5f5f5",
-    display:"flex",
-    paddingTop:10,
-    paddingLeft:20,
-    paddingRight:20,
+    display: "flex",
+    paddingTop: 10,
+    paddingLeft: 20,
+    paddingRight: 20,
   },
   menuContainer: {
     width: 35,

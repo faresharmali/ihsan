@@ -18,7 +18,6 @@ export default function Kids(props) {
                 size={4}
                 color="#000"
               />
-
               <Text> الجنس : {k.sexe}</Text>
               <Icon
                 style={{ marginRight: 10, marginLeft: 5 }}
@@ -27,7 +26,6 @@ export default function Kids(props) {
                 size={4}
                 color="#000"
               />
-
               <Text>العمر : {k.age} </Text>
             </View>
           </View>

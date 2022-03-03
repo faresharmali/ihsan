@@ -9,7 +9,11 @@ import {
 import React, { useState } from "react";
 import BottomBar from "../../Navigation/BottomBar";
 import { Icon } from "native-base";
-import { MaterialCommunityIcons, Entypo,MaterialIcons } from "@expo/vector-icons";
+import {
+  MaterialCommunityIcons,
+  Entypo,
+  MaterialIcons,
+} from "@expo/vector-icons";
 import { useFonts } from "expo-font";
 import DataContainer from "../../Components/DataContainer";
 import Family from "../../../assets/avatars/family.png";
@@ -25,13 +29,37 @@ export default function Families({ navigation }) {
     return <Text>Loading</Text>;
   }
   const styling = {
-    backgroundColor:"#fff",
-    marginTop:5,
-
+    backgroundColor: "#fff",
+    marginTop: 5,
   };
-  const openModal=()=>{
-    navigation.navigate('Family')
-  }
+  const openModal = () => {
+    navigation.navigate("Family");
+  };
+  const Famillies = [
+    {
+      0: "عائلة مريم أرملة محمد",
+      1: "0660818412",
+    },
+
+    {
+      0: "عائلة فاطمة أرملة عمر",
+      1: "0660818412",
+    },
+
+    {
+      0: "عائلة كريمة أرملة اسلام",
+      1: "0660818412",
+    },
+
+    {
+      0: "عائلة مريم أرملة عبد الله",
+      1: "0660818412",
+    },
+    {
+      0: "عائلة سعدية أرملة أسامة",
+      1: "0660818412",
+    },
+  ];
   return (
     <View style={styles.container}>
       <View style={styles.ScreenEntity}>
@@ -48,38 +76,33 @@ export default function Families({ navigation }) {
             color="#348578"
           />
         </View>
-        
       </View>
       <Input
-          InputRightElement={
-            <Icon
-              style={{ marginRight: 10 }}
-              as={<MaterialIcons name="search" />}
-              size={5}
-              ml="2"
-              color="#348578"
-            />
-          }
-          style={styles.input}
-          w={{
-            base: "90%",
-            md: "50%",
-          }}
-          h={42}
-          textAlign="right"
-          placeholder="البحث عن عائلة"
-          {...styling}
-        />
+        InputRightElement={
+          <Icon
+            style={{ marginRight: 10 }}
+            as={<MaterialIcons name="search" />}
+            size={5}
+            ml="2"
+            color="#348578"
+          />
+        }
+        style={styles.input}
+        w={{
+          base: "90%",
+          md: "50%",
+        }}
+        h={42}
+        textAlign="right"
+        placeholder="البحث عن عائلة"
+        {...styling}
+      />
 
       <ScrollView style={styles.Content}>
-        <DataContainer pic={Family} openFamily={openModal} />
-        <DataContainer pic={Family} openFamily={openModal} />
-        <DataContainer pic={Family} openFamily={openModal} />
-        <DataContainer pic={Family} openFamily={openModal} />
-        <DataContainer pic={Family} openFamily={openModal} />
-        <DataContainer pic={Family} openFamily={openModal} />
-        <DataContainer pic={Family} openFamily={openModal} />
-        <DataContainer pic={Family} openFamily={openModal} />
+        {Famillies.map((f) => (
+          <DataContainer  AvatarSize={40} data={f} pic={Family} openFamily={openModal} />
+          )
+        )}
       </ScrollView>
       <BottomBar
         navigation={navigation}

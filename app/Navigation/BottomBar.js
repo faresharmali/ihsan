@@ -45,7 +45,10 @@ export default function BottomBar(props) {
         </View>
       </TouchableOpacity>
       <View style={styles.itemContainer}>
-       
+      <TouchableOpacity
+          onPress={() => props.navigation.navigate("Informations")}
+        >
+         
           <View style={styles.bottomBarITem}>
             <Icon
               as={FontAwesome5}
@@ -56,6 +59,7 @@ export default function BottomBar(props) {
 
             <Text style={styles.bottomBarITemText}>معلومات</Text>
           </View>
+          </TouchableOpacity>
         <View style={styles.bottomBarITem}>
           <Icon
             as={MaterialCommunityIcons}

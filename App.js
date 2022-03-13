@@ -11,7 +11,6 @@ export default function App() {
   const [CurrentPage, PageHandler] = useState(1);
   return (
     <NativeBaseProvider style={styles.container}>
-      <StatusBar style="light" />
       {CurrentPage == 0 && <Login PageHandler={PageHandler} />}
       {CurrentPage == 1 && <AdminDashboard PageHandler={PageHandler} />}
     </NativeBaseProvider>

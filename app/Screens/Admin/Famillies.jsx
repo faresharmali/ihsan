@@ -1,11 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import {
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  TouchableWithoutFeedback,
-} from "react-native";
+import { StyleSheet, Text, View, ScrollView } from "react-native";
 import React, { useState } from "react";
 import BottomBar from "../../Navigation/BottomBar";
 import { Icon } from "native-base";
@@ -62,6 +56,8 @@ export default function Families({ navigation }) {
   ];
   return (
     <View style={styles.container}>
+      <StatusBar style="dark" />
+
       <View style={styles.ScreenEntity}>
         <View style={styles.menuContainer}>
           <Icon as={Entypo} name="menu" size={8} color="#fff" />
@@ -72,7 +68,6 @@ export default function Families({ navigation }) {
           <MaterialCommunityIcons
             name="account-group"
             size={30}
-            color="black"
             color="#348578"
           />
         </View>
@@ -100,9 +95,13 @@ export default function Families({ navigation }) {
 
       <ScrollView style={styles.Content}>
         {Famillies.map((f) => (
-          <DataContainer  AvatarSize={40} data={f} pic={Family} openFamily={openModal} />
-          )
-        )}
+          <DataContainer
+            AvatarSize={40}
+            data={f}
+            pic={Family}
+            openFamily={openModal}
+          />
+        ))}
       </ScrollView>
       <BottomBar
         navigation={navigation}

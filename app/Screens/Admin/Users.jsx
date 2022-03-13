@@ -19,8 +19,8 @@ import Woman2 from "../../../assets/avatars/woman.png";
 import User from "../../../assets/avatars/woman2.png";
 import Gamer from "../../../assets/avatars/gamer.png";
 
-export default function Users({navigation}) {
-  const [active, setActive] = useState(1);
+export default function Users({ navigation }) {
+  const [active, setActive] = useState(6);
   let [fontsLoaded] = useFonts({
     "Amiri-Bold": require("../../../assets/fonts/Amiri-Bold.ttf"),
     "Tajawal-Medium": require("../../../assets/fonts/Tajawal-Medium.ttf"),
@@ -28,50 +28,46 @@ export default function Users({navigation}) {
   if (!fontsLoaded) {
     return <Text>Loading</Text>;
   }
-  const pics=[Man,Man2,Woman,Woman2,User,Gamer]
+  const pics = [Man, Man2, Woman, Woman2, User, Gamer];
   const users = [
     {
       0: "فارس حرمالي",
       1: "ادارة",
-      icon1
-      :"phone"
-
+      icon1: "phone",
     },
 
     {
       0: "عبد المجيد اسماعيل",
       1: "رئيس قسم",
-      icon1:"رئيس قسم"
-
+      icon1: "رئيس قسم",
     },
 
     {
       0: "سماعيل دحماني",
       1: "وسيط اجتماعي",
-      icon1:"phone"
-
+      icon1: "phone",
     },
 
     {
       0: "اسلام مقران",
       1: "وسيط اجتماعي",
-      icon1:"phone"
-
+      icon1: "phone",
     },
     {
       0: "عيسى بن مبارك",
       1: "موزع القفة",
-      icon1:"phone"
-
+      icon1: "phone",
     },
     {
       0: "حسين أمزيان",
       1: "موزع القفة",
-      icon1:"phone"
+      icon1: "phone",
     },
   ];
   return (
     <View style={styles.container}>
+      <StatusBar style="dark" />
+
       <View style={styles.ScreenEntity}>
         <View style={styles.menuContainer}>
           <Icon as={Entypo} name="menu" size={8} color="#fff" />
@@ -82,7 +78,6 @@ export default function Users({navigation}) {
           <MaterialCommunityIcons
             name="account-group"
             size={30}
-            color="black"
             color="#348578"
           />
         </View>
@@ -169,18 +164,42 @@ export default function Users({navigation}) {
                 color: active == 5 ? "#fff" : "#000",
               }}
             >
-              رؤساء الأقسام
+              رؤساء
+            </Text>
+          </View>
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={() => setActive(5)}>
+          <View
+            style={{
+              ...styles.filterItem,
+              backgroundColor: active == 6 ? "#348578" : "#fff",
+            }}
+          >
+            <Text
+              style={{
+                ...styles.filterText,
+                color: active == 6 ? "#fff" : "#000",
+              }}
+            >
+              الكل
             </Text>
           </View>
         </TouchableWithoutFeedback>
       </View>
       <ScrollView style={styles.Content}>
-              {users.map((u)=>(
-                <DataContainer AvatarSize={40}  data={u} pic={pics[users.indexOf(u)]}/>
-              ))}
-      
+        {users.map((u) => (
+          <DataContainer
+            key={u[0]}
+            AvatarSize={40}
+            data={u}
+            pic={pics[users.indexOf(u)]}
+          />
+        ))}
       </ScrollView>
-      <BottomBar navigation={navigation} adduser={()=>navigation.navigate('AddUser')} />
+      <BottomBar
+        navigation={navigation}
+        adduser={() => navigation.navigate("AddUser")}
+      />
     </View>
   );
 }
@@ -208,7 +227,7 @@ const styles = StyleSheet.create({
     padding: 6,
     backgroundColor: "#fff",
     borderRadius: 5,
-    minWidth: 55,
+    minWidth: 50,
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
@@ -244,10 +263,10 @@ const styles = StyleSheet.create({
     width: "100%",
     maxHeight: "72.5%",
     backgroundColor: "#f5f5f5",
-    display:"flex",
-    paddingTop:10,
-    paddingLeft:20,
-    paddingRight:20,
+    display: "flex",
+    paddingTop: 10,
+    paddingLeft: 20,
+    paddingRight: 20,
   },
   menuContainer: {
     width: 35,

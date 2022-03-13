@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   },
   DataContainer: {
     width: "100%",
-    height: 60,
+    height: 55,
     backgroundColor: "#fff",
     marginBottom: 10,
     borderRadius: 7,

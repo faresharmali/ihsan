@@ -10,9 +10,9 @@ import React, { useState } from "react";
 import { Icon } from "native-base";
 import { MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
-import DataContainer from "../../../Components/DataContainer";
-import BottomBar from "../../../Navigation/BottomBar";
-import icon from "../../../../assets/icons/information.png";
+import DataContainer from "../../Components/DataContainer";
+import BottomBar from "../../Navigation/BottomBar";
+import icon from "../../../assets/icons/information.png";
 
 export default function Informations({ navigation }) {
   const [active, setActive] = useState(5);
@@ -45,6 +45,8 @@ export default function Informations({ navigation }) {
   ];
   return (
     <View style={styles.container}>
+      <StatusBar style="dark" />
+
       <View style={styles.ScreenEntity}>
         <View style={styles.menuContainer}>
           <Icon as={Entypo} name="menu" size={8} color="#fff" />
@@ -55,7 +57,6 @@ export default function Informations({ navigation }) {
           <MaterialCommunityIcons
             name="information"
             size={30}
-            color="black"
             color="#348578"
           />
         </View>
@@ -149,7 +150,7 @@ export default function Informations({ navigation }) {
       </View>
       <ScrollView style={styles.Content}>
         {users.map((u) => (
-          <DataContainer AvatarSize={28} data={u} pic={icon} />
+          <DataContainer AvatarSize={25} data={u} pic={icon} />
         ))}
       </ScrollView>
       <BottomBar

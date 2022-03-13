@@ -49,6 +49,8 @@ export default function FamilyScreen({ navigation }) {
   ];
   return (
     <View style={styles.container}>
+            <StatusBar style="light" />
+
       <View style={styles.pageEntity}>
         <View style={styles.IconsContainer}>
           <Icon as={Ionicons} size={8} color="#fff" name="md-chevron-back" />

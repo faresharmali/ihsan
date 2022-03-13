@@ -6,7 +6,7 @@ import AddUser from "../../Forms/AddUser.jsx";
 import Families from "./Famillies.jsx";
 import AddFamily from "../../Forms/AddFamily.jsx";
 import FamilyScreen from "../Famillies/Family.jsx";
-import Informations from "./informations/informations.jsx";
+import Informations from "../informations/informations.jsx";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
@@ -15,7 +15,7 @@ export default function AdminDashboard() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Famillies"
+        initialRouteName="Informations"
         screenOptions={{
           gestureEnabled: true,
           gestureDirection: "vertical",

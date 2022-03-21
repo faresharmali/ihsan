@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { StyleSheet, Text, View, ScrollView ,TouchableOpacity} from "react-native";
 import React, { useState } from "react";
 import BottomBar from "../../Navigation/BottomBar";
 import { Icon } from "native-base";
@@ -13,7 +13,7 @@ import DataContainer from "../../Components/DataContainer";
 import Family from "../../../assets/avatars/family.png";
 import { Input, Stack } from "native-base";
 
-export default function Families({ navigation }) {
+export default function Families({ navigation,drawer }) {
   const [active, setActive] = useState(1);
   let [fontsLoaded] = useFonts({
     "Amiri-Bold": require("../../../assets/fonts/Amiri-Bold.ttf"),
@@ -58,10 +58,11 @@ export default function Families({ navigation }) {
     <View style={styles.container}>
       <StatusBar style="dark" />
 
+
       <View style={styles.ScreenEntity}>
-        <View style={styles.menuContainer}>
+        <TouchableOpacity onPress={()=>drawer.openDrawer()} style={styles.menuContainer}>
           <Icon as={Entypo} name="menu" size={8} color="#fff" />
-        </View>
+        </TouchableOpacity>
 
         <View style={styles.containerTitle}>
           <Text style={styles.ScreenEntityTitle}>العائلات </Text>

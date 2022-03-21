@@ -18,6 +18,9 @@ import Family from "../../../assets/avatars/family.png";
 import FamilyInfo from "./FamilyInfo";
 import Kids from "./Kids";
 import { Box, Fab } from "native-base";
+import icon from "../../../assets/icons/information.png";
+
+import DataContainer from "../../Components/DataContainer";
 export default function FamilyScreen({ navigation }) {
   const [section, setSection] = useState("infos");
   const kids = [
@@ -47,9 +50,103 @@ export default function FamilyScreen({ navigation }) {
       age: "14",
     },
   ];
+  const users = [
+    {
+      0: "طلب العائلة 1",
+      1: "معلومات الطلب",
+      2: "معلومات الطلب",
+    },
+
+    {
+      0: "طلب العائلة 1",
+      1: "معلومات الطلب",
+      2: "معلومات الطلب",
+    },
+
+    {
+      0: "طلب العائلة 1",
+      1: "معلومات الطلب",
+      2: "معلومات الطلب",
+    },
+    {
+      0: "طلب العائلة 1",
+      1: "معلومات الطلب",
+      2: "معلومات الطلب",
+    },
+
+    {
+      0: "طلب العائلة 1",
+      1: "معلومات الطلب",
+      2: "معلومات الطلب",
+    },
+
+    {
+      0: "طلب العائلة 1",
+      1: "معلومات الطلب",
+      2: "معلومات الطلب",
+    },
+    {
+      0: "طلب العائلة 1",
+      1: "معلومات الطلب",
+      2: "معلومات الطلب",
+    },
+
+    {
+      0: "طلب العائلة 1",
+      1: "معلومات الطلب",
+      2: "معلومات الطلب",
+    },
+
+    {
+      0: "طلب العائلة 1",
+      1: "معلومات الطلب",
+      2: "معلومات الطلب",
+    },
+    {
+      0: "طلب العائلة 1",
+      1: "معلومات الطلب",
+      2: "معلومات الطلب",
+    },
+
+    {
+      0: "طلب العائلة 1",
+      1: "معلومات الطلب",
+      2: "معلومات الطلب",
+    },
+
+    {
+      0: "طلب العائلة 1",
+      1: "معلومات الطلب",
+      2: "معلومات الطلب",
+    },
+  ];
+  const benifits = [
+    {
+      0: "استفادة العائلة 1",
+      1: "معلومات الاستفادة",
+      2: "معلومات الاستفادة",
+    },
+    {
+      0: "استفادة العائلة 1",
+      1: "معلومات الاستفادة",
+      2: "معلومات الاستفادة",
+    },
+    {
+      0: "استفادة العائلة 1",
+      1: "معلومات الاستفادة",
+      2: "معلومات الاستفادة",
+    },
+    {
+      0: "استفادة العائلة 1",
+      1: "معلومات الاستفادة",
+      2: "معلومات الاستفادة",
+    },
+
+   
+  ];
   return (
     <View style={styles.container}>
-            <StatusBar style="light" />
+      <StatusBar style="light" />
 
       <View style={styles.pageEntity}>
         <View style={styles.IconsContainer}>
@@ -69,17 +166,17 @@ export default function FamilyScreen({ navigation }) {
               <Text style={styles.NavigationItemText}>معلومات</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => setSection("idk")}>
+          <TouchableOpacity onPress={() => setSection("children")}>
             <View style={styles.NavigationItem}>
               <Text style={styles.NavigationItemText}>الأبناء</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => setSection("idk")}>
+          <TouchableOpacity onPress={() => setSection("demands")}>
             <View style={styles.NavigationItem}>
               <Text style={styles.NavigationItemText}>طلبات</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => setSection("idk")}>
+          <TouchableOpacity onPress={() => setSection("benefits")}>
             <View style={styles.NavigationItem}>
               <Text style={styles.NavigationItemText}>استفادات</Text>
             </View>
@@ -89,12 +186,12 @@ export default function FamilyScreen({ navigation }) {
 
       {section == "infos" && <FamilyInfo />}
 
-      {section != "infos" && (
+      {section == "children" && (
         <ScrollView style={styles.Content}>
           <Kids kids={kids} />
           <Box position="relative" h={100} w="100%">
             <Fab
-              onPress={() => alert("wassuup")}
+              onPress={() => navigation.navigate("AddChild")}
               position="absolute"
               size="sm"
               backgroundColor="#348578"
@@ -103,6 +200,20 @@ export default function FamilyScreen({ navigation }) {
               }
             />
           </Box>
+        </ScrollView>
+      )}
+      {section == "demands" && (
+        <ScrollView style={styles.Content}>
+          {users.map((u) => (
+            <DataContainer AvatarSize={25} data={u} pic={icon} />
+          ))}
+        </ScrollView>
+      )}
+      {section == "benefits" && (
+        <ScrollView style={styles.Content}>
+          {benifits.map((u) => (
+            <DataContainer AvatarSize={25} data={u} pic={icon} />
+          ))}
         </ScrollView>
       )}
     </View>

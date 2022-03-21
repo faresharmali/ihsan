@@ -1,5 +1,5 @@
 import React from "react";
-
+import { StatusBar } from "expo-status-bar";
 import { Text, View, Image } from "react-native";
 import styles from "../Styles.js";
 import Logo from "../../assets/Logo2.png";
@@ -22,6 +22,8 @@ export default function Login({ navigation, pageHandler }) {
   }
   return (
     <View style={styles.container}>
+      <StatusBar style="dark" />
+
       <View style={styles.logoContainer}>
         <Image style={styles.Logo} source={Logo} />
 

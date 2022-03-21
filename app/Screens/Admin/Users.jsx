@@ -5,6 +5,7 @@ import {
   View,
   ScrollView,
   TouchableWithoutFeedback,
+  TouchableOpacity
 } from "react-native";
 import React, { useState } from "react";
 import BottomBar from "../../Navigation/BottomBar";
@@ -18,8 +19,10 @@ import Woman from "../../../assets/avatars/user.png";
 import Woman2 from "../../../assets/avatars/woman.png";
 import User from "../../../assets/avatars/woman2.png";
 import Gamer from "../../../assets/avatars/gamer.png";
+import { LogBox } from 'react-native';
+LogBox.ignoreAllLogs();
+export default function Users({ navigation,drawer }) {
 
-export default function Users({ navigation }) {
   const [active, setActive] = useState(6);
   let [fontsLoaded] = useFonts({
     "Amiri-Bold": require("../../../assets/fonts/Amiri-Bold.ttf"),
@@ -69,9 +72,9 @@ export default function Users({ navigation }) {
       <StatusBar style="dark" />
 
       <View style={styles.ScreenEntity}>
-        <View style={styles.menuContainer}>
+      <TouchableOpacity onPress={()=>drawer.openDrawer()} style={styles.menuContainer}>
           <Icon as={Entypo} name="menu" size={8} color="#fff" />
-        </View>
+        </TouchableOpacity>
 
         <View style={styles.containerTitle}>
           <Text style={styles.ScreenEntityTitle}>الأعضاء </Text>
@@ -244,8 +247,6 @@ const styles = StyleSheet.create({
   ScreenEntity: {
     flexDirection: "row",
     width: "100%",
-    backgroundColor: "#f5f5f5",
-    backgroundColor: "#f5f5f5",
     marginTop: "15%",
     alignItems: "center",
     justifyContent: "space-between",

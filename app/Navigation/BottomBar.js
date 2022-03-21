@@ -1,5 +1,11 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View,TouchableOpacity, TouchableWithoutFeedback } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+} from "react-native";
 import { Icon } from "native-base";
 import {
   Entypo,
@@ -13,9 +19,7 @@ export default function BottomBar(props) {
   return (
     <View style={styles.BottomBar}>
       <View style={styles.itemContainer}>
-        <TouchableOpacity
-          onPress={() => props.navigation.navigate("Users")}
-        >
+        <TouchableOpacity onPress={() => props.navigation.navigate("Users")}>
           <View style={styles.bottomBarITem}>
             <Icon
               as={MaterialCommunityIcons}
@@ -30,13 +34,12 @@ export default function BottomBar(props) {
         <TouchableOpacity
           onPress={() => props.navigation.navigate("Famillies")}
         >
-        <View style={styles.bottomBarITem}>
-          <Icon as={FontAwesome} name="building" color={"#348578"} size={5} />
+          <View style={styles.bottomBarITem}>
+            <Icon as={FontAwesome} name="building" color={"#348578"} size={5} />
 
-          <Text style={styles.bottomBarITemText}>العائلات</Text>
-        </View>
+            <Text style={styles.bottomBarITemText}>العائلات</Text>
+          </View>
         </TouchableOpacity>
-
       </View>
 
       <TouchableOpacity onPress={() => props.adduser()}>
@@ -45,10 +48,9 @@ export default function BottomBar(props) {
         </View>
       </TouchableOpacity>
       <View style={styles.itemContainer}>
-      <TouchableOpacity
+        <TouchableOpacity
           onPress={() => props.navigation.navigate("Informations")}
         >
-         
           <View style={styles.bottomBarITem}>
             <Icon
               as={FontAwesome5}
@@ -59,17 +61,21 @@ export default function BottomBar(props) {
 
             <Text style={styles.bottomBarITemText}>معلومات</Text>
           </View>
-          </TouchableOpacity>
-        <View style={styles.bottomBarITem}>
-          <Icon
-            as={MaterialCommunityIcons}
-            name="truck-fast"
-            color={"#348578"}
-            size={5}
-          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => props.navigation.navigate("Activities")}
+        >
+          <View style={styles.bottomBarITem}>
+            <Icon
+              as={MaterialCommunityIcons}
+              name="truck-fast"
+              color={"#348578"}
+              size={5}
+            />
 
-          <Text style={styles.bottomBarITemText}>أنشطة</Text>
-        </View>
+            <Text style={styles.bottomBarITemText}>أنشطة</Text>
+          </View>
+        </TouchableOpacity>
       </View>
     </View>
   );

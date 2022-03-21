@@ -5,6 +5,7 @@ import {
   View,
   ScrollView,
   TouchableWithoutFeedback,
+  TouchableOpacity
 } from "react-native";
 import React, { useState } from "react";
 import { Icon } from "native-base";
@@ -14,11 +15,11 @@ import DataContainer from "../../Components/DataContainer";
 import BottomBar from "../../Navigation/BottomBar";
 import icon from "../../../assets/icons/information.png";
 
-export default function Informations({ navigation }) {
+export default function Informations({ navigation ,drawer}) {
   const [active, setActive] = useState(5);
   let [fontsLoaded] = useFonts({
-    "Amiri-Bold": require("../../../../assets/fonts/Amiri-Bold.ttf"),
-    "Tajawal-Medium": require("../../../../assets/fonts/Tajawal-Medium.ttf"),
+    "Amiri-Bold": require("../../../assets/fonts/Amiri-Bold.ttf"),
+    "Tajawal-Medium": require("../../../assets/fonts/Tajawal-Medium.ttf"),
   });
   if (!fontsLoaded) {
     return <Text>Loading</Text>;
@@ -48,9 +49,9 @@ export default function Informations({ navigation }) {
       <StatusBar style="dark" />
 
       <View style={styles.ScreenEntity}>
-        <View style={styles.menuContainer}>
+      <TouchableOpacity onPress={()=>drawer.openDrawer()} style={styles.menuContainer}>
           <Icon as={Entypo} name="menu" size={8} color="#fff" />
-        </View>
+        </TouchableOpacity>
 
         <View style={styles.containerTitle}>
           <Text style={styles.ScreenEntityTitle}>معلومات </Text>
@@ -155,7 +156,7 @@ export default function Informations({ navigation }) {
       </ScrollView>
       <BottomBar
         navigation={navigation}
-        adduser={() => navigation.navigate("AddFamily")}
+        adduser={() => navigation.navigate("AddInformation")}
       />
     </View>
   );
@@ -201,8 +202,6 @@ const styles = StyleSheet.create({
   ScreenEntity: {
     flexDirection: "row",
     width: "100%",
-    backgroundColor: "#f5f5f5",
-    backgroundColor: "#f5f5f5",
     marginTop: "15%",
     alignItems: "center",
     justifyContent: "space-between",

@@ -6,9 +6,6 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Icon } from "native-base";
 import Logo from "../../assets/Logo2.png";
 export default function DrawerContent(props) {
-  const [SocieteInfo, setSocieteInfo] = useState("عربية");
-  const Logout = async () => {};
-  const MyColor = "#232e42";
   return (
     <View style={styles.container}>
       <View style={styles.userInfoSection}>
@@ -17,11 +14,7 @@ export default function DrawerContent(props) {
             <Title style={styles.title}>جمعية إحسان</Title>
             <Caption style={styles.caption}>جمعية إحسان</Caption>
           </View>
-          <Avatar.Image
-            source={Logo}
-            size={60}
-            marginLeft={10}
-          />
+          <Avatar.Image source={Logo} size={60} marginLeft={10} />
         </View>
       </View>
       <Drawer.Section>
@@ -29,10 +22,10 @@ export default function DrawerContent(props) {
           icon={({ color, size }) => (
             <Icon
               style={styles.icon}
-              as={<MaterialIcons name="account-circle" />}
+              as={<MaterialIcons name="home" />}
             />
           )}
-          label="الأعضاء"
+          label="الرئيسية"
           labelStyle={styles.label}
           onPress={() => {
             props.navigation.navigate("Home");
@@ -45,7 +38,20 @@ export default function DrawerContent(props) {
               as={<MaterialIcons name="account-circle" />}
             />
           )}
-          label="العائلات"
+          label="قسم الكفالة"
+          labelStyle={styles.label}
+          onPress={() => {
+            props.navigation.navigate("Kafala");
+          }}
+        />
+        <DrawerItem
+          icon={({ color, size }) => (
+            <Icon
+              style={styles.icon}
+              as={<MaterialIcons name="account-circle" />}
+            />
+          )}
+          label="قسم المالية"
           labelStyle={styles.label}
           onPress={() => {
             props.navigation.navigate("venteetachat");
@@ -58,7 +64,7 @@ export default function DrawerContent(props) {
               as={<MaterialIcons name="account-circle" />}
             />
           )}
-          label="العائلات"
+          label="المقر"
           labelStyle={styles.label}
           onPress={() => {
             props.navigation.navigate("venteetachat");
@@ -71,14 +77,14 @@ export default function DrawerContent(props) {
               as={<MaterialIcons name="account-circle" />}
             />
           )}
-          label="العائلات"
+          label="قسم الصحة"
           labelStyle={styles.label}
           onPress={() => {
             props.navigation.navigate("venteetachat");
           }}
         />
         <DrawerItem
-          label="العائلات"
+          label="قسم التعليم"
           icon={({ color, size }) => (
             <Icon
               style={styles.icon}
@@ -110,9 +116,8 @@ const styles = StyleSheet.create({
   },
   userInfoSection: {
     paddingTop: StatusBar.currentHeight,
-
     paddingRight: 20,
-    backgroundColor: "#FF7F3F",
+    backgroundColor: "#348578",
     height: "18%",
     alignItems: "flex-end",
     justifyContent: "center",

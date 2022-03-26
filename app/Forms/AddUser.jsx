@@ -7,12 +7,7 @@ import { useFonts } from "expo-font";
 import { Button } from "react-native-paper";
 
 export default function AddUser({ navigation }) {
-  let [fontsLoaded] = useFonts({
-    "Tajawal-Medium": require("../../assets/fonts/Tajawal-Medium.ttf"),
-  });
-  if (!fontsLoaded) {
-    return <Text>Loading</Text>;
-  }
+
   const styling = {
     borderColor: "#000",
     borderWidth: 0.5,

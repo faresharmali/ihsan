@@ -13,13 +13,6 @@ export default function Login({ navigation, pageHandler }) {
     alert("wassup");
   };
 
-  let [fontsLoaded] = useFonts({
-    "Amiri-Bold": require("../../assets/fonts/Amiri-Bold.ttf"),
-    "Tajawal-Medium": require("../../assets/fonts/Tajawal-Medium.ttf"),
-  });
-  if (!fontsLoaded) {
-    return <Text>Loading</Text>;
-  }
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />

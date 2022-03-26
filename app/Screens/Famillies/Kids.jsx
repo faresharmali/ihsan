@@ -4,44 +4,45 @@ import { Icon } from "native-base";
 import { MaterialIcons, Entypo } from "@expo/vector-icons";
 import Kid from "../../../assets/icons/kid.png";
 export default function Kids(props) {
+  console.log(props)
   return (
     <View>
-      {props.kids.map((k) => (
-        <View key={k.name} style={styles.DataContainer}>
-          <Image source={Kid} style={styles.avatar} />
-          <View style={styles.infos}>
-            <Text style={styles.UserPersonal}>{k.name} </Text>
-            <View style={styles.secondaryInfos}>
-              <Icon
-                as={MaterialIcons}
-                name="admin-panel-settings"
-                size={4}
-                color="#000"
-              />
-              <Text> الجنس : {k.sexe}</Text>
-              <Icon
-                style={{ marginRight: 10, marginLeft: 5 }}
-                as={Entypo}
-                name="clock"
-                size={4}
-                color="#000"
-              />
-              <Text>العمر : {k.age} </Text>
-            </View>
+    {props.kids.map((k) => (
+      <View key={k.name} style={styles.DataContainer}>
+        <Image source={Kid} style={styles.avatar} />
+        <View style={styles.infos}>
+          <Text style={styles.UserPersonal}>{k.name} </Text>
+          <View style={styles.secondaryInfos}>
+            <Icon
+              as={MaterialIcons}
+              name="admin-panel-settings"
+              size={4}
+              color="#000"
+            />
+            <Text> الجنس : {k.sexe}</Text>
+            <Icon
+              style={{ marginRight: 10, marginLeft: 5 }}
+              as={Entypo}
+              name="clock"
+              size={4}
+              color="#000"
+            />
+            <Text>العمر : {k.age} </Text>
           </View>
-          <TouchableOpacity onPress={props.openFamily}>
-            <View style={styles.menuBtn}>
-              <Icon
-                as={Entypo}
-                name="dots-three-horizontal"
-                size={6}
-                color="#fff"
-              />
-            </View>
-          </TouchableOpacity>
         </View>
-      ))}
-    </View>
+        <TouchableOpacity onPress={props.openFamily}>
+          <View style={styles.menuBtn}>
+            <Icon
+              as={Entypo}
+              name="dots-three-horizontal"
+              size={6}
+              color="#fff"
+            />
+          </View>
+        </TouchableOpacity>
+      </View>
+    ))}
+  </View>
   );
 }
 

@@ -1,22 +1,35 @@
 import { StyleSheet, Text, View, TouchableWithoutFeedback } from "react-native";
-import React from "react";
-import Man from "../../assets/avatars/man.png";
+import React ,{useState}from "react";
 import { Input, Stack, Icon } from "native-base";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
-import { useFonts } from "expo-font";
 import { Button } from "react-native-paper";
-
+import { useDispatch } from "react-redux";
 export default function AddFamily({ navigation }) {
-  let [fontsLoaded] = useFonts({
-    "Tajawal-Medium": require("../../assets/fonts/Tajawal-Medium.ttf"),
-  });
-  if (!fontsLoaded) {
-    return <Text>Loading</Text>;
-  }
+  const [FamilyData,setFamilyData]=useState({
+    Mother:"",
+    Father:"",
+    Adresse:"",
+    Phone:"",
+    Income:"",
+    Infos:"",
+    Children:[]
+  })
   const styling = {
     borderColor: "#000",
     borderWidth: 0.5,
   };
+  const myAction = () => {
+    return {
+      type: "AddFamily",
+      data:{
+       ...FamilyData
+      }
+    };
+  };
+  let dispatch = useDispatch();
+  const inputHandler=(e,name)=>{
+    setFamilyData({...FamilyData,[name]:e})
+  }
   return (
     <View style={styles.Container}>
       <View style={styles.TitleContainer}>
@@ -25,7 +38,7 @@ export default function AddFamily({ navigation }) {
 
           <Text style={styles.PageTitile}>اضافة عائلة</Text>
         </View>
-        <TouchableWithoutFeedback onPress={() => navigation.navigate('Users')}>
+        <TouchableWithoutFeedback onPress={() => navigation.navigate("Users")}>
           <Icon
             style={styles.back}
             as={FontAwesome}
@@ -54,8 +67,31 @@ export default function AddFamily({ navigation }) {
           }}
           h={50}
           textAlign="right"
-          placeholder="اسم المستخدم"
+          placeholder="اسم و لقب الأب"
           {...styling}
+          onChangeText={(text)=>inputHandler(text,"Mother")}
+        />
+        <Input
+          InputRightElement={
+            <Icon
+              style={{ marginRight: 10 }}
+              as={<MaterialIcons name="account-circle" />}
+              size={5}
+              ml="2"
+              color="#348578"
+            />
+          }
+          style={styles.input}
+          w={{
+            base: "95%",
+            md: "50%",
+          }}
+          h={50}
+          textAlign="right"
+          placeholder="اسم و لقب الأم"
+          {...styling}
+          onChangeText={(text)=>inputHandler(text,"Father")}
+
         />
         <Input
           InputRightElement={
@@ -73,8 +109,11 @@ export default function AddFamily({ navigation }) {
           }}
           h={50}
           textAlign="right"
-          placeholder="كلمة المرور"
+          placeholder="رقم الهاتف"
           {...styling}
+          onChangeText={(text)=>inputHandler(text,"Phone")}
+
+
         />
         <Input
           InputRightElement={
@@ -92,8 +131,10 @@ export default function AddFamily({ navigation }) {
           }}
           h={50}
           textAlign="right"
-          placeholder="كلمة المرور"
+          placeholder="العنوان"
           {...styling}
+          onChangeText={(text)=>inputHandler(text,"Adresse")}
+
         />
         <Input
           InputRightElement={
@@ -111,8 +152,10 @@ export default function AddFamily({ navigation }) {
           }}
           h={50}
           textAlign="right"
-          placeholder="كلمة المرور"
+          placeholder="المدخول"
           {...styling}
+          onChangeText={(text)=>inputHandler(text,"Income")}
+
         />
         <Input
           InputRightElement={
@@ -130,30 +173,22 @@ export default function AddFamily({ navigation }) {
           }}
           h={50}
           textAlign="right"
-          placeholder="كلمة المرور"
+          placeholder="معلومات عامة"
           {...styling}
+          onChangeText={(text)=>inputHandler(text,"Infos")}
+
         />
-        <Input
-          InputRightElement={
-            <Icon
-              style={{ marginRight: 10 }}
-              as={<MaterialIcons name="lock" />}
-              size={5}
-              ml="2"
-              color="#348578"
-            />
-          }
-          w={{
-            base: "95%",
-            md: "25%",
-          }}
-          h={50}
-          textAlign="right"
-          placeholder="كلمة المرور"
-          {...styling}
-        />
+       
+      
       </Stack>
-      <Button style={styles.Button} mode="contained" onPress={() => Login()}>
+      <Button
+        style={styles.Button}
+        mode="contained"
+        onPress={() => {
+          dispatch(myAction());
+          navigation.navigate("Famillies");
+        }}
+      >
         <Text style={{ fontSize: 16, marginLeft: 10 }}>اضافة</Text>
       </Button>
     </View>

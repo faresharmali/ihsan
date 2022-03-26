@@ -17,13 +17,7 @@ import icon from "../../../assets/icons/information.png";
 
 export default function Informations({ navigation ,drawer}) {
   const [active, setActive] = useState(5);
-  let [fontsLoaded] = useFonts({
-    "Amiri-Bold": require("../../../assets/fonts/Amiri-Bold.ttf"),
-    "Tajawal-Medium": require("../../../assets/fonts/Tajawal-Medium.ttf"),
-  });
-  if (!fontsLoaded) {
-    return <Text>Loading</Text>;
-  }
+
   const users = [
     {
       0: "عائلة تحتاج ثلاجة",

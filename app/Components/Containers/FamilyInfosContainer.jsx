@@ -2,29 +2,26 @@ import { StyleSheet, Text, View, Image, TouchableOpacity,TouchableWithoutFeedbac
 import React from "react";
 import { Icon } from "native-base";
 import { MaterialIcons, Entypo } from "@expo/vector-icons";
-export default function DataContainer(props) {
+export default function FamilyInfosContainer(props) {
   return (
     <View style={styles.DataContainer}>
       <Image source={props.pic} style={{width:props.AvatarSize,height:props.AvatarSize}} />
       <View style={styles.infos}>
-        <Text style={styles.UserPersonal}>{props.data[0]} </Text>
+        <Text style={styles.UserPersonal}>{`عائلة ${props.data.Mother} ارملة ${props.data.Father}`} </Text>
         <View style={styles.secondaryInfos}>
-          {props.data[1] && (
+          {props.data.Phone  && (
             <>
             <Icon as={MaterialIcons} name="phone" size={4} color="#000" />
-              <Text> {props.data[1]}</Text>
+              <Text> {props.data.Phone }</Text>
             </>
           )}
-          {props.data[2] && (
-            <><Icon
-                style={{ marginRight: 10, marginLeft: 5 }}
-                as={Entypo}
-                name="clock"
-                size={4}
-                color="#000"
-              />
-              <Text>{props.data[2]}</Text>
-                </>  )}
+          {props.data.Phone  && (
+            <>
+            <Icon as={MaterialIcons} name="map" size={4} color="#000" />
+              <Text> {props.data.Adresse }</Text>
+            </>
+          )}
+        
         </View>
       </View>
       <TouchableOpacity onPress={props.openFamily}>

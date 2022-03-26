@@ -2,22 +2,26 @@ import { StyleSheet, Text, View, TouchableWithoutFeedback } from "react-native";
 import React from "react";
 import { Input, Stack, Icon } from "native-base";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
-import { useFonts } from "expo-font";
 import { Button } from "react-native-paper";
-
-export default function AddChild({ navigation }) {
-  let [fontsLoaded] = useFonts({
-    "Tajawal-Medium": require("../../assets/fonts/Tajawal-Medium.ttf"),
-  });
-  if (!fontsLoaded) {
-    return <Text>Loading</Text>;
-  }
+import { useDispatch } from "react-redux";
+import store from "../store";
+export default function AddChild({route, navigation }) {
+  const myAction = () => {
+    return {
+      type: "AddChild",
+      id:route.params.id
+    };
+  };
+  let dispatch = useDispatch();
   const styling = {
     borderColor: "#000",
     borderWidth: 0.5,
   };
-
-  return (
+const add=()=>{
+  dispatch(myAction())
+  navigation.goBack()
+} 
+ return (
     <View style={styles.Container}>
       <View style={styles.TitleContainer}>
         <View style={{ flexDirection: "row-reverse" }}>
@@ -114,7 +118,7 @@ export default function AddChild({ navigation }) {
           {...styling}
         />
       </Stack>
-      <Button style={styles.Button} mode="contained" onPress={() => Login()}>
+      <Button style={styles.Button} mode="contained" onPress={() => add()}>
         <Text style={{ fontSize: 16, marginLeft: 10 }}>اضافة </Text>
       </Button>
     </View>

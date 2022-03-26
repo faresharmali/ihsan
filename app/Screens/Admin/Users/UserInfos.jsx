@@ -28,7 +28,7 @@ console.log(data)
           />
         </View>
         <View style={styles.Info}>
-          <Text style={styles.InfoText}>اسم و لقب الأم: {data.Mother}  </Text>
+          <Text style={styles.InfoText}>الاسم و اللقب: {data.Mother}  </Text>
           <Icon
             as={FontAwesome}
             size={6}
@@ -37,7 +37,7 @@ console.log(data)
           />
         </View>
         <View style={styles.Info}>
-          <Text style={styles.InfoText}>اسم و لقب الأب : {data.Father} </Text>
+          <Text style={styles.InfoText}>المسؤولية : {data[1]} </Text>
           <Icon
             as={FontAwesome}
             size={6}
@@ -46,7 +46,7 @@ console.log(data)
           />
         </View>
         <View style={styles.Info}>
-          <Text style={styles.InfoText}>العنوان :{data.Adresse}</Text>
+          <Text style={styles.InfoText}>العنوان : الجزائر العاصمة</Text>
           <Icon
             as={FontAwesome}
             size={6}
@@ -55,7 +55,7 @@ console.log(data)
           />
         </View>
         <View style={styles.Info}>
-          <Text style={styles.InfoText}>رقم الهاتف : {data.Phone}</Text>
+          <Text style={styles.InfoText}>رقم الهاتف : 0660818412</Text>
           <Icon
             as={FontAwesome}
             size={6}
@@ -64,7 +64,7 @@ console.log(data)
           />
         </View>
         <View style={styles.Info}>
-          <Text style={styles.InfoText}> المدخول : {data.Income} </Text>
+          <Text style={styles.InfoText}> المدخول : 10000 دينار</Text>
           <Icon
             as={FontAwesome5}
             size={6}

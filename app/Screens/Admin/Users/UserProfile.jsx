@@ -7,25 +7,21 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import React, { useState,useEffect } from "react";
+import React, { useState } from "react";
 import { Icon } from "native-base";
 import {
   MaterialCommunityIcons,
   Ionicons,
   AntDesign,
 } from "@expo/vector-icons";
-import Family from "../../../assets/avatars/family.png";
-import FamilyInfo from "./FamilyInfo";
-import Kids from "./Kids";
+import Man from "../../../../assets/avatars/man.png" 
+
 import { Box, Fab } from "native-base";
-import icon from "../../../assets/icons/information.png";
-import store from "../../store";
-import DataContainer from "../../Components/DataContainer";
-import { useSelector } from "react-redux";
-export default function FamilyScreen({route,navigation }) {
+import icon from "../../../../assets/icons/information.png";
+import UserInfos from "./UserInfos.jsx"
+import DataContainer from "../../../Components/DataContainer";
+export default function UserProfile({ route,navigation }) {
   const [section, setSection] = useState("infos");
-  const [refresh, setRefresh] = useState(false);
- 
   const users = [
     {
       0: "طلب العائلة 1",
@@ -120,17 +116,19 @@ export default function FamilyScreen({route,navigation }) {
 
    
   ];
-  store.subscribe(()=>{
-    setRefresh(!refresh)
-    })
-  let family = useSelector(state=>state.Families.filter((f)=>f.id==route.params.id)[0])
+
   return (
     <View style={styles.container}>
       <StatusBar style="light" />
 
       <View style={styles.pageEntity}>
         <View style={styles.IconsContainer}>
+            <TouchableOpacity
+            onPress={()=> navigation.navigate("Users")}
+            >
+
           <Icon as={Ionicons} size={8} color="#fff" name="md-chevron-back" />
+            </TouchableOpacity>
           <Icon
             as={MaterialCommunityIcons}
             size={8}
@@ -138,8 +136,8 @@ export default function FamilyScreen({route,navigation }) {
             name="square-edit-outline"
           />
         </View>
-        <Image style={styles.EntityImage} source={Family} />
-        <Text style={styles.EntityTitle}>{`عائلة ${family.Mother} ارملة ${family.Father}`}</Text>
+        <Image style={styles.EntityImage} source={route.params.pic} />
+        <Text style={styles.EntityTitle}>{route.params[0]}</Text>
         <View style={styles.Navigation}>
           <TouchableOpacity onPress={() => setSection("infos")}>
             <View style={styles.NavigationItem}>
@@ -148,12 +146,12 @@ export default function FamilyScreen({route,navigation }) {
           </TouchableOpacity>
           <TouchableOpacity onPress={() => setSection("children")}>
             <View style={styles.NavigationItem}>
-              <Text style={styles.NavigationItemText}>الأبناء</Text>
+              <Text style={styles.NavigationItemText}>العائلات</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => setSection("demands")}>
             <View style={styles.NavigationItem}>
-              <Text style={styles.NavigationItemText}>طلبات</Text>
+              <Text style={styles.NavigationItemText}>النشاطات</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => setSection("benefits")}>
@@ -164,13 +162,12 @@ export default function FamilyScreen({route,navigation }) {
         </View>
       </View>
 
-
-      {section == "children" &&
+      {section == "infos" && ( <UserInfos title="معلومات العضو"  data={route.params}/>)}
+      {section == "children" && (
         <ScrollView style={styles.Content}>
-         <Kids kids={family.Children} />
           <Box position="relative" h={100} w="100%">
             <Fab
-              onPress={() => navigation.navigate("AddChild",{...route.params})}
+              onPress={() => navigation.navigate("AddChild")}
               position="absolute"
               size="sm"
               backgroundColor="#348578"
@@ -180,9 +177,6 @@ export default function FamilyScreen({route,navigation }) {
             />
           </Box>
         </ScrollView>
-        } 
-      {section == "infos" && (
-         <FamilyInfo data={family}/>
       )}
       {section == "demands" && (
         <ScrollView style={styles.Content}>

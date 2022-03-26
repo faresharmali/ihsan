@@ -1,18 +1,31 @@
 import "react-native-gesture-handler";
 import React from "react";
 
-import { StyleSheet, SafeAreaView, View } from "react-native";
+import { StyleSheet, SafeAreaView, Text } from "react-native";
 import Login from "./app/Auth/Login";
 import { NativeBaseProvider } from "native-base";
 import { useState } from "react";
-import Admin from "./app/Screens/Admin/Admin"
+import { useFonts } from "expo-font";
+import Admin from "./app/Screens/Admin/Admin";
+import { Provider } from "react-redux";
+import store from "./app/store";
 export default function App() {
+
   const [CurrentPage, PageHandler] = useState(1);
+  let [fontsLoaded] = useFonts({
+    "Amiri-Bold": require("./assets/fonts/Amiri-Bold.ttf"),
+    "Tajawal-Medium": require("./assets/fonts/Tajawal-Medium.ttf"),
+  });
+  if (!fontsLoaded) {
+    return <Text>Loading</Text>;
+  }
   return (
-    <NativeBaseProvider style={styles.container}>
-      {CurrentPage == 0 && <Login PageHandler={PageHandler} />}
-      {CurrentPage == 1 && <Admin PageHandler={PageHandler} />}
-    </NativeBaseProvider>
+    <Provider store={store}>
+      <NativeBaseProvider style={styles.container}>
+        {CurrentPage == 0 && <Login PageHandler={PageHandler} />}
+        {CurrentPage == 1 && <Admin PageHandler={PageHandler} />}
+      </NativeBaseProvider>
+    </Provider>
   );
 }
 

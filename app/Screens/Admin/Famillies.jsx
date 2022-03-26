@@ -8,52 +8,22 @@ import {
   Entypo,
   MaterialIcons,
 } from "@expo/vector-icons";
-import { useFonts } from "expo-font";
-import DataContainer from "../../Components/DataContainer";
+import FamilyInfosContainer from "../../Components/Containers/FamilyInfosContainer";
 import Family from "../../../assets/avatars/family.png";
 import { Input, Stack } from "native-base";
-
+import { useSelector } from "react-redux";
 export default function Families({ navigation,drawer }) {
   const [active, setActive] = useState(1);
-  let [fontsLoaded] = useFonts({
-    "Amiri-Bold": require("../../../assets/fonts/Amiri-Bold.ttf"),
-    "Tajawal-Medium": require("../../../assets/fonts/Tajawal-Medium.ttf"),
-  });
-  if (!fontsLoaded) {
-    return <Text>Loading</Text>;
-  }
+
   const styling = {
     backgroundColor: "#fff",
     marginTop: 5,
   };
-  const openModal = () => {
-    navigation.navigate("Family");
+  const openModal = (data) => {
+    navigation.navigate("Family",data);
   };
-  const Famillies = [
-    {
-      0: "عائلة مريم أرملة محمد",
-      1: "0660818412",
-    },
+  let MyFamilies =useSelector(state=>state.Families)
 
-    {
-      0: "عائلة فاطمة أرملة عمر",
-      1: "0660818412",
-    },
-
-    {
-      0: "عائلة كريمة أرملة اسلام",
-      1: "0660818412",
-    },
-
-    {
-      0: "عائلة مريم أرملة عبد الله",
-      1: "0660818412",
-    },
-    {
-      0: "عائلة سعدية أرملة أسامة",
-      1: "0660818412",
-    },
-  ];
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />
@@ -95,12 +65,12 @@ export default function Families({ navigation,drawer }) {
       />
 
       <ScrollView style={styles.Content}>
-        {Famillies.map((f) => (
-          <DataContainer
+        {MyFamilies.map((f) => (
+          <FamilyInfosContainer
             AvatarSize={40}
             data={f}
             pic={Family}
-            openFamily={openModal}
+            openFamily={()=>openModal(f)}
           />
         ))}
       </ScrollView>

@@ -12,6 +12,7 @@ import Informations from "../informations/informations.jsx";
 import Activity from "../Activities/Activities.jsx";
 import AddChild from "../../Forms/AddChild.jsx";
 import AddInformation from "../../Forms/addInformation.jsx";
+import UserProfile from "./Users/UserProfile.jsx";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
@@ -70,6 +71,11 @@ export default function Kafala({ navigation }) {
         options={TransitionFromBottom}
         name="AddInformation"
         component={AddInformation}
+      />
+      <Stack.Screen
+        options={TransitionFromBottom}
+        name="UserProfile"
+        component={UserProfile}
       />
     </Stack.Navigator>
   );

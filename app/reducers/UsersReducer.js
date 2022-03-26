@@ -48,7 +48,10 @@ const users = [
   export default UserReducer=(state=users,action)=>{
     switch(action.type){
         case "showUsers":return state
+        case "AddUser":
+          return [...state, action.data];
         default : return state
     }
 }
+
 

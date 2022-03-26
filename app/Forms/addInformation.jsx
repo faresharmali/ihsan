@@ -3,11 +3,21 @@ import React from "react";
 import Man from "../../assets/avatars/man.png";
 import { Input, Stack, Icon } from "native-base";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
-import { useFonts } from "expo-font";
+import { useDispatch } from "react-redux"; 
 import { Button } from "react-native-paper";
 
-export default function AddInformation({ navigation }) {
+export default function AddInformation({ route, navigation }) {
 
+  const dispatch =useDispatch()
+  const Action=()=>{
+    return {
+      type:"AddInformation",
+      data:{
+        id:6,
+        0:"معلومة رقم 6"
+      }
+    }
+  }
   const styling = {
     borderColor: "#000",
     borderWidth: 0.5,
@@ -148,7 +158,9 @@ export default function AddInformation({ navigation }) {
           {...styling}
         />
       </Stack>
-      <Button style={styles.Button} mode="contained" onPress={() => Login()}>
+      <Button style={styles.Button} mode="contained" onPress={() => {dispatch(Action());navigation.navigate("Informations");setTimeout(() => {
+        route.params.showToast()
+      }, 600); }}>
         <Text style={{ fontSize: 16, marginLeft: 10 }}>اضافة</Text>
       </Button>
     </View>

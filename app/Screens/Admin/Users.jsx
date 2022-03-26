@@ -14,6 +14,8 @@ import { MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
 import DataContainer from "../../Components/DataContainer";
 import { useSelector } from "react-redux";
 import { LogBox } from "react-native";
+import Toast from 'react-native-toast-message';
+import toastConfig from "../../Components/ToastConfiguration"
 LogBox.ignoreAllLogs();
 export default function Users({ navigation, drawer }) {
   const [active, setActive] = useState(6);
@@ -24,7 +26,15 @@ export default function Users({ navigation, drawer }) {
     });
   };
   let users =useSelector(state=>state.users)
-
+  let state =useSelector(state=>state)
+console.error("state",state.Families)
+  const showToast=()=>{
+    Toast.show({
+      type: "success",
+      text1: "نجحت العملية",
+      text2: " تمت اضافة المستخدم بنجاح  👋",
+    });
+  }
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />
@@ -161,9 +171,11 @@ export default function Users({ navigation, drawer }) {
           />
         ))}
       </ScrollView>
+      <Toast config={toastConfig} />
+
       <BottomBar
         navigation={navigation}
-        adduser={() => navigation.navigate("AddUser")}
+        adduser={() => navigation.navigate("AddUser",{showToast})}
       />
     </View>
   );

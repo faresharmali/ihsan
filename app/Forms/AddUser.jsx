@@ -3,11 +3,23 @@ import React from "react";
 import RNPickerSelect from "react-native-picker-select";
 import { Input, Stack, Icon } from "native-base";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
-import { useFonts } from "expo-font";
 import { Button } from "react-native-paper";
+import { useDispatch } from "react-redux";
+import Gamer from "../../assets/avatars/gamer.png";
+export default function AddUser({ route,navigation }) {
 
-export default function AddUser({ navigation }) {
-
+  const dispatch =useDispatch()
+  const action =()=>{
+    return {
+      type:"AddUser",
+      data:{
+        0: "غوجو ساترو",
+        1: "مستعمل جوجوتسو",
+        icon1: "phone",
+        pic: Gamer,
+      }
+    }
+  }
   const styling = {
     borderColor: "#000",
     borderWidth: 0.5,
@@ -202,7 +214,9 @@ export default function AddUser({ navigation }) {
           ]}
         />
       </Stack>
-      <Button style={styles.Button} mode="contained" onPress={() => Login()}>
+      <Button style={styles.Button} mode="contained" onPress={() => {dispatch(action());navigation.goBack();setTimeout(() => {
+        route.params.showToast()
+      }, (600));}}>
         <Text style={{ fontSize: 16, marginLeft: 10 }}>اضافة مستخدم </Text>
       </Button>
     </View>

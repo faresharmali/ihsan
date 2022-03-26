@@ -20,6 +20,9 @@ export default function AddChild({route, navigation }) {
 const add=()=>{
   dispatch(myAction())
   navigation.goBack()
+  setTimeout(() => {
+    route.params.showToast()
+  }, (600));
 } 
  return (
     <View style={styles.Container}>

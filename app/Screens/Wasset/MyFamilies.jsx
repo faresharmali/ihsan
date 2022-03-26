@@ -15,7 +15,7 @@ import { useSelector } from "react-redux";
 import toastConfig from "../../Components/ToastConfiguration";
 import Toast from 'react-native-toast-message';
 
-export default function Families({ navigation,drawer }) {
+export default function MyFamilies({ navigation,drawer }) {
   const [active, setActive] = useState(1);
   const showToast=()=>{
     Toast.show({

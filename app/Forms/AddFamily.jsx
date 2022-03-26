@@ -1,19 +1,19 @@
 import { StyleSheet, Text, View, TouchableWithoutFeedback } from "react-native";
-import React ,{useState}from "react";
+import React, { useState } from "react";
 import { Input, Stack, Icon } from "native-base";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { Button } from "react-native-paper";
 import { useDispatch } from "react-redux";
-export default function AddFamily({ navigation }) {
-  const [FamilyData,setFamilyData]=useState({
-    Mother:"",
-    Father:"",
-    Adresse:"",
-    Phone:"",
-    Income:"",
-    Infos:"",
-    Children:[]
-  })
+export default function AddFamily({ route, navigation }) {
+  const [FamilyData, setFamilyData] = useState({
+    Mother: "",
+    Father: "",
+    Adresse: "",
+    Phone: "",
+    Income: "",
+    Infos: "",
+    Children: [],
+  });
   const styling = {
     borderColor: "#000",
     borderWidth: 0.5,
@@ -21,15 +21,15 @@ export default function AddFamily({ navigation }) {
   const myAction = () => {
     return {
       type: "AddFamily",
-      data:{
-       ...FamilyData
-      }
+      data: {
+        ...FamilyData,
+      },
     };
   };
   let dispatch = useDispatch();
-  const inputHandler=(e,name)=>{
-    setFamilyData({...FamilyData,[name]:e})
-  }
+  const inputHandler = (e, name) => {
+    setFamilyData({ ...FamilyData, [name]: e });
+  };
   return (
     <View style={styles.Container}>
       <View style={styles.TitleContainer}>
@@ -69,7 +69,7 @@ export default function AddFamily({ navigation }) {
           textAlign="right"
           placeholder="اسم و لقب الأب"
           {...styling}
-          onChangeText={(text)=>inputHandler(text,"Mother")}
+          onChangeText={(text) => inputHandler(text, "Mother")}
         />
         <Input
           InputRightElement={
@@ -90,8 +90,7 @@ export default function AddFamily({ navigation }) {
           textAlign="right"
           placeholder="اسم و لقب الأم"
           {...styling}
-          onChangeText={(text)=>inputHandler(text,"Father")}
-
+          onChangeText={(text) => inputHandler(text, "Father")}
         />
         <Input
           InputRightElement={
@@ -111,9 +110,7 @@ export default function AddFamily({ navigation }) {
           textAlign="right"
           placeholder="رقم الهاتف"
           {...styling}
-          onChangeText={(text)=>inputHandler(text,"Phone")}
-
-
+          onChangeText={(text) => inputHandler(text, "Phone")}
         />
         <Input
           InputRightElement={
@@ -133,8 +130,7 @@ export default function AddFamily({ navigation }) {
           textAlign="right"
           placeholder="العنوان"
           {...styling}
-          onChangeText={(text)=>inputHandler(text,"Adresse")}
-
+          onChangeText={(text) => inputHandler(text, "Adresse")}
         />
         <Input
           InputRightElement={
@@ -154,8 +150,7 @@ export default function AddFamily({ navigation }) {
           textAlign="right"
           placeholder="المدخول"
           {...styling}
-          onChangeText={(text)=>inputHandler(text,"Income")}
-
+          onChangeText={(text) => inputHandler(text, "Income")}
         />
         <Input
           InputRightElement={
@@ -175,18 +170,18 @@ export default function AddFamily({ navigation }) {
           textAlign="right"
           placeholder="معلومات عامة"
           {...styling}
-          onChangeText={(text)=>inputHandler(text,"Infos")}
-
+          onChangeText={(text) => inputHandler(text, "Infos")}
         />
-       
-      
       </Stack>
       <Button
         style={styles.Button}
         mode="contained"
         onPress={() => {
           dispatch(myAction());
-          navigation.navigate("Famillies");
+          navigation.goBack();
+          setTimeout(() => {
+            route.params.showToast();
+          }, 600);
         }}
       >
         <Text style={{ fontSize: 16, marginLeft: 10 }}>اضافة</Text>

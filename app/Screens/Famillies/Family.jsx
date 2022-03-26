@@ -22,6 +22,8 @@ import icon from "../../../assets/icons/information.png";
 import store from "../../store";
 import DataContainer from "../../Components/DataContainer";
 import { useSelector } from "react-redux";
+import Toast from 'react-native-toast-message';
+import toastConfig from "../../Components/ToastConfiguration"
 export default function FamilyScreen({route,navigation }) {
   const [section, setSection] = useState("infos");
   const [refresh, setRefresh] = useState(false);
@@ -123,6 +125,13 @@ export default function FamilyScreen({route,navigation }) {
   store.subscribe(()=>{
     setRefresh(!refresh)
     })
+    const showToast=()=>{
+      Toast.show({
+        type: "success",
+        text1: "نجحت العملية",
+        text2: " تمت اضافة الأبن بنجاح  👋",
+      });
+    }
   let family = useSelector(state=>state.Families.filter((f)=>f.id==route.params.id)[0])
   return (
     <View style={styles.container}>
@@ -170,7 +179,7 @@ export default function FamilyScreen({route,navigation }) {
          <Kids kids={family.Children} />
           <Box position="relative" h={100} w="100%">
             <Fab
-              onPress={() => navigation.navigate("AddChild",{...route.params})}
+              onPress={() => navigation.navigate("AddChild",{...route.params,showToast})}
               position="absolute"
               size="sm"
               backgroundColor="#348578"
@@ -198,6 +207,8 @@ export default function FamilyScreen({route,navigation }) {
           ))}
         </ScrollView>
       )}
+            <Toast config={toastConfig} />
+
     </View>
   );
 }

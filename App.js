@@ -9,9 +9,10 @@ import { useFonts } from "expo-font";
 import Admin from "./app/Screens/Admin/Admin";
 import { Provider } from "react-redux";
 import store from "./app/store";
+import Wasseet from "./app/Screens/Wasset/wasset";
 export default function App() {
 
-  const [CurrentPage, PageHandler] = useState(1);
+  const [CurrentPage, PageHandler] = useState(2);
   let [fontsLoaded] = useFonts({
     "Amiri-Bold": require("./assets/fonts/Amiri-Bold.ttf"),
     "Tajawal-Medium": require("./assets/fonts/Tajawal-Medium.ttf"),
@@ -24,6 +25,7 @@ export default function App() {
       <NativeBaseProvider style={styles.container}>
         {CurrentPage == 0 && <Login PageHandler={PageHandler} />}
         {CurrentPage == 1 && <Admin PageHandler={PageHandler} />}
+        {CurrentPage == 2 && <Wasseet PageHandler={PageHandler} />}
       </NativeBaseProvider>
     </Provider>
   );

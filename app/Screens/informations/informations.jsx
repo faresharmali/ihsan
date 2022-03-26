@@ -5,45 +5,44 @@ import {
   View,
   ScrollView,
   TouchableWithoutFeedback,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Icon } from "native-base";
 import { MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
-import { useFonts } from "expo-font";
 import DataContainer from "../../Components/DataContainer";
 import BottomBar from "../../Navigation/BottomBar";
 import icon from "../../../assets/icons/information.png";
+import { useSelector, useDispatch } from "react-redux";
+import Toast from 'react-native-toast-message';
+import toastConfig from "../../Components/ToastConfiguration";
+export default function Informations({ navigation, drawer }) {
 
-export default function Informations({ navigation ,drawer}) {
+  const showToast=()=>{
+    Toast.show({
+      type: "success",
+      text1: "نجحت العملية",
+      text2: " تمت اضافة المعلومة بنجاح  👋",
+    });
+  }
   const [active, setActive] = useState(5);
-
-  const users = [
-    {
-      0: "عائلة تحتاج ثلاجة",
-    },
-    {
-      0: "عائلة تحتاج ثلاجة",
-    },
-    {
-      0: "عائلة تحتاج ثلاجة",
-    },
-    {
-      0: "عائلة تحتاج ثلاجة",
-    },
-    {
-      0: "عائلة تحتاج ثلاجة",
-    },
-    {
-      0: "عائلة تحتاج ثلاجة",
-    },
-  ];
+  const action = () => {
+    return {
+      type: "GetInformations",
+    };
+  };
+  let Informations = useSelector((state) => state.Informations);
+  const dispatch = useDispatch();
+  dispatch(action());
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />
 
       <View style={styles.ScreenEntity}>
-      <TouchableOpacity onPress={()=>drawer.openDrawer()} style={styles.menuContainer}>
+        <TouchableOpacity
+          onPress={() => drawer.openDrawer()}
+          style={styles.menuContainer}
+        >
           <Icon as={Entypo} name="menu" size={8} color="#fff" />
         </TouchableOpacity>
 
@@ -144,14 +143,16 @@ export default function Informations({ navigation ,drawer}) {
         </TouchableWithoutFeedback>
       </View>
       <ScrollView style={styles.Content}>
-        {users.map((u) => (
+        {Informations.map((u) => (
           <DataContainer AvatarSize={25} data={u} pic={icon} />
         ))}
       </ScrollView>
       <BottomBar
         navigation={navigation}
-        adduser={() => navigation.navigate("AddInformation")}
+        adduser={() => navigation.navigate("AddInformation",{showToast})}
       />
+           <Toast config={toastConfig} />
+
     </View>
   );
 }

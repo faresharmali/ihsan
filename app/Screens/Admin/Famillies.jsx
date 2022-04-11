@@ -1,5 +1,11 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, ScrollView ,TouchableOpacity} from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import React, { useState } from "react";
 import BottomBar from "../../Navigation/BottomBar";
 import { Icon } from "native-base";
@@ -13,33 +19,35 @@ import Family from "../../../assets/avatars/family.png";
 import { Input, Stack } from "native-base";
 import { useSelector } from "react-redux";
 import toastConfig from "../../Components/ToastConfiguration";
-import Toast from 'react-native-toast-message';
+import Toast from "react-native-toast-message";
 
-export default function Families({ navigation,drawer }) {
+export default function Families({ navigation, drawer }) {
   const [active, setActive] = useState(1);
-  const showToast=()=>{
+  const showToast = () => {
     Toast.show({
       type: "success",
       text1: "نجحت العملية",
       text2: " تمت اضافة العائلة بنجاح  👋",
     });
-  }
+  };
   const styling = {
     backgroundColor: "#fff",
     marginTop: 5,
   };
   const openModal = (data) => {
-    navigation.navigate("Family",data);
+    navigation.navigate("Family", data);
   };
-  let MyFamilies = useSelector(state=>state.Families)
-  console.log("families",MyFamilies)
+  let MyFamilies = useSelector((state) => state.Families);
+  console.log("families", MyFamilies);
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />
 
-
       <View style={styles.ScreenEntity}>
-        <TouchableOpacity onPress={()=>drawer.openDrawer()} style={styles.menuContainer}>
+        <TouchableOpacity
+          onPress={() => drawer.openDrawer()}
+          style={styles.menuContainer}
+        >
           <Icon as={Entypo} name="menu" size={8} color="#fff" />
         </TouchableOpacity>
 
@@ -48,46 +56,47 @@ export default function Families({ navigation,drawer }) {
           <MaterialCommunityIcons
             name="account-group"
             size={30}
-            color="#348578"
+            color="#fff"
           />
         </View>
       </View>
-      <Input
-        InputRightElement={
-          <Icon
-            style={{ marginRight: 10 }}
-            as={<MaterialIcons name="search" />}
-            size={5}
-            ml="2"
-            color="#348578"
-          />
-        }
-        style={styles.input}
-        w={{
-          base: "90%",
-          md: "50%",
-        }}
-        h={42}
-        textAlign="right"
-        placeholder="البحث عن عائلة"
-        {...styling}
-      />
+      <View style={styles.Section}>
+        <Input
+          InputRightElement={
+            <Icon
+              style={{ marginRight: 10 }}
+              as={<MaterialIcons name="search" />}
+              size={5}
+              ml="2"
+              color="#348578"
+            />
+          }
+          style={styles.input}
+          w={{
+            base: "90%",
+            md: "50%",
+          }}
+          h={42}
+          textAlign="right"
+          placeholder="البحث عن عائلة"
+          {...styling}
+        />
 
-      <ScrollView style={styles.Content}>
-        {MyFamilies.map((f) => (
-          <FamilyInfosContainer
-            AvatarSize={40}
-            data={f}
-            pic={Family}
-            openFamily={()=>openModal(f)}
-          />
-        ))}
-      </ScrollView>
-
+        <ScrollView style={styles.Content}>
+          {MyFamilies.map((f) => (
+            <FamilyInfosContainer
+              AvatarSize={40}
+              data={f}
+              pic={Family}
+              openFamily={() => openModal(f)}
+            />
+          ))}
+        </ScrollView>
+      </View>
       <Toast config={toastConfig} />
       <BottomBar
         navigation={navigation}
-        adduser={() => navigation.navigate("AddFamily",{showToast})}
+        adduser={() => navigation.navigate("AddFamily", { showToast })}
       />
     </View>
   );
@@ -95,6 +104,7 @@ export default function Families({ navigation,drawer }) {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: "#348578",
     flex: 1,
     alignItems: "center",
     justifyContent: "flex-start",
@@ -133,27 +143,39 @@ const styles = StyleSheet.create({
   ScreenEntity: {
     flexDirection: "row",
     width: "100%",
-    marginTop: "15%",
+    marginTop: "10%",
     alignItems: "center",
     justifyContent: "space-between",
     paddingLeft: 20,
     paddingRight: 20,
+    paddingBottom:10
   },
   ScreenEntityTitle: {
-    color: "#000",
+    color: "#fff",
     fontSize: 25,
     marginRight: 10,
     fontFamily: "Tajawal-Medium",
+  
   },
 
+  Section: {
+    width: "100%",
+    height: "90%",
+    backgroundColor:"#f5f5f5",
+    borderTopRightRadius:15,
+    borderTopLeftRadius:15,
+    display: "flex",
+    alignItems:"center",
+  },
   Content: {
     width: "100%",
-    maxHeight: "80%",
+    maxHeight: "78%",
     backgroundColor: "#f5f5f5",
     display: "flex",
     paddingTop: 10,
     paddingLeft: 20,
     paddingRight: 20,
+   
   },
   menuContainer: {
     width: 35,

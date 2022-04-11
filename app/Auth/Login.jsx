@@ -6,7 +6,6 @@ import Logo from "../../assets/Logo2.png";
 import { Input, Stack, Icon } from "native-base";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Button } from "react-native-paper";
-import { useFonts } from "expo-font";
 
 export default function Login({ navigation, pageHandler }) {
   const Login = () => {

@@ -1,7 +1,7 @@
 import { StyleSheet, Button, View } from "react-native";
 import React, { useState,useEffect } from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import Kafala from "./Kafala";
+import Administration from "./Administration";
 import DrawerContent from "../../Navigation/DrawerContent"
 import { NavigationContainer } from "@react-navigation/native";
 import AdminDashboard from "./AdminDashboard";
@@ -28,9 +28,9 @@ export default function Dashboard(props) {
             )}
           />
           <Drawer.Screen
-            name="Kafala"
+            name="Administration"
             component={(props) => (
-              <Kafala {...props} pageHandler={props.pageHandler} />
+              <Administration {...props} pageHandler={props.pageHandler} />
             )}
           />
          

@@ -52,7 +52,7 @@ console.error("state",state.Families)
           <MaterialCommunityIcons
             name="account-group"
             size={30}
-            color="#348578"
+            color="#fff"
           />
         </View>
       </View>
@@ -183,6 +183,7 @@ console.error("state",state.Families)
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor:"#348578",
     flex: 1,
     alignItems: "center",
     justifyContent: "flex-start",
@@ -192,13 +193,16 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   containerFilter: {
+    borderTopRightRadius:15,
+    borderTopLeftRadius:15,
+    backgroundColor:"#f5f5f5",
     width: "100%",
     flexDirection: "row-reverse",
     justifyContent: "space-between",
+    paddingTop:10,
     padding: 10,
     paddingLeft: 20,
     paddingRight: 20,
-    marginTop: 10,
   },
   filterItem: {
     padding: 6,
@@ -221,14 +225,15 @@ const styles = StyleSheet.create({
   ScreenEntity: {
     flexDirection: "row",
     width: "100%",
-    marginTop: "15%",
+    marginTop: "10%",
     alignItems: "center",
     justifyContent: "space-between",
     paddingLeft: 20,
     paddingRight: 20,
+    paddingBottom:10
   },
   ScreenEntityTitle: {
-    color: "#000",
+    color: "#fff",
     fontSize: 25,
     marginRight: 10,
     fontFamily: "Tajawal-Medium",
@@ -236,7 +241,7 @@ const styles = StyleSheet.create({
 
   Content: {
     width: "100%",
-    maxHeight: "72.5%",
+    maxHeight: "80%",
     backgroundColor: "#f5f5f5",
     display: "flex",
     paddingTop: 10,

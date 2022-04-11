@@ -13,14 +13,15 @@ import Activity from "../Activities/Activities.jsx";
 import AddChild from "../../Forms/AddChild.jsx";
 import AddInformation from "../../Forms/addInformation.jsx";
 import UserProfile from "./Users/UserProfile.jsx";
+import Bureau from "../Bureau/Bureau.jsx"
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
 const scaleFromCenter = { ...TransitionPresets.ScaleFromCenterAndroid };
-export default function Kafala({ navigation }) {
+export default function Administration({ navigation }) {
   return (
     <Stack.Navigator
-      initialRouteName="Informations"
+      initialRouteName="Bureau"
       screenOptions={{
         gestureEnabled: true,
         gestureDirection: "vertical",
@@ -76,6 +77,11 @@ export default function Kafala({ navigation }) {
         options={TransitionFromBottom}
         name="UserProfile"
         component={UserProfile}
+      />
+      <Stack.Screen
+        options={slideFromRight}
+        name="Bureau"
+        component={Bureau}
       />
     </Stack.Navigator>
   );

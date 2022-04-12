@@ -14,6 +14,7 @@ import AddChild from "../../Forms/AddChild.jsx";
 import AddInformation from "../../Forms/addInformation.jsx";
 import UserProfile from "./Users/UserProfile.jsx";
 import Bureau from "../Bureau/Bureau.jsx"
+import AddReservation from "../../Forms/AddReservation.jsx";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
@@ -82,6 +83,11 @@ export default function Administration({ navigation }) {
         options={slideFromRight}
         name="Bureau"
         component={Bureau}
+      />
+      <Stack.Screen
+        options={TransitionFromBottom}
+        name="AddReservation"
+        component={AddReservation}
       />
     </Stack.Navigator>
   );

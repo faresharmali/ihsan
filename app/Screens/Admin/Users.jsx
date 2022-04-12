@@ -172,10 +172,14 @@ console.error("state",state.Families)
         ))}
       </ScrollView>
       <Toast config={toastConfig} />
+      <TouchableOpacity
+        onPress={()=>navigation.navigate("AddUser",{showToast})}
+      style={styles.fab}>
+          <Icon as={Entypo} name="plus" size={8} color="#fff" />
 
+          </TouchableOpacity>
       <BottomBar
         navigation={navigation}
-        adduser={() => navigation.navigate("AddUser",{showToast})}
       />
     </View>
   );
@@ -258,4 +262,17 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
   },
+  fab:{
+    width:50,
+    height:50,
+    backgroundColor:"#348578",
+    alignItems:"center",
+    justifyContent:"center",
+    borderRadius:25,
+    elevation:5,
+    position:"absolute",
+    bottom:65,
+    right:10
+    
+  }
 });

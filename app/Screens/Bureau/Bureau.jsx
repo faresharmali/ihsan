@@ -117,7 +117,7 @@ export default function Bureau({ navigation, drawer }) {
             alignItems: "center",
             backgroundColor: "#fff",
             elevation: 1,
-            borderRadius:5
+            borderRadius: 5,
           }}
         >
           <Icon
@@ -184,11 +184,13 @@ export default function Bureau({ navigation, drawer }) {
           }}
         />
       </View>
-
-      <BottomBar
-        navigation={navigation}
-        adduser={() => navigation.navigate("AddInformation", { showToast })}
-      />
+      <TouchableOpacity
+        onPress={() => navigation.navigate("AddReservation", { showToast })}
+        style={styles.fab}
+      >
+        <Icon as={Entypo} name="plus" size={8} color="#fff" />
+      </TouchableOpacity>
+      <BottomBar navigation={navigation} />
       <Toast config={toastConfig} />
     </View>
   );
@@ -214,7 +216,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingLeft: 20,
     paddingRight: 20,
-    paddingBottom:10
+    paddingBottom: 10,
   },
   ScreenEntityTitle: {
     color: "#fff",
@@ -250,10 +252,20 @@ const styles = StyleSheet.create({
   },
   StartTime: {
     fontFamily: "Tajawal-Medium",
-
   },
   EndTime: {
     fontFamily: "Tajawal-Medium",
-
+  },
+  fab: {
+    width: 50,
+    height: 50,
+    backgroundColor: "#348578",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 25,
+    elevation: 5,
+    position: "absolute",
+    bottom: 65,
+    right: 10,
   },
 });

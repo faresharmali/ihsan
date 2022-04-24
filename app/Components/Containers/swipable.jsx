@@ -8,7 +8,7 @@ export default function Swipable({
   setIsPanelActive,
   setshowButton,
   data,
-  ChooseJob
+  ChooseJob,title
 }) {
   const panelProps = {
     fullWidth: true,
@@ -28,7 +28,7 @@ export default function Swipable({
 
   return (
     <SwipeablePanel {...panelProps} isActive={isPanelActive}>
-      <Text style={styles.title}>اختيار القسم</Text>
+      <Text style={styles.title}>{title}</Text>
       <View style={styles.container}>
         {data.map((d) => (
           <TouchableOpacity onPress={()=>ChooseJob(d.title)} style={styles.ItemContainer}>

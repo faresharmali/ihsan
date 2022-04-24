@@ -23,7 +23,7 @@ export default function Kofal({ navigation, drawer }) {
     Toast.show({
       type: "success",
       text1: "نجحت العملية",
-      text2: " تمت اضافة العائلة بنجاح  👋",
+      text2: " تمت اضافة المحسن بنجاح  👋",
     });
   };
   const styling = {
@@ -76,7 +76,7 @@ export default function Kofal({ navigation, drawer }) {
         <ScrollView style={styles.Content}>
           {Donators.map((f) => (
             <DataContainer
-              AvatarSize={30}
+              AvatarSize={22}
               data={f}
               pic={Family}
               openFamily={() => openModal(f)}
@@ -86,7 +86,7 @@ export default function Kofal({ navigation, drawer }) {
       </View>
       <Toast config={toastConfig} />
       <TouchableOpacity
-        onPress={() => navigation.navigate("AddFamily", { showToast })}
+        onPress={() => navigation.navigate("AddDonator", { showToast })}
         style={styles.fab}
       >
         <Icon as={Entypo} name="plus" size={8} color="#fff" />

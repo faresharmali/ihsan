@@ -26,8 +26,6 @@ export default function Users({ navigation, drawer }) {
     });
   };
   let users =useSelector(state=>state.users)
-  let state =useSelector(state=>state)
-console.error("state",state.Families)
   const showToast=()=>{
     Toast.show({
       type: "success",

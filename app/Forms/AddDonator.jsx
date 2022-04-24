@@ -6,20 +6,20 @@ import { Button } from "react-native-paper";
 import { useDispatch } from "react-redux";
 import Gamer from "../../assets/avatars/gamer.png";
 import Swipable from "../Components/Containers/swipable";
-export default function AddUser({ route, navigation }) {
+import { useSelector } from "react-redux";
+export default function AddDonator({ route, navigation }) {
   const [isPanelActive, setIsPanelActive] = useState(false);
+  const [isUsersPannel, setisUsersPannel] = useState(false);
   const [showButton, setshowButton] = useState(true);
+  const [job, setJob] = useState("القسم");
+  const [user, setUser] = useState("الوسيط");
   const [userInfos, setuserInfos] = useState({
     name: "",
     phone: "",
     adresse: "",
-    username: "",
-    password: "",
-    confirmepassword: "",
     job: "",
+    user: "",
   });
-  const [job, setJob] = useState("اختيار المهمة");
-  console.error(userInfos);
   const handleUserInput = (text, name) => {
     setuserInfos({ ...userInfos, [name]: text });
   };
@@ -27,14 +27,20 @@ export default function AddUser({ route, navigation }) {
     setIsPanelActive(true);
     setshowButton(false);
   };
-
+  const openUsersPanel = () => {
+    setisUsersPannel(true);
+    setshowButton(false);
+  };
+  let users =useSelector(state=>state.users)
+let allUSers=users.map((u)=>({title:u[0]})) 
   const dispatch = useDispatch();
   const action = () => {
     return {
-      type: "AddUser",
+      type: "AddDonator",
       data: {
         0: userInfos.name,
         1: job,
+        2: userInfos.phone,
         icon1: "phone",
         pic: Gamer,
       },
@@ -59,9 +65,14 @@ export default function AddUser({ route, navigation }) {
   ];
   const ChooseJob = (job) => {
     setuserInfos({ ...userInfos, job });
-
     setJob(job);
     setIsPanelActive(false);
+    setshowButton(true);
+  };
+  const ChooseUser = (user) => {
+    setuserInfos({ ...userInfos, user });
+    setUser(user);
+    setisUsersPannel(false);
     setshowButton(true);
   };
   return (
@@ -70,9 +81,9 @@ export default function AddUser({ route, navigation }) {
         <View style={{ flexDirection: "row-reverse" }}>
           <Icon as={FontAwesome} name="user-plus" size={7} color="#348578" />
 
-          <Text style={styles.PageTitile}>اضافة مستخدم</Text>
+          <Text style={styles.PageTitile}>اضافة محسن</Text>
         </View>
-        <TouchableWithoutFeedback onPress={() => navigation.navigate("Users")}>
+        <TouchableWithoutFeedback onPress={() => navigation.navigate("Kofal")}>
           <Icon
             style={styles.back}
             as={FontAwesome}
@@ -145,67 +156,6 @@ export default function AddUser({ route, navigation }) {
           {...styling}
           onChangeText={(text) => handleUserInput(text, "adresse")}
         />
-        <Input
-          InputRightElement={
-            <Icon
-              style={{ marginRight: 10 }}
-              as={<MaterialIcons name="account-circle" />}
-              size={5}
-              ml="2"
-              color="#348578"
-            />
-          }
-          style={styles.input}
-          w={{
-            base: "95%",
-            md: "50%",
-          }}
-          h={50}
-          textAlign="right"
-          placeholder="اسم المستخدم"
-          onChangeText={(text) => handleUserInput(text, "username")}
-          {...styling}
-        />
-        <Input
-          InputRightElement={
-            <Icon
-              style={{ marginRight: 10 }}
-              as={<MaterialIcons name="lock" />}
-              size={5}
-              ml="2"
-              color="#348578"
-            />
-          }
-          w={{
-            base: "95%",
-            md: "25%",
-          }}
-          h={50}
-          textAlign="right"
-          placeholder="كلمة المرور"
-          onChangeText={(text) => handleUserInput(text, "password")}
-          {...styling}
-        />
-        <Input
-          InputRightElement={
-            <Icon
-              style={{ marginRight: 10 }}
-              as={<MaterialIcons name="lock" />}
-              size={5}
-              ml="2"
-              color="#348578"
-            />
-          }
-          w={{
-            base: "95%",
-            md: "25%",
-          }}
-          h={50}
-          textAlign="right"
-          placeholder="تأكيد كلمة المرور"
-          onChangeText={(text) => handleUserInput(text, "confirmepassword")}
-          {...styling}
-        />
 
         <TouchableWithoutFeedback onPress={() => openPanel()}>
           <View style={styles.dateContainer}>
@@ -218,6 +168,17 @@ export default function AddUser({ route, navigation }) {
             <Text style={styles.InputText}>{job} </Text>
           </View>
         </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={() => openUsersPanel()}>
+          <View style={styles.dateContainer}>
+            <Icon
+              as={<MaterialIcons name="lock" />}
+              size={5}
+              ml="2"
+              color="#348578"
+            />
+            <Text style={styles.InputText}>{user} </Text>
+          </View>
+        </TouchableWithoutFeedback>
       </Stack>
       {showButton && (
         <Button
@@ -225,7 +186,7 @@ export default function AddUser({ route, navigation }) {
           mode="contained"
           onPress={() => {
             dispatch(action());
-            navigation.navigate("Users");
+            navigation.navigate("Kofal");
             setTimeout(() => {
               route.params.showToast();
             });
@@ -235,12 +196,20 @@ export default function AddUser({ route, navigation }) {
         </Button>
       )}
       <Swipable
-            title="اختيار القسم"
-
+      title="اختيار القسم"
         ChooseJob={ChooseJob}
         data={jobs}
         isPanelActive={isPanelActive}
         setIsPanelActive={setIsPanelActive}
+        setshowButton={setshowButton}
+      />
+      <Swipable
+            title="اختيار الوسيط"
+
+        ChooseJob={ChooseUser}
+        data={allUSers}
+        isPanelActive={isUsersPannel}
+        setIsPanelActive={setisUsersPannel}
         setshowButton={setshowButton}
       />
     </View>

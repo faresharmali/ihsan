@@ -16,6 +16,7 @@ import Toast from "react-native-toast-message";
 import toastConfig from "../../Components/ToastConfiguration";
 import { Card, Avatar } from "react-native-paper";
 import { Box, Fab } from "native-base";
+import { useSelector } from "react-redux";
 
 export default function Bureau({ navigation, drawer }) {
   const [date, setDate] = useState("2022-04-12");
@@ -70,33 +71,7 @@ export default function Bureau({ navigation, drawer }) {
     today: "اليوم",
   };
   LocaleConfig.defaultLocale = "ar";
-  const [items, setItems] = useState({
-    "2022-04-11": [
-      { name: "اجتماع قسم المالية", startTime: "8:00", endTime: "10:30" },
-      { name: "اجتماع قسم الصحة", startTime: "10:30", endTime: "12:30" },
-      { name: "اجتماع قسم الادارة", startTime: "13:00", endTime: "15:30" },
-    ],
-    "2022-04-16": [
-      { name: "تدريس اللغة العربية", startTime: "9:00", endTime: "10:30" },
-      { name: "اجتماع قسم المالية", startTime: "11:00", endTime: "12:30" },
-      { name: "اجتماع قسم المالية", startTime: "14:00", endTime: "15:30" },
-    ],
-    "2022-04-17": [
-      { name: "اجتماع قسم المالية", startTime: "8:00", endTime: "10:30" },
-    ],
-    "2022-04-18": [
-      { name: "اجتماع قسم المالية", startTime: "8:00", endTime: "9:00" },
-      { name: "اجتماع قسم المالية", startTime: "9:00", endTime: "10:30" },
-    ],
-    "2022-04-19": [
-      { name: "اجتماع قسم المالية", startTime: "8:00", endTime: "10:30" },
-      { name: "اجتماع قسم المالية", startTime: "8:00", endTime: "10:30" },
-    ],
-    "2022-04-20": [
-      { name: "اجتماع قسم المالية", startTime: "8:00", endTime: "10:30" },
-      { name: "اجتماع قسم المالية", startTime: "8:00", endTime: "10:30" },
-    ],
-  });
+  let Meetings = useSelector((state) => state.Meetings);
 
   const showToast = () => {
     Toast.show({
@@ -160,7 +135,7 @@ export default function Bureau({ navigation, drawer }) {
       <View style={styles.Content}>
         <Agenda
           renderItem={renderItem}
-          items={items}
+          items={Meetings}
           refreshing={false}
           selected={"2022-04-16"}
           hideExtraDays={false}

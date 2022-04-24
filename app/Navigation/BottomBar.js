@@ -17,6 +17,7 @@ import React from "react";
 
 export default function BottomBar(props) {
   return (
+    <View style={styles.Container}>
     <View style={styles.BottomBar}>
       <View style={styles.itemContainer}>
         <TouchableOpacity onPress={() => props.navigation.navigate("Users")}>
@@ -42,7 +43,7 @@ export default function BottomBar(props) {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => props.navigation.navigate("Informations")}
+          onPress={() => props.navigation.navigate("Kofal")}
         >
           <View style={styles.bottomBarITem}>
             <Icon
@@ -70,7 +71,7 @@ export default function BottomBar(props) {
           </View>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => props.navigation.navigate("Informations")}
+          onPress={() => props.navigation.navigate("Orphans")}
         >
           <View style={styles.bottomBarITem}>
             <Icon
@@ -86,16 +87,23 @@ export default function BottomBar(props) {
        
       </View>
     </View>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  Container:{
+    backgroundColor: "#f5f5f5",
+    position: "absolute",
+    bottom: 0,
+    width: "100%",
+    height: 50,
+  },
   BottomBar: {
     backgroundColor: "#348578",
     width: "100%",
     height: 50,
-    position: "absolute",
-    bottom: 0,
+  
     justifyContent: "center",
     alignItems: "center",
     justifyContent: "space-between",

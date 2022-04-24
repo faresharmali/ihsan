@@ -21,7 +21,7 @@ export default function Users({ navigation, drawer }) {
   const [active, setActive] = useState(6);
 
   const openModal = (u) => {
-    navigation.navigate("UserProfile", {
+    navigation.navigate("AdminProfile", {
       ...u,
     });
   };
@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
     width: "100%",
     flexDirection: "row-reverse",
     justifyContent: "space-between",
-    paddingTop:10,
+    paddingTop:20,
     padding: 10,
     paddingLeft: 20,
     paddingRight: 20,
@@ -234,7 +234,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingLeft: 20,
     paddingRight: 20,
-    paddingBottom:10
+    paddingBottom:10,
   },
   ScreenEntityTitle: {
     color: "#fff",
@@ -245,7 +245,7 @@ const styles = StyleSheet.create({
 
   Content: {
     width: "100%",
-    maxHeight: "80%",
+    maxHeight: "76.2%",
     backgroundColor: "#f5f5f5",
     display: "flex",
     paddingTop: 10,

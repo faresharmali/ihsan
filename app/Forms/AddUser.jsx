@@ -1,56 +1,72 @@
 import { StyleSheet, Text, View, TouchableWithoutFeedback } from "react-native";
-import React from "react";
-import RNPickerSelect from "react-native-picker-select";
+import React, { useState } from "react";
 import { Input, Stack, Icon } from "native-base";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { Button } from "react-native-paper";
 import { useDispatch } from "react-redux";
 import Gamer from "../../assets/avatars/gamer.png";
-export default function AddUser({ route,navigation }) {
+import Swipable from "../Components/Containers/swipable";
+export default function AddUser({ route, navigation }) {
 
-  const dispatch =useDispatch()
-  const action =()=>{
+  const [isPanelActive, setIsPanelActive] = useState(false);
+  const [showButton, setshowButton] = useState(true);
+  const [userInfos, setuserInfos] = useState({
+    name:"",
+    phone:"",
+    adresse:"",
+    username:"",
+    password:"",
+    confirmepassword:"",
+    job:"",
+    
+  });
+  const [job, setJob] = useState("اختيار المهمة");
+  console.error(userInfos)
+  const handleUserInput=(text,name)=>{
+   setuserInfos({...userInfos,[name]:text})
+  }
+  const openPanel = () => {
+    setIsPanelActive(true);
+    setshowButton(false);
+  };
+
+  const dispatch = useDispatch();
+  const action = () => {
     return {
-      type:"AddUser",
-      data:{
-        0: "غوجو ساترو",
-        1: "مستعمل جوجوتسو",
+      type: "AddUser",
+      data: {
+        0: userInfos.name,
+        1: job,
         icon1: "phone",
         pic: Gamer,
-      }
-    }
-  }
+      },
+    };
+  };
   const styling = {
     borderColor: "#000",
     borderWidth: 0.5,
+    fontFamily: "Tajawal-Medium",
+    fontSize:14
+
   };
-  const customPickerStyles = {
-    inputIOS: {
-      fontSize: 14,
-      paddingHorizontal: 10,
-      paddingVertical: 8,
-      borderWidth: 1,
-      borderColor: "rgba(0,0,0,0.3)",
-      borderRadius: 5,
-      color: "#000",
-      width: 370,
-      paddingRight:45,
-    },
-    inputAndroid: {
-      fontSize: 14,
-      paddingHorizontal: 10,
-      paddingVertical: 8,
-      borderWidth: 1,
-      borderColor: "rgba(0,0,0,0.3)",
-      borderRadius: 5,
-      color: "#000",
-      width: 370,
-      paddingRight:45,
-    },
-    icon: {
-      color: "#000",
-    },
-  };
+  let jobs=[
+    {title:" قسم المالية"},
+    {title:" قسم الققة"},
+    {title:" قسم الكفالة"},
+    {title:" قسم التعليم"},
+    {title:" قسم الصحة"},
+    {title:" قسم الصحة"},
+    {title:" قسم الادارة"},
+    {title:" قسم الأنشطة الخيرية"},
+    {title:" قسم الأرامل"},
+  ]
+  const ChooseJob=(job)=>{
+    setuserInfos({...userInfos,job})
+
+    setJob(job)
+    setIsPanelActive(false);
+    setshowButton(true);
+  }
   return (
     <View style={styles.Container}>
       <View style={styles.TitleContainer}>
@@ -86,9 +102,12 @@ export default function AddUser({ route,navigation }) {
             md: "25%",
           }}
           h={50}
+          name="name"
           textAlign="right"
           placeholder="الاسم و اللقب"
           {...styling}
+
+          onChangeText={(text)=>handleUserInput(text,"name")}
         />
         <Input
           InputRightElement={
@@ -107,6 +126,8 @@ export default function AddUser({ route,navigation }) {
           h={50}
           textAlign="right"
           placeholder="رقم الهاتف"
+          onChangeText={(text)=>handleUserInput(text,"phone")}
+
           {...styling}
         />
         <Input
@@ -127,6 +148,8 @@ export default function AddUser({ route,navigation }) {
           textAlign="right"
           placeholder="العنوان"
           {...styling}
+          onChangeText={(text)=>handleUserInput(text,"adresse")}
+
         />
         <Input
           InputRightElement={
@@ -146,6 +169,8 @@ export default function AddUser({ route,navigation }) {
           h={50}
           textAlign="right"
           placeholder="اسم المستخدم"
+          onChangeText={(text)=>handleUserInput(text,"username")}
+
           {...styling}
         />
         <Input
@@ -165,6 +190,8 @@ export default function AddUser({ route,navigation }) {
           h={50}
           textAlign="right"
           placeholder="كلمة المرور"
+          onChangeText={(text)=>handleUserInput(text,"password")}
+
           {...styling}
         />
         <Input
@@ -184,46 +211,53 @@ export default function AddUser({ route,navigation }) {
           h={50}
           textAlign="right"
           placeholder="تأكيد كلمة المرور"
+          onChangeText={(text)=>handleUserInput(text,"confirmepassword")}
+
           {...styling}
         />
 
-        <RNPickerSelect
-          useNativeAndroidPickerStyle={false}
-          placeholder={{
-            label: "الصلاحيات",
-            color: "#000",
-          
-          }}
-          style={customPickerStyles}
-          Icon={() => (
+        <TouchableWithoutFeedback onPress={() => openPanel()}>
+          <View style={styles.dateContainer}>
             <Icon
-              style={{ margin: 10 }}
               as={<MaterialIcons name="lock" />}
               size={5}
               ml="2"
-            
               color="#348578"
             />
-          )}
-          onValueChange={() => {}}
-          items={[
-            { label: "مدير", value: "football" },
-            { label: "موزع القفة", value: "f" },
-            { label: "رئيس قسم", value: "footbsall" },
-            { label: "كافل", value: "footbaall" },
-          ]}
-        />
+            <Text style={styles.InputText}>{job} </Text>
+          </View>
+        </TouchableWithoutFeedback>
       </Stack>
-      <Button style={styles.Button} mode="contained" onPress={() => {dispatch(action());navigation.goBack();setTimeout(() => {
-        route.params.showToast()
-      }, (600));}}>
-        <Text style={{ fontSize: 16, marginLeft: 10 }}>اضافة مستخدم </Text>
-      </Button>
+      {showButton && (
+        <Button
+          style={styles.Button}
+          mode="contained"
+          onPress={() => {dispatch(action());navigation.navigate("Users");setTimeout(() => {
+            route.params.showToast()})}}
+        >
+          <Text style={{ fontSize: 16, marginLeft: 10 }}>اضافة مستخدم </Text>
+        </Button>
+      )}
+     <Swipable ChooseJob={ChooseJob} data={jobs} isPanelActive={isPanelActive} setIsPanelActive={setIsPanelActive} setshowButton={setshowButton} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  dateContainer: {
+    width: "95%",
+    height: 50,
+    borderColor: "#000",
+    borderWidth: 0.5,
+    borderRadius: 5,
+    flexDirection: "row-reverse",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    paddingLeft: 10,
+  },
+  InputText: {
+    fontFamily: "Tajawal-Medium",
+  },
   Container: {
     backgroundColor: "#fff",
     flex: 1,
@@ -269,5 +303,8 @@ const styles = StyleSheet.create({
   },
   back: {
     left: 0,
+  },
+  Modal: {
+    width: "100%",
   },
 });

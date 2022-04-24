@@ -9,11 +9,7 @@ import {
 import React, { useState } from "react";
 import BottomBar from "../../Navigation/BottomBar";
 import { Icon } from "native-base";
-import {
-  MaterialCommunityIcons,
-  Entypo,
-  MaterialIcons,
-} from "@expo/vector-icons";
+import { FontAwesome5, Entypo, MaterialIcons } from "@expo/vector-icons";
 import FamilyInfosContainer from "../../Components/Containers/FamilyInfosContainer";
 import Family from "../../../assets/avatars/family.png";
 import { Input, Stack } from "native-base";
@@ -21,8 +17,7 @@ import { useSelector } from "react-redux";
 import toastConfig from "../../Components/ToastConfiguration";
 import Toast from "react-native-toast-message";
 
-export default function Families({ navigation, drawer }) {
-  const [active, setActive] = useState(1);
+export default function Orphans({ navigation, drawer }) {
   const showToast = () => {
     Toast.show({
       type: "success",
@@ -51,12 +46,8 @@ export default function Families({ navigation, drawer }) {
         </TouchableOpacity>
 
         <View style={styles.containerTitle}>
-          <Text style={styles.ScreenEntityTitle}>العائلات </Text>
-          <MaterialCommunityIcons
-            name="account-group"
-            size={30}
-            color="#fff"
-          />
+          <Text style={styles.ScreenEntityTitle}>الأيتام </Text>
+          <FontAwesome5 name="child" size={25} color="#fff" />
         </View>
       </View>
       <View style={styles.Section}>
@@ -77,7 +68,7 @@ export default function Families({ navigation, drawer }) {
           }}
           h={42}
           textAlign="right"
-          placeholder="البحث عن عائلة"
+          placeholder="البحث عن يتيم"
           {...styling}
         />
 
@@ -93,16 +84,7 @@ export default function Families({ navigation, drawer }) {
         </ScrollView>
       </View>
       <Toast config={toastConfig} />
-      <TouchableOpacity
-              onPress={()=>navigation.navigate("AddFamily",{showToast})}
-
-      style={styles.fab}>
-          <Icon as={Entypo} name="plus" size={8} color="#fff" />
-
-          </TouchableOpacity>
-      <BottomBar
-        navigation={navigation}
-      />
+      <BottomBar navigation={navigation} />
     </View>
   );
 }
@@ -153,24 +135,23 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingLeft: 20,
     paddingRight: 20,
-    paddingBottom:10
+    paddingBottom: 10,
   },
   ScreenEntityTitle: {
     color: "#fff",
-    fontSize: 25,
+    fontSize: 20,
     marginRight: 10,
     fontFamily: "Tajawal-Medium",
-  
   },
 
   Section: {
     width: "100%",
     height: "90%",
-    backgroundColor:"#f5f5f5",
-    borderTopRightRadius:15,
-    borderTopLeftRadius:15,
+    backgroundColor: "#f5f5f5",
+    borderTopRightRadius: 15,
+    borderTopLeftRadius: 15,
     display: "flex",
-    alignItems:"center",
+    alignItems: "center",
   },
   Content: {
     width: "100%",
@@ -180,7 +161,6 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingLeft: 20,
     paddingRight: 20,
-   
   },
   menuContainer: {
     width: 35,
@@ -192,17 +172,16 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
   },
-  fab:{
-    width:50,
-    height:50,
-    backgroundColor:"#348578",
-    alignItems:"center",
-    justifyContent:"center",
-    borderRadius:25,
-    elevation:5,
-    position:"absolute",
-    bottom:65,
-    right:10
-    
-  }
+  fab: {
+    width: 50,
+    height: 50,
+    backgroundColor: "#348578",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 25,
+    elevation: 5,
+    position: "absolute",
+    bottom: 65,
+    right: 10,
+  },
 });

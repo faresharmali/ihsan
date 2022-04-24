@@ -15,14 +15,17 @@ import AddInformation from "../../Forms/addInformation.jsx";
 import UserProfile from "./Users/UserProfile.jsx";
 import Bureau from "../Bureau/Bureau.jsx"
 import AddReservation from "../../Forms/AddReservation.jsx";
+import Kofal from "../kofal/Kofal.jsx"; 
+import Orphans from "../Orphans/Orpahans.jsx"
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
 const scaleFromCenter = { ...TransitionPresets.ScaleFromCenterAndroid };
+import AdminProfile from "../Profiles/adminProfile.jsx";
 export default function Administration({ navigation }) {
   return (
     <Stack.Navigator
-      initialRouteName="Bureau"
+      initialRouteName="Users"
       screenOptions={{
         gestureEnabled: true,
         gestureDirection: "vertical",
@@ -80,6 +83,11 @@ export default function Administration({ navigation }) {
         component={UserProfile}
       />
       <Stack.Screen
+        options={TransitionFromBottom}
+        name="AdminProfile"
+        component={AdminProfile}
+      />
+      <Stack.Screen
         options={slideFromRight}
         name="Bureau"
         component={Bureau}
@@ -88,6 +96,16 @@ export default function Administration({ navigation }) {
         options={TransitionFromBottom}
         name="AddReservation"
         component={AddReservation}
+      />
+      <Stack.Screen
+        options={slideFromRight}
+        name="Kofal"
+        component={Kofal}
+      />
+      <Stack.Screen
+        options={slideFromRight}
+        name="Orphans"
+        component={Orphans}
       />
     </Stack.Navigator>
   );

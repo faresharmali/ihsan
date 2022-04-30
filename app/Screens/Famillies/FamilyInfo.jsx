@@ -19,7 +19,7 @@ console.log(data)
 
       <View style={styles.InfosContainer}>
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>{`عائلة ${data.Mother} ارملة ${data.Father}`} </Text>
+          <Text style={styles.title}>{`عائلة ${data.Mother} ارملة ${data.FatherFirstName} ${data.FatherLastName}`} </Text>
           <Icon
             as={Ionicons}
             size={8}
@@ -37,7 +37,7 @@ console.log(data)
           />
         </View>
         <View style={styles.Info}>
-          <Text style={styles.InfoText}>اسم و لقب الأب : {data.Father} </Text>
+          <Text style={styles.InfoText}>اسم و لقب الأب : {data.FatherFirstName} {data.FatherLastName} </Text>
           <Icon
             as={FontAwesome}
             size={6}
@@ -65,6 +65,15 @@ console.log(data)
         </View>
         <View style={styles.Info}>
           <Text style={styles.InfoText}> المدخول : {data.Income} </Text>
+          <Icon
+            as={FontAwesome5}
+            size={6}
+            color="#348578"
+            name="wallet"
+          />
+        </View>
+        <View style={styles.Info}>
+          <Text style={styles.InfoText}> مبلغ الكفالة : {data.Donation} </Text>
           <Icon
             as={FontAwesome5}
             size={6}
@@ -125,7 +134,7 @@ const styles = StyleSheet.create({
  
   InfosContainer: {
     width: "90%",
-    height: 520,
+    height: 540,
     backgroundColor: "#fff",
     marginTop: 60,
     elevation: 1,

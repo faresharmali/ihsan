@@ -1,40 +1,41 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity,TouchableWithoutFeedback } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+} from "react-native";
 import React from "react";
 import { Icon } from "native-base";
 import { MaterialIcons, Entypo } from "@expo/vector-icons";
 export default function FamilyInfosContainer(props) {
   return (
-    <View style={styles.DataContainer}>
-      <Image source={props.pic} style={{width:props.AvatarSize,height:props.AvatarSize}} />
+    <TouchableOpacity onPress={props.openFamily} style={styles.DataContainer}>
+      <Image
+        source={props.pic}
+        style={{ width: props.AvatarSize, height: props.AvatarSize }}
+      />
       <View style={styles.infos}>
-        <Text style={styles.UserPersonal}>{`عائلة ${props.data.Mother} ارملة ${props.data.Father}`} </Text>
+        <Text style={styles.UserPersonal}>
+          {`عائلة ${props.data.Mother} ارملة ${props.data.FatherFirstName} ${props.data.FatherLastName}`}{" "}
+        </Text>
         <View style={styles.secondaryInfos}>
-          {props.data.Phone  && (
+          {props.data.Phone && (
             <>
-            <Icon as={MaterialIcons} name="phone" size={4} color="#000" />
-              <Text> {props.data.Phone }</Text>
+              <Icon as={MaterialIcons} name="phone" size={4} color="#000" />
+              <Text> {props.data.Phone}</Text>
             </>
           )}
-          {props.data.Phone  && (
+          {props.data.Phone && (
             <>
-            <Icon as={MaterialIcons} name="map" size={4} color="#000" />
-              <Text> {props.data.Adresse }</Text>
+              <Icon as={MaterialIcons} name="map" size={4} color="#000" />
+              <Text> {props.data.Adresse}</Text>
             </>
           )}
-        
         </View>
       </View>
-      <TouchableOpacity onPress={props.openFamily}>
-        <View style={styles.menuBtn}>
-          <Icon
-            as={Entypo}
-            name="dots-three-horizontal"
-            size={5}
-            color="#fff"
-          />
-        </View>
-      </TouchableOpacity>
-    </View>
+    </TouchableOpacity>
   );
 }
 const styles = StyleSheet.create({

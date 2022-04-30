@@ -7,11 +7,13 @@ import { useDispatch } from "react-redux";
 export default function AddFamily({ route, navigation }) {
   const [FamilyData, setFamilyData] = useState({
     Mother: "",
-    Father: "",
+    FatherFirstName: "",
+    FatherLastName: "",
     Adresse: "",
     Phone: "",
-    Income: "",
+    Income: 0,
     Infos: "",
+    Donation: 0,
     Children: [],
   });
   const styling = {
@@ -67,9 +69,30 @@ export default function AddFamily({ route, navigation }) {
           }}
           h={50}
           textAlign="right"
-          placeholder="اسم و لقب الأب"
+          placeholder="اسم الأب"
           {...styling}
-          onChangeText={(text) => inputHandler(text, "Mother")}
+          onChangeText={(text) => inputHandler(text, "FatherFirstName")}
+        />
+        <Input
+          InputRightElement={
+            <Icon
+              style={{ marginRight: 10 }}
+              as={<MaterialIcons name="account-circle" />}
+              size={5}
+              ml="2"
+              color="#348578"
+            />
+          }
+          style={styles.input}
+          w={{
+            base: "95%",
+            md: "50%",
+          }}
+          h={50}
+          textAlign="right"
+          placeholder=" لقب الأب"
+          {...styling}
+          onChangeText={(text) => inputHandler(text, "FatherLastName")}
         />
         <Input
           InputRightElement={
@@ -90,7 +113,7 @@ export default function AddFamily({ route, navigation }) {
           textAlign="right"
           placeholder="اسم و لقب الأم"
           {...styling}
-          onChangeText={(text) => inputHandler(text, "Father")}
+          onChangeText={(text) => inputHandler(text, "Mother")}
         />
         <Input
           InputRightElement={
@@ -151,6 +174,26 @@ export default function AddFamily({ route, navigation }) {
           placeholder="المدخول"
           {...styling}
           onChangeText={(text) => inputHandler(text, "Income")}
+        />
+        <Input
+          InputRightElement={
+            <Icon
+              style={{ marginRight: 10 }}
+              as={<MaterialIcons name="lock" />}
+              size={5}
+              ml="2"
+              color="#348578"
+            />
+          }
+          w={{
+            base: "95%",
+            md: "25%",
+          }}
+          h={50}
+          textAlign="right"
+          placeholder="مبلغ الكفالة"
+          {...styling}
+          onChangeText={(text) => inputHandler(text, "Donation")}
         />
         <Input
           InputRightElement={

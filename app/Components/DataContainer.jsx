@@ -4,7 +4,7 @@ import { Icon } from "native-base";
 import { MaterialIcons, Entypo } from "@expo/vector-icons";
 export default function DataContainer(props) {
   return (
-    <View style={styles.DataContainer}>
+    <TouchableOpacity onPress={props.openFamily} style={styles.DataContainer}>
       <Image source={props.pic} style={{width:props.AvatarSize,height:props.AvatarSize}} />
       <View style={styles.infos}>
         <Text style={styles.UserPersonal}>{props.data[0]} </Text>
@@ -27,17 +27,8 @@ export default function DataContainer(props) {
                 </>  )}
         </View>
       </View>
-      <TouchableOpacity onPress={props.openFamily}>
-        <View style={styles.menuBtn}>
-          <Icon
-            as={Entypo}
-            name="dots-three-horizontal"
-            size={5}
-            color="#fff"
-          />
-        </View>
-      </TouchableOpacity>
-    </View>
+
+    </TouchableOpacity>
   );
 }
 const styles = StyleSheet.create({

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "ihsan",
-    "slug": "ihsan",
+    "name": "Ihsan",
+    "slug": "Ihsan",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -24,7 +24,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.fares081998.ihsan"
+      "package": "com.fares081998.Ihsan"
     },
     "web": {
       "favicon": "./assets/favicon.png"

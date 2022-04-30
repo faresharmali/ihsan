@@ -8,10 +8,10 @@ export default function Kids(props) {
   return (
     <View>
     {props.kids.map((k) => (
-      <View key={k.name} style={styles.DataContainer}>
+      <TouchableOpacity onLongPress={()=>alert("wech ?")} key={k.name} style={styles.DataContainer}>
         <Image source={Kid} style={styles.avatar} />
         <View style={styles.infos}>
-          <Text style={styles.UserPersonal}>{k.name} </Text>
+          <Text style={styles.UserPersonal}>{k.Name} </Text>
           <View style={styles.secondaryInfos}>
             <Icon
               as={MaterialIcons}
@@ -19,7 +19,7 @@ export default function Kids(props) {
               size={4}
               color="#000"
             />
-            <Text> الجنس : {k.sexe}</Text>
+            <Text> الجنس : {k.Sexe}</Text>
             <Icon
               style={{ marginRight: 10, marginLeft: 5 }}
               as={Entypo}
@@ -27,20 +27,18 @@ export default function Kids(props) {
               size={4}
               color="#000"
             />
-            <Text>العمر : {k.age} </Text>
+            <Text>العمر : {k.Age} </Text>
+            <Icon
+              style={{ marginRight: 10, marginLeft: 5 }}
+              as={Entypo}
+              name="clock"
+              size={4}
+              color="#000"
+            />
+            <Text>المستوى : {k.Level} </Text>
           </View>
         </View>
-        <TouchableOpacity onPress={props.openFamily}>
-          <View style={styles.menuBtn}>
-            <Icon
-              as={Entypo}
-              name="dots-three-horizontal"
-              size={6}
-              color="#fff"
-            />
-          </View>
-        </TouchableOpacity>
-      </View>
+      </TouchableOpacity>
     ))}
   </View>
   );
@@ -67,8 +65,8 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   avatar: {
-    height: 32,
-    width: 32,
+    height: 20,
+    width: 20,
   },
   secondaryInfos: {
     flexDirection: "row-reverse",

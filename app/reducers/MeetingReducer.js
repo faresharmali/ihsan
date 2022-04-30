@@ -27,7 +27,7 @@ const Meetings =
         ],
       }
 
-  const AddChild=(state,action)=>{
+  const AddMeeting=(state,action)=>{
       state.forEach((f)=>{
           if(f.id==action.id){
               f.Children=[...f.Children,{name:"خرا"}]
@@ -40,8 +40,6 @@ const Meetings =
       case "ShowMeeting":
         return state;
       case "AddMeeting":
-        return {...state};
-      case "AddChild":
         return AddMeeting(state,action);
       default:
         return state;

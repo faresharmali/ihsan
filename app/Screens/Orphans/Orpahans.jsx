@@ -16,7 +16,7 @@ import { Input, Stack } from "native-base";
 import { useSelector } from "react-redux";
 import toastConfig from "../../Components/ToastConfiguration";
 import Toast from "react-native-toast-message";
-
+import Kids from "../Famillies/Kids";
 export default function Orphans({ navigation, drawer }) {
   const showToast = () => {
     Toast.show({
@@ -29,11 +29,14 @@ export default function Orphans({ navigation, drawer }) {
     backgroundColor: "#fff",
     marginTop: 5,
   };
-  const openModal = (data) => {
-    navigation.navigate("Family", data);
-  };
   let MyFamilies = useSelector((state) => state.Families);
-  return (
+  let kids=[]
+  MyFamilies.forEach((f)=>{
+    f.Children.forEach((k)=>{
+      kids.push(k)
+    })
+  })
+    return (
     <View style={styles.container}>
       <StatusBar style="dark" />
 
@@ -73,14 +76,8 @@ export default function Orphans({ navigation, drawer }) {
         />
 
         <ScrollView style={styles.Content}>
-          {MyFamilies.map((f) => (
-            <FamilyInfosContainer
-              AvatarSize={40}
-              data={f}
-              pic={Family}
-              openFamily={() => openModal(f)}
-            />
-          ))}
+        <Kids kids={kids} />
+
         </ScrollView>
       </View>
       <Toast config={toastConfig} />

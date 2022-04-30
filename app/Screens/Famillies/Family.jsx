@@ -148,7 +148,7 @@ export default function FamilyScreen({route,navigation }) {
           />
         </View>
         <Image style={styles.EntityImage} source={Family} />
-        <Text style={styles.EntityTitle}>{`عائلة ${family.Mother} ارملة ${family.Father}`}</Text>
+        <Text style={styles.EntityTitle}>{`عائلة ${family.Mother} ارملة ${family.FatherFirstName}  ${family.FatherLastName}`}</Text>
         <View style={styles.Navigation}>
           <TouchableOpacity onPress={() => setSection("infos")}>
             <View style={styles.NavigationItem}>

@@ -1,15 +1,25 @@
 import { StyleSheet, Text, View, TouchableWithoutFeedback } from "react-native";
-import React from "react";
+import React,{useState} from "react";
 import { Input, Stack, Icon } from "native-base";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { Button } from "react-native-paper";
 import { useDispatch } from "react-redux";
 import store from "../store";
 export default function AddChild({route, navigation }) {
+  const [ChildData, setChildData] = useState({
+    Name: "",
+    Age: "",
+    Sexe: "",
+    Level: "",
+  });
   const myAction = () => {
     return {
       type: "AddChild",
-      id:route.params.id
+      id:route.params.id,
+      data:{
+        ...ChildData,
+        Father:route.params.FatherLastName
+      }
     };
   };
   let dispatch = useDispatch();
@@ -24,6 +34,9 @@ const add=()=>{
     route.params.showToast()
   }, (600));
 } 
+const inputHandler = (e, name) => {
+  setChildData({ ...ChildData, [name]: e });
+};
  return (
     <View style={styles.Container}>
       <View style={styles.TitleContainer}>
@@ -62,6 +75,7 @@ const add=()=>{
           textAlign="right"
           placeholder="الاسم"
           {...styling}
+          onChangeText={(text) => inputHandler(text, "Name")}
         />
         <Input
           InputRightElement={
@@ -81,6 +95,8 @@ const add=()=>{
           textAlign="right"
           placeholder="العمر "
           {...styling}
+          onChangeText={(text) => inputHandler(text, "Age")}
+
         />
         <Input
           InputRightElement={
@@ -100,6 +116,8 @@ const add=()=>{
           textAlign="right"
           placeholder="الجنس"
           {...styling}
+          onChangeText={(text) => inputHandler(text, "Sexe")}
+
         />
         <Input
           InputRightElement={
@@ -119,6 +137,8 @@ const add=()=>{
           textAlign="right"
           placeholder="المستوى الدراسي"
           {...styling}
+          onChangeText={(text) => inputHandler(text, "Level")}
+
         />
       </Stack>
       <Button style={styles.Button} mode="contained" onPress={() => add()}>

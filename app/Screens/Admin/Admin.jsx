@@ -1,20 +1,23 @@
 import { StyleSheet, Button, View } from "react-native";
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import Administration from "./Administration";
-import DrawerContent from "../../Navigation/DrawerContent"
+import DrawerContent from "../../Navigation/DrawerContent";
 import { NavigationContainer } from "@react-navigation/native";
 import AdminDashboard from "./AdminDashboard";
+import OrpahansSection from "../OrphansSection";
 const Drawer = createDrawerNavigator();
 
 export default function Dashboard(props) {
-  useEffect(() => {console.log("token changed",props.Token)}, [props.Token]);
+  useEffect(() => {
+    console.log("token changed", props.Token);
+  }, [props.Token]);
 
   return (
     <React.Fragment>
       <NavigationContainer>
         <Drawer.Navigator
-         drawerPosition="right"
+          drawerPosition="right"
           drawerContent={(prop) => (
             <DrawerContent {...prop} pageHandler={props.pageHandler} />
           )}
@@ -33,7 +36,12 @@ export default function Dashboard(props) {
               <Administration {...props} pageHandler={props.pageHandler} />
             )}
           />
-         
+          <Drawer.Screen
+            name="OrpahansSection"
+            component={(props) => (
+              <OrpahansSection {...props} pageHandler={props.pageHandler} />
+            )}
+          />
         </Drawer.Navigator>
       </NavigationContainer>
     </React.Fragment>

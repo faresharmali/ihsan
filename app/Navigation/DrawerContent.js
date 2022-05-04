@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, StatusBar, Image, Text,TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  View,
+  StatusBar,
+  Image,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 import { DrawerItem } from "@react-navigation/drawer";
 import { Avatar, Title, Caption, Drawer } from "react-native-paper";
 import {
@@ -58,7 +65,7 @@ export default function DrawerContent(props) {
           label="قسم الأيتام"
           labelStyle={styles.label}
           onPress={() => {
-            props.navigation.navigate("venteetachat");
+            props.navigation.navigate("OrpahansSection");
           }}
         />
         <DrawerItem
@@ -148,7 +155,7 @@ export default function DrawerContent(props) {
           }}
         />
       </Drawer.Section>
-      <TouchableOpacity style={styles.logoutContainer}> 
+      <TouchableOpacity style={styles.logoutContainer}>
         <Icon
           style={styles.logoutIcon}
           as={<MaterialCommunityIcons name="logout" />}
@@ -240,22 +247,18 @@ const styles = StyleSheet.create({
     width: 43,
     marginLeft: 10,
   },
-  logoutContainer:{
-    flexDirection:"row-reverse",
-    alignItems:"center",
-    padding:10,
+  logoutContainer: {
+    flexDirection: "row-reverse",
+    alignItems: "center",
+    padding: 10,
   },
-  logoutIcon:{
+  logoutIcon: {
     color: "#348578",
-    marginLeft:10,
-        fontSize: 26,
-
-
+    marginLeft: 10,
+    fontSize: 26,
   },
-  logoutText:{
-  fontSize:15,
-  fontFamily: "Tajawal-Medium",
-
+  logoutText: {
+    fontSize: 15,
+    fontFamily: "Tajawal-Medium",
   },
-
 });

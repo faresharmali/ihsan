@@ -5,51 +5,51 @@ import {
   View,
   ScrollView,
   TouchableWithoutFeedback,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import React, { useState } from "react";
 import { Icon } from "native-base";
 import { MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
-import DataContainer from "../../Components/DataContainer";
-import BottomBar from "../../Navigation/BottomBar";
+import DataContainer from "../../../Components/DataContainer";
+import BottomBar from "../../../Navigation/BottomBar";
 import icon from "../../../assets/icons/information.png";
 
-export default function Activity({ navigation,drawer }) {
+export default function Activity({ navigation, drawer }) {
   const [active, setActive] = useState(5);
 
   const users = [
     {
       0: "نشاط 1",
     },
-    
+
     {
       0: "نشاط 1",
     },
-    
+
     {
       0: "نشاط 1",
     },
-    
+
     {
       0: "نشاط 1",
     },
-    
+
     {
       0: "نشاط 1",
     },
-    
-  
   ];
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />
 
       <View style={styles.ScreenEntity}>
-      <TouchableOpacity onPress={()=>drawer.openDrawer()} style={styles.menuContainer}>
+        <TouchableOpacity
+          onPress={() => drawer.openDrawer()}
+          style={styles.menuContainer}
+        >
           <Icon as={Entypo} name="menu" size={8} color="#fff" />
         </TouchableOpacity>
-
 
         <View style={styles.containerTitle}>
           <Text style={styles.ScreenEntityTitle}>أنشطة </Text>

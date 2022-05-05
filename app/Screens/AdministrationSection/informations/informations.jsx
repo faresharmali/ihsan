@@ -10,12 +10,12 @@ import {
 import React, { useEffect, useState } from "react";
 import { Icon } from "native-base";
 import { MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
-import DataContainer from "../../Components/DataContainer";
-import BottomBar from "../../Navigation/BottomBar";
-import icon from "../../../assets/icons/information.png";
+import DataContainer from "../../../Components/DataContainer";
+import BottomBar from "../../../Navigation/BottomBar";
+import icon from "../../../../assets/icons/information.png";
 import { useSelector, useDispatch } from "react-redux";
 import Toast from 'react-native-toast-message';
-import toastConfig from "../../Components/ToastConfiguration";
+import toastConfig from "../../../Components/ToastConfiguration";
 export default function Informations({ navigation, drawer }) {
 
   const showToast=()=>{

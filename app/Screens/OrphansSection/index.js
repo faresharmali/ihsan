@@ -6,10 +6,11 @@ import {
 import OrpahnsDonators from "./Donators.jsx";
 import Families from "./Families.jsx";
 import Members from "./Members.jsx";
+import Bureau from "./Bureau";
+import AddReservation from "../../Forms/AddReservation.jsx";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
-const scaleFromCenter = { ...TransitionPresets.ScaleFromCenterAndroid };
 export default function OrpahansSection({ navigation }) {
   return (
     <Stack.Navigator
@@ -34,6 +35,12 @@ export default function OrpahansSection({ navigation }) {
         options={slideFromRight}
         name="Members"
         component={Members}
+      />
+      <Stack.Screen options={slideFromRight} name="Bureau" component={Bureau} />
+      <Stack.Screen
+        options={TransitionFromBottom}
+        name="AddReservation"
+        component={AddReservation}
       />
     </Stack.Navigator>
   );

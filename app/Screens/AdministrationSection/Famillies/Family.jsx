@@ -14,16 +14,16 @@ import {
   Ionicons,
   AntDesign,
 } from "@expo/vector-icons";
-import Family from "../../../assets/avatars/family.png";
+import Family from "../../../../assets/avatars/family.png";
 import FamilyInfo from "./FamilyInfo";
 import Kids from "./Kids";
 import { Box, Fab } from "native-base";
-import icon from "../../../assets/icons/information.png";
-import store from "../../store";
-import DataContainer from "../../Components/DataContainer";
+import icon from "../../../../assets/icons/information.png";
+import store from "../../../store";
+import DataContainer from "../../../Components/DataContainer";
 import { useSelector } from "react-redux";
 import Toast from 'react-native-toast-message';
-import toastConfig from "../../Components/ToastConfiguration"
+import toastConfig from "../../../Components/ToastConfiguration"
 export default function FamilyScreen({route,navigation }) {
   const [section, setSection] = useState("infos");
   const [refresh, setRefresh] = useState(false);

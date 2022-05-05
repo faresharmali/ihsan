@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import { Icon } from "native-base";
 import { MaterialIcons, Entypo } from "@expo/vector-icons";
-import Kid from "../../../assets/icons/kid.png";
+import Kid from "../../../../assets/icons/kid.png";
 export default function Kids(props) {
   console.log(props)
   return (

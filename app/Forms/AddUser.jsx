@@ -19,7 +19,6 @@ export default function AddUser({ route, navigation }) {
     job: "",
   });
   const [job, setJob] = useState("اختيار المهمة");
-  console.error(userInfos);
   const handleUserInput = (text, name) => {
     setuserInfos({ ...userInfos, [name]: text });
   };

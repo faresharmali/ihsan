@@ -70,6 +70,15 @@ export default function OrpahnsSectionBottomBar(props) {
             <View style={styles.bottomBarITem}>
               <Icon as={FontAwesome5} name="child" color={"#fff"} size={4} />
 
+              <Text style={styles.bottomBarITemText}>الكفالة</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate("Orphans")}
+          >
+            <View style={styles.bottomBarITem}>
+              <Icon as={FontAwesome5} name="child" color={"#fff"} size={4} />
+
               <Text style={styles.bottomBarITemText}>المالية</Text>
             </View>
           </TouchableOpacity>

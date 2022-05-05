@@ -7,16 +7,15 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React, { useState } from "react";
-import BottomBar from "../../Navigation/BottomBar";
+import BottomBar from "../../../Navigation/BottomBar";
 import { Icon } from "native-base";
 import { FontAwesome5, Entypo, MaterialIcons } from "@expo/vector-icons";
-import FamilyInfosContainer from "../../Components/Containers/FamilyInfosContainer";
-import Family from "../../../assets/icons/user.png";
+import Family from "../../../../assets/icons/user.png";
 import { Input, Stack } from "native-base";
 import { useSelector } from "react-redux";
-import toastConfig from "../../Components/ToastConfiguration";
+import toastConfig from "../../../Components/ToastConfiguration";
 import Toast from "react-native-toast-message";
-import DataContainer from "../../Components/DataContainer";
+import DataContainer from "../../../Components/DataContainer";
 export default function Kofal({ navigation, drawer }) {
   const [active, setActive] = useState(1);
   const showToast = () => {

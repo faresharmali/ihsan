@@ -13,7 +13,7 @@ import { MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
 import DataContainer from "../../../Components/DataContainer";
 import BottomBar from "../../../Navigation/BottomBar";
-import icon from "../../../assets/icons/information.png";
+import icon from "../../../../assets/icons/information.png";
 
 export default function Activity({ navigation, drawer }) {
   const [active, setActive] = useState(5);

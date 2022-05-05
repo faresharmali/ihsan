@@ -7,14 +7,12 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React, { useState } from "react";
-import BottomBar from "../../Navigation/BottomBar";
+import BottomBar from "../../../Navigation/BottomBar";
 import { Icon } from "native-base";
 import { FontAwesome5, Entypo, MaterialIcons } from "@expo/vector-icons";
-import FamilyInfosContainer from "../../Components/Containers/FamilyInfosContainer";
-import Family from "../../../assets/avatars/family.png";
 import { Input, Stack } from "native-base";
 import { useSelector } from "react-redux";
-import toastConfig from "../../Components/ToastConfiguration";
+import toastConfig from "../../../Components/ToastConfiguration";
 import Toast from "react-native-toast-message";
 import Kids from "../Famillies/Kids";
 export default function Orphans({ navigation, drawer }) {

@@ -18,19 +18,19 @@ export default function FamilyInfosContainer(props) {
       />
       <View style={styles.infos}>
         <Text style={styles.UserPersonal}>
-          {`عائلة ${props.data.Mother} ارملة ${props.data.FatherFirstName} ${props.data.FatherLastName}`}{" "}
+          {`عائلة ${props.data.motherFullName} ارملة ${props.data.fatherFirstName} ${props.data.fatherLastName}`}{" "}
         </Text>
         <View style={styles.secondaryInfos}>
           {props.data.Phone && (
             <>
               <Icon as={MaterialIcons} name="phone" size={4} color="#000" />
-              <Text> {props.data.Phone}</Text>
+              <Text> {props.data.phone}</Text>
             </>
           )}
-          {props.data.Phone && (
+          {props.data.adresse && (
             <>
               <Icon as={MaterialIcons} name="map" size={4} color="#000" />
-              <Text> {props.data.Adresse}</Text>
+              <Text> {props.data.adresse}</Text>
             </>
           )}
         </View>

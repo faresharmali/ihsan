@@ -6,7 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import BottomBar from "../../Navigation/BottomBar";
 import { Icon } from "native-base";
 import {
@@ -20,9 +20,13 @@ import { Input, Stack } from "native-base";
 import { useSelector } from "react-redux";
 import toastConfig from "../../Components/ToastConfiguration";
 import Toast from "react-native-toast-message";
+import { getFamilies } from "../../api/family";
+import { useDispatch } from "react-redux";
 
 export default function Families({ navigation, drawer }) {
   const [active, setActive] = useState(1);
+  const dispatch = useDispatch();
+
   const showToast = () => {
     Toast.show({
       type: "success",
@@ -38,6 +42,23 @@ export default function Families({ navigation, drawer }) {
     navigation.navigate("Family", data);
   };
   let MyFamilies = useSelector((state) => state.Families);
+
+  const updateState = (data) => {
+    return {
+      type: "updateFamiliesList",
+      data: data,
+    };
+  };
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", async () => {
+      const res = await getFamilies();
+      dispatch(updateState(res.data.result));
+      console.log("families",res.data.result)
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />
@@ -52,11 +73,7 @@ export default function Families({ navigation, drawer }) {
 
         <View style={styles.containerTitle}>
           <Text style={styles.ScreenEntityTitle}>العائلات </Text>
-          <MaterialCommunityIcons
-            name="account-group"
-            size={30}
-            color="#fff"
-          />
+          <MaterialCommunityIcons name="account-group" size={30} color="#fff" />
         </View>
       </View>
       <View style={styles.Section}>
@@ -84,6 +101,7 @@ export default function Families({ navigation, drawer }) {
         <ScrollView style={styles.Content}>
           {MyFamilies.map((f) => (
             <FamilyInfosContainer
+            key={f._id}
               AvatarSize={40}
               data={f}
               pic={Family}
@@ -94,15 +112,12 @@ export default function Families({ navigation, drawer }) {
       </View>
       <Toast config={toastConfig} />
       <TouchableOpacity
-              onPress={()=>navigation.navigate("AddFamily",{showToast})}
-
-      style={styles.fab}>
-          <Icon as={Entypo} name="plus" size={8} color="#fff" />
-
-          </TouchableOpacity>
-      <BottomBar
-        navigation={navigation}
-      />
+        onPress={() => navigation.navigate("AddFamily", { showToast })}
+        style={styles.fab}
+      >
+        <Icon as={Entypo} name="plus" size={8} color="#fff" />
+      </TouchableOpacity>
+      <BottomBar navigation={navigation} />
     </View>
   );
 }
@@ -153,24 +168,23 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingLeft: 20,
     paddingRight: 20,
-    paddingBottom:10
+    paddingBottom: 10,
   },
   ScreenEntityTitle: {
     color: "#fff",
     fontSize: 25,
     marginRight: 10,
     fontFamily: "Tajawal-Medium",
-  
   },
 
   Section: {
     width: "100%",
     height: "90%",
-    backgroundColor:"#f5f5f5",
-    borderTopRightRadius:15,
-    borderTopLeftRadius:15,
+    backgroundColor: "#f5f5f5",
+    borderTopRightRadius: 15,
+    borderTopLeftRadius: 15,
     display: "flex",
-    alignItems:"center",
+    alignItems: "center",
   },
   Content: {
     width: "100%",
@@ -180,7 +194,6 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingLeft: 20,
     paddingRight: 20,
-   
   },
   menuContainer: {
     width: 35,
@@ -192,17 +205,16 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
   },
-  fab:{
-    width:50,
-    height:50,
-    backgroundColor:"#348578",
-    alignItems:"center",
-    justifyContent:"center",
-    borderRadius:25,
-    elevation:5,
-    position:"absolute",
-    bottom:65,
-    right:10
-    
-  }
+  fab: {
+    width: 50,
+    height: 50,
+    backgroundColor: "#348578",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 25,
+    elevation: 5,
+    position: "absolute",
+    bottom: 65,
+    right: 10,
+  },
 });

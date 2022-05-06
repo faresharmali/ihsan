@@ -77,16 +77,14 @@ export default function AddUser({ route, navigation }) {
     Keyboard.dismiss();
     if (validate()) {
       if (userInfos.password == userInfos.confirmepassword) {
-        const user={...userInfos}
-        delete user.confirmepassword
-        const res=await CreateUser(user)
-        if(res.ok){
+        const user = { ...userInfos };
+        delete user.confirmepassword;
+        const res = await CreateUser(user);
+        if (res.ok) {
           route.params.showToast();
-          navigation.goBack()
-        }else{
-
+          navigation.goBack();
+        } else {
         }
-
       } else {
         SetErrors({ ...errors, password: true, confirmepassword: true });
 

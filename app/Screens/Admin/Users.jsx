@@ -7,54 +7,53 @@ import {
   TouchableWithoutFeedback,
   TouchableOpacity,
 } from "react-native";
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import BottomBar from "../../Navigation/BottomBar";
 import { Icon } from "native-base";
 import { MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
 import DataContainer from "../../Components/DataContainer";
 import { useSelector } from "react-redux";
 import { LogBox } from "react-native";
-import Toast from 'react-native-toast-message';
-import toastConfig from "../../Components/ToastConfiguration"
+import Toast from "react-native-toast-message";
+import toastConfig from "../../Components/ToastConfiguration";
 import { useDispatch } from "react-redux";
-import {getUsers} from "../../api/user"
-import Man from "../../../assets/avatars/man.png"
+import { getUsers } from "../../api/user";
+import Man from "../../../assets/avatars/man.png";
 LogBox.ignoreAllLogs();
 export default function Users({ navigation, drawer }) {
   const dispatch = useDispatch();
-
   const [active, setActive] = useState(6);
   const openModal = (u) => {
     navigation.navigate("AdminProfile", {
       ...u,
     });
   };
-  let userList =useSelector(state=>state.users)
-
-  const showToast=()=>{
+  let userList = useSelector((state) => state.users);
+  const showToast = () => {
     Toast.show({
       type: "success",
       text1: "نجحت العملية",
       text2: " تمت اضافة المستخدم بنجاح  👋",
     });
-  }
-
+  };
   const updateState = (data) => {
     return {
       type: "updateUserList",
-      data:data
+      data: data,
     };
   };
-  const action = () => {
-    return {
-      type: "getUsers",
-    };
-  };
-  useEffect(()=>{
-    const unsubscribe = navigation.addListener('focus', async() => {
-        const res = await getUsers();
-        dispatch(updateState(res.data.result.map((user)=>({0:user.name,1:user.phone,2:user.job}))))
-
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", async () => {
+      const res = await getUsers();
+      dispatch(
+        updateState(
+          res.data.result.map((user) => ({
+            0: user.name,
+            1: user.phone,
+            2: user.job,
+          }))
+        )
+      );
     });
 
     return unsubscribe;
@@ -74,11 +73,7 @@ export default function Users({ navigation, drawer }) {
 
         <View style={styles.containerTitle}>
           <Text style={styles.ScreenEntityTitle}>الأعضاء </Text>
-          <MaterialCommunityIcons
-            name="account-group"
-            size={30}
-            color="#fff"
-          />
+          <MaterialCommunityIcons name="account-group" size={30} color="#fff" />
         </View>
       </View>
       <View style={styles.containerFilter}>
@@ -186,7 +181,7 @@ export default function Users({ navigation, drawer }) {
         </TouchableWithoutFeedback>
       </View>
       <ScrollView style={styles.Content}>
-      {userList.map((u) => (
+        {userList.map((u) => (
           <DataContainer
             key={u[0]}
             AvatarSize={40}
@@ -198,21 +193,19 @@ export default function Users({ navigation, drawer }) {
       </ScrollView>
       <Toast config={toastConfig} />
       <TouchableOpacity
-        onPress={()=>navigation.navigate("AddUser",{showToast})}
-      style={styles.fab}>
-          <Icon as={Entypo} name="plus" size={8} color="#fff" />
-
-          </TouchableOpacity>
-      <BottomBar
-        navigation={navigation}
-      />
+        onPress={() => navigation.navigate("AddUser", { showToast })}
+        style={styles.fab}
+      >
+        <Icon as={Entypo} name="plus" size={8} color="#fff" />
+      </TouchableOpacity>
+      <BottomBar navigation={navigation} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor:"#348578",
+    backgroundColor: "#348578",
     flex: 1,
     alignItems: "center",
     justifyContent: "flex-start",
@@ -222,13 +215,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   containerFilter: {
-    borderTopRightRadius:15,
-    borderTopLeftRadius:15,
-    backgroundColor:"#f5f5f5",
+    borderTopRightRadius: 15,
+    borderTopLeftRadius: 15,
+    backgroundColor: "#f5f5f5",
     width: "100%",
     flexDirection: "row-reverse",
     justifyContent: "space-between",
-    paddingTop:20,
+    paddingTop: 20,
     padding: 10,
     paddingLeft: 20,
     paddingRight: 20,
@@ -259,7 +252,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingLeft: 20,
     paddingRight: 20,
-    paddingBottom:10,
+    paddingBottom: 10,
   },
   ScreenEntityTitle: {
     color: "#fff",
@@ -287,17 +280,16 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
   },
-  fab:{
-    width:50,
-    height:50,
-    backgroundColor:"#348578",
-    alignItems:"center",
-    justifyContent:"center",
-    borderRadius:25,
-    elevation:5,
-    position:"absolute",
-    bottom:65,
-    right:10
-    
-  }
+  fab: {
+    width: 50,
+    height: 50,
+    backgroundColor: "#348578",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 25,
+    elevation: 5,
+    position: "absolute",
+    bottom: 65,
+    right: 10,
+  },
 });

@@ -1,51 +1,106 @@
-import { StyleSheet, Text, View, TouchableWithoutFeedback } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
 import React, { useState } from "react";
 import { Input, Stack, Icon } from "native-base";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { Button } from "react-native-paper";
-import { useDispatch } from "react-redux";
+import { CreateFamily } from "../api/family";
 export default function AddFamily({ route, navigation }) {
-  const [FamilyData, setFamilyData] = useState({
-    Mother: "",
-    FatherFirstName: "",
-    FatherLastName: "",
-    Adresse: "",
-    Phone: "",
-    Income: 0,
-    Infos: "",
-    Donation: 0,
-    Children: [],
+  const [ErrorMessageVisible, setErrorMessageVisible] = useState(false);
+  const [ErrorMessage, setErrorMessage] = useState("");
+  const [errors, SetErrors] = useState({
+    fatherFirstName: false,
+    fatherLastName: false,
+    motherFullName: false,
+    adresse: false,
+    salary: false,
+    phone: false,
+    donation: false,
   });
+  const [userInfos, setuserInfos] = useState({
+    fatherFirstName: "",
+    fatherLastName: "",
+    motherFullName: "",
+    adresse: "",
+    salary: "",
+    phone: "",
+    donation: "",
+  });
+
+  const handleUserInput = (text, name) => {
+    setErrorMessageVisible(false);
+    SetErrors({ ...errors, [name]: false });
+    setuserInfos({ ...userInfos, [name]: text });
+  };
+
   const styling = {
     borderColor: "#000",
     borderWidth: 0.5,
+    fontFamily: "Tajawal-Medium",
+    fontSize: 14,
   };
-  const myAction = () => {
-    return {
-      type: "AddFamily",
-      data: {
-        ...FamilyData,
-      },
-    };
+
+  const CreateNewUser = async () => {
+    Keyboard.dismiss();
+    if (validate()) {
+      const res = await CreateFamily(user);
+      if (res.ok) {
+        route.params.showToast();
+        navigation.goBack();
+      } else {
+      }
+    } else {
+      setErrorMessage("كل الخانات اجبارية");
+      setErrorMessageVisible(true);
+    }
   };
-  let dispatch = useDispatch();
-  const inputHandler = (e, name) => {
-    setFamilyData({ ...FamilyData, [name]: e });
+  const validate = () => {
+    let valid = true;
+    let FieldErrors = { ...errors };
+    if (userInfos.fatherLastName.trim() == "") {
+      (FieldErrors.fatherLastName = true), (valid = false);
+    }
+    if (userInfos.fatherFirstName.trim() == "") {
+      (FieldErrors.fatherFirstName = true), (valid = false);
+    }
+    if (userInfos.motherFullName.trim() == "") {
+      (FieldErrors.motherFullName = true), (valid = false);
+    }
+    if (userInfos.adresse.trim() == "") {
+      (FieldErrors.adresse = true), (valid = false);
+    }
+    if (userInfos.phone.trim() == "") {
+      (FieldErrors.phone = true), (valid = false);
+    }
+    if (userInfos.salary.trim() == "") {
+      (FieldErrors.salary = true), (valid = false);
+    }
+    if (userInfos.donation.trim() == "") {
+      (FieldErrors.donation = true), (valid = false);
+    }
+    SetErrors(FieldErrors);
+    return valid;
   };
+
   return (
     <View style={styles.Container}>
       <View style={styles.TitleContainer}>
         <View style={{ flexDirection: "row-reverse" }}>
           <Icon as={FontAwesome} name="user-plus" size={7} color="#348578" />
 
-          <Text style={styles.PageTitile}>اضافة عائلة</Text>
+          <Text style={styles.PageTitile}>اضافة مستخدم</Text>
         </View>
         <TouchableWithoutFeedback onPress={() => navigation.navigate("Users")}>
           <Icon
             style={styles.back}
             as={FontAwesome}
-            name="arrow-left"
-            size={8}
+            name="close"
+            size={7}
             color="#348578"
           />
         </TouchableWithoutFeedback>
@@ -56,70 +111,76 @@ export default function AddFamily({ route, navigation }) {
           InputRightElement={
             <Icon
               style={{ marginRight: 10 }}
-              as={<MaterialIcons name="account-circle" />}
+              as={<FontAwesome name="user" />}
               size={5}
               ml="2"
               color="#348578"
             />
           }
-          style={styles.input}
           w={{
             base: "95%",
-            md: "50%",
+            md: "25%",
           }}
           h={50}
+          name="name"
           textAlign="right"
-          placeholder="اسم الأب"
+          placeholder="اسم الأب "
           {...styling}
-          onChangeText={(text) => inputHandler(text, "FatherFirstName")}
+          borderWidth={1}
+          borderColor={errors.fatherFirstName ? "#c21a0e" : "grey"}
+          onChangeText={(text) => handleUserInput(text, "fatherFirstName")}
         />
         <Input
           InputRightElement={
             <Icon
               style={{ marginRight: 10 }}
-              as={<MaterialIcons name="account-circle" />}
+              as={<FontAwesome name="user" />}
               size={5}
               ml="2"
               color="#348578"
             />
           }
-          style={styles.input}
           w={{
             base: "95%",
-            md: "50%",
+            md: "25%",
           }}
           h={50}
+          name="name"
           textAlign="right"
-          placeholder=" لقب الأب"
+          placeholder="لقب الأب "
           {...styling}
-          onChangeText={(text) => inputHandler(text, "FatherLastName")}
+          borderWidth={1}
+          borderColor={errors.fatherLastName ? "#c21a0e" : "grey"}
+          onChangeText={(text) => handleUserInput(text, "fatherLastName")}
         />
         <Input
           InputRightElement={
             <Icon
               style={{ marginRight: 10 }}
-              as={<MaterialIcons name="account-circle" />}
+              as={<FontAwesome name="user" />}
               size={5}
               ml="2"
               color="#348578"
             />
           }
-          style={styles.input}
           w={{
             base: "95%",
-            md: "50%",
+            md: "25%",
           }}
           h={50}
+          name="name"
           textAlign="right"
           placeholder="اسم و لقب الأم"
           {...styling}
-          onChangeText={(text) => inputHandler(text, "Mother")}
+          borderWidth={1}
+          borderColor={errors.motherFullName ? "#c21a0e" : "grey"}
+          onChangeText={(text) => handleUserInput(text, "motherFullName")}
         />
         <Input
           InputRightElement={
             <Icon
               style={{ marginRight: 10 }}
-              as={<MaterialIcons name="lock" />}
+              as={<MaterialIcons name="phone" />}
               size={5}
               ml="2"
               color="#348578"
@@ -132,28 +193,34 @@ export default function AddFamily({ route, navigation }) {
           h={50}
           textAlign="right"
           placeholder="رقم الهاتف"
+          onChangeText={(text) => handleUserInput(text, "phone")}
           {...styling}
-          onChangeText={(text) => inputHandler(text, "Phone")}
+          borderWidth={1}
+          borderColor={errors.phone ? "#c21a0e" : "grey"}
         />
+
         <Input
           InputRightElement={
             <Icon
               style={{ marginRight: 10 }}
-              as={<MaterialIcons name="lock" />}
+              as={<MaterialIcons name="account-circle" />}
               size={5}
               ml="2"
               color="#348578"
             />
           }
+          style={styles.input}
           w={{
             base: "95%",
-            md: "25%",
+            md: "50%",
           }}
           h={50}
           textAlign="right"
           placeholder="العنوان"
+          onChangeText={(text) => handleUserInput(text, "adresse")}
           {...styling}
-          onChangeText={(text) => inputHandler(text, "Adresse")}
+          borderWidth={1}
+          borderColor={errors.adresse ? "#c21a0e" : "grey"}
         />
         <Input
           InputRightElement={
@@ -172,8 +239,11 @@ export default function AddFamily({ route, navigation }) {
           h={50}
           textAlign="right"
           placeholder="المدخول"
+          onChangeText={(text) => handleUserInput(text, "salary")}
           {...styling}
-          onChangeText={(text) => inputHandler(text, "Income")}
+          type={"motherFullName"}
+          borderWidth={1}
+          borderColor={errors.salary ? "#c21a0e" : "grey"}
         />
         <Input
           InputRightElement={
@@ -192,48 +262,43 @@ export default function AddFamily({ route, navigation }) {
           h={50}
           textAlign="right"
           placeholder="مبلغ الكفالة"
+          onChangeText={(text) => handleUserInput(text, "donation")}
           {...styling}
-          onChangeText={(text) => inputHandler(text, "Donation")}
-        />
-        <Input
-          InputRightElement={
-            <Icon
-              style={{ marginRight: 10 }}
-              as={<MaterialIcons name="lock" />}
-              size={5}
-              ml="2"
-              color="#348578"
-            />
-          }
-          w={{
-            base: "95%",
-            md: "25%",
-          }}
-          h={50}
-          textAlign="right"
-          placeholder="معلومات عامة"
-          {...styling}
-          onChangeText={(text) => inputHandler(text, "Infos")}
+          borderWidth={1}
+          type={"motherFullName"}
+          borderColor={errors.donation ? "#c21a0e" : "grey"}
         />
       </Stack>
-      <Button
-        style={styles.Button}
-        mode="contained"
-        onPress={() => {
-          dispatch(myAction());
-          navigation.goBack();
-          setTimeout(() => {
-            route.params.showToast();
-          }, 600);
-        }}
-      >
-        <Text style={{ fontSize: 16, marginLeft: 10 }}>اضافة</Text>
+      {ErrorMessageVisible && (
+        <View style={styles.ErrorMessage}>
+          <FontAwesome name="exclamation-triangle" size={20} color="#BE123C" />
+          <Text style={styles.errorText}>{ErrorMessage}</Text>
+        </View>
+      )}
+
+      <Button style={styles.Button} mode="contained" onPress={CreateNewUser}>
+        <Text style={{ fontSize: 16, marginLeft: 10 }}>اضافة مستخدم </Text>
       </Button>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  dateContainer: {
+    width: "95%",
+    height: 50,
+    borderColor: "#000",
+    borderWidth: 0.5,
+    borderRadius: 5,
+    flexDirection: "row-reverse",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    paddingLeft: 10,
+    borderWidth: 1,
+  },
+  InputText: {
+    fontFamily: "Tajawal-Medium",
+  },
   Container: {
     backgroundColor: "#fff",
     flex: 1,
@@ -279,5 +344,23 @@ const styles = StyleSheet.create({
   },
   back: {
     left: 0,
+  },
+  Modal: {
+    width: "100%",
+  },
+  ErrorMessage: {
+    width: "80%",
+    height: 40,
+    backgroundColor: "#FECDD3",
+    marginTop: 10,
+    flexDirection: "row-reverse",
+    alignItems: "center",
+    borderRadius: 10,
+    paddingLeft: 10,
+  },
+  errorText: {
+    fontFamily: "Tajawal-Medium",
+    marginRight: 10,
+    fontSize: 13,
   },
 });

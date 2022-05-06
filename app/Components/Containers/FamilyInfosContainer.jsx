@@ -21,7 +21,7 @@ export default function FamilyInfosContainer(props) {
           {`عائلة ${props.data.motherFullName} ارملة ${props.data.fatherFirstName} ${props.data.fatherLastName}`}{" "}
         </Text>
         <View style={styles.secondaryInfos}>
-          {props.data.Phone && (
+          {props.data.phone && (
             <>
               <Icon as={MaterialIcons} name="phone" size={4} color="#000" />
               <Text> {props.data.phone}</Text>
@@ -33,6 +33,7 @@ export default function FamilyInfosContainer(props) {
               <Text> {props.data.adresse}</Text>
             </>
           )}
+      
         </View>
       </View>
     </TouchableOpacity>
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
   },
   DataContainer: {
     width: "100%",
-    height: 55,
+    minHeight: 70,
     backgroundColor: "#fff",
     marginBottom: 10,
     borderRadius: 7,
@@ -55,7 +56,7 @@ const styles = StyleSheet.create({
     elevation: 1.5,
     flexDirection: "row-reverse",
     alignItems: "center",
-    padding: 10,
+    paddingLeft: 10,
   },
 
   secondaryInfos: {

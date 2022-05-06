@@ -7,7 +7,7 @@ import {
   TouchableWithoutFeedback,
   TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import BottomBar from "../../Navigation/BottomBar";
 import { Icon } from "native-base";
 import { MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
@@ -16,16 +16,21 @@ import { useSelector } from "react-redux";
 import { LogBox } from "react-native";
 import Toast from 'react-native-toast-message';
 import toastConfig from "../../Components/ToastConfiguration"
+import { useDispatch } from "react-redux";
+import {getUsers} from "../../api/user"
+import Man from "../../../assets/avatars/man.png"
 LogBox.ignoreAllLogs();
 export default function Users({ navigation, drawer }) {
-  const [active, setActive] = useState(6);
+  const dispatch = useDispatch();
 
+  const [active, setActive] = useState(6);
   const openModal = (u) => {
     navigation.navigate("AdminProfile", {
       ...u,
     });
   };
-  let users =useSelector(state=>state.users)
+  let userList =useSelector(state=>state.users)
+
   const showToast=()=>{
     Toast.show({
       type: "success",
@@ -33,6 +38,28 @@ export default function Users({ navigation, drawer }) {
       text2: " تمت اضافة المستخدم بنجاح  👋",
     });
   }
+
+  const updateState = (data) => {
+    return {
+      type: "updateUserList",
+      data:data
+    };
+  };
+  const action = () => {
+    return {
+      type: "getUsers",
+    };
+  };
+  useEffect(()=>{
+    const unsubscribe = navigation.addListener('focus', async() => {
+        const res = await getUsers();
+        dispatch(updateState(res.data.result.map((user)=>({0:user.name,1:user.phone,2:user.job}))))
+
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />
@@ -159,12 +186,12 @@ export default function Users({ navigation, drawer }) {
         </TouchableWithoutFeedback>
       </View>
       <ScrollView style={styles.Content}>
-        {users.map((u) => (
+      {userList.map((u) => (
           <DataContainer
             key={u[0]}
             AvatarSize={40}
             data={u}
-            pic={u.pic}
+            pic={Man}
             openFamily={() => openModal(u)}
           />
         ))}

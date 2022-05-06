@@ -34,8 +34,6 @@ export default function Login({ navigation, PageHandler, SetloggedInUser }) {
     return valid;
   };
 
-
-
   const Signin = async () => {
     Keyboard.dismiss();
     if (validate()) {

@@ -13,10 +13,10 @@ import Activity from "../AdministrationSection/Activities/Activities.jsx";
 import AddChild from "../../Forms/AddChild.jsx";
 import AddInformation from "../../Forms/addInformation.jsx";
 import UserProfile from "./Users/UserProfile.jsx";
-import Bureau from "../Bureau/Bureau.jsx"
+import Bureau from "../Bureau/Bureau.jsx";
 import AddReservation from "../../Forms/AddReservation.jsx";
-import Kofal from "../AdministrationSection/kofal/Kofal.jsx"; 
-import Orphans from "../AdministrationSection/Orphans/Orpahans.jsx"
+import Kofal from "../AdministrationSection/kofal/Kofal.jsx";
+import Orphans from "../AdministrationSection/Orphans/Orpahans.jsx";
 import AdminProfile from "../Profiles/adminProfile.jsx";
 import AddDonator from "../../Forms/AddDonator.jsx";
 const Stack = createStackNavigator();
@@ -43,31 +43,23 @@ export default function Administration({ navigation }) {
         name="AddFamily"
         component={AddFamily}
       />
-      <Stack.Screen
-        options={slideFromRight}
-        name="Users"
-        component={(props) => <Users {...props} drawer={navigation} />}
-      />
-      <Stack.Screen
-        options={slideFromRight}
-        name="Famillies"
-        component={(props) => <Families {...props} drawer={navigation} />}
-      />
+      <Stack.Screen options={slideFromRight} name="Users">
+        {(props) => <Users {...props} drawer={navigation} />}
+      </Stack.Screen>
+      <Stack.Screen options={slideFromRight} name="Famillies">
+        {(props) => <Families {...props} drawer={navigation} />}
+      </Stack.Screen>
       <Stack.Screen
         options={TransitionFromBottom}
         name="Family"
         component={FamilyScreen}
       />
-      <Stack.Screen
-        options={slideFromRight}
-        name="Informations"
-        component={(props) => <Informations {...props} drawer={navigation} />}
-      />
-      <Stack.Screen
-        options={slideFromRight}
-        name="Activities"
-        component={(props) => <Activity {...props} drawer={navigation} />}
-      />
+      <Stack.Screen options={slideFromRight} name="Informations">
+        {(props) => <Informations {...props} drawer={navigation} />}
+      </Stack.Screen>
+      <Stack.Screen options={slideFromRight} name="Activities">
+        {(props) => <Activity {...props} drawer={navigation} />}
+      </Stack.Screen>
       <Stack.Screen
         options={TransitionFromBottom}
         name="AddChild"
@@ -88,21 +80,13 @@ export default function Administration({ navigation }) {
         name="AdminProfile"
         component={AdminProfile}
       />
-      <Stack.Screen
-        options={slideFromRight}
-        name="Bureau"
-        component={Bureau}
-      />
+      <Stack.Screen options={slideFromRight} name="Bureau" component={Bureau} />
       <Stack.Screen
         options={TransitionFromBottom}
         name="AddReservation"
         component={AddReservation}
       />
-      <Stack.Screen
-        options={slideFromRight}
-        name="Kofal"
-        component={Kofal}
-      />
+      <Stack.Screen options={slideFromRight} name="Kofal" component={Kofal} />
       <Stack.Screen
         options={slideFromRight}
         name="Orphans"

@@ -9,10 +9,6 @@ import OrpahansSection from "../OrphansSection";
 const Drawer = createDrawerNavigator();
 
 export default function Dashboard(props) {
-  useEffect(() => {
-    console.log("token changed", props.Token);
-  }, [props.Token]);
-
   return (
     <React.Fragment>
       <NavigationContainer>
@@ -24,24 +20,21 @@ export default function Dashboard(props) {
           screenOptions={{ headerShown: false }}
           initialRouteName="Home"
         >
-          <Drawer.Screen
-            name="Home"
-            component={(props) => (
+          <Drawer.Screen name="Home">
+            {(props) => (
               <AdminDashboard {...props} pageHandler={props.pageHandler} />
             )}
-          />
-          <Drawer.Screen
-            name="Administration"
-            component={(props) => (
+          </Drawer.Screen>
+          <Drawer.Screen name="Administration">
+            {(props) => (
               <Administration {...props} pageHandler={props.pageHandler} />
             )}
-          />
-          <Drawer.Screen
-            name="OrpahansSection"
-            component={(props) => (
+          </Drawer.Screen>
+          <Drawer.Screen name="OrpahansSection">
+            {(props) => (
               <OrpahansSection {...props} pageHandler={props.pageHandler} />
             )}
-          />
+          </Drawer.Screen>
         </Drawer.Navigator>
       </NavigationContainer>
     </React.Fragment>

@@ -9,8 +9,6 @@ import React, { useState } from "react";
 import { Input, Stack, Icon, Radio } from "native-base";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { Button } from "react-native-paper";
-import { useDispatch } from "react-redux";
-import Gamer from "../../assets/avatars/gamer.png";
 import Swipable from "../Components/Containers/swipable";
 import { useSelector } from "react-redux";
 import { CreateDonator } from "../api/user";
@@ -43,31 +41,16 @@ export default function AddDonator({ route, navigation }) {
 
   const openPanel = () => {
     Keyboard.dismiss();
-
     setIsPanelActive(true);
     setshowButton(false);
   };
   const openUsersPanel = () => {
     Keyboard.dismiss();
-
     setisUsersPannel(true);
     setshowButton(false);
   };
   let users = useSelector((state) => state.users);
   let allUSers = users.map((u) => ({ title: u[0] }));
-  const dispatch = useDispatch();
-  const action = () => {
-    return {
-      type: "AddDonator",
-      data: {
-        0: userInfos.name,
-        1: job,
-        2: userInfos.phone,
-        icon1: "phone",
-        pic: Gamer,
-      },
-    };
-  };
   const styling = {
     borderColor: "#000",
     borderWidth: 0.5,
@@ -75,15 +58,15 @@ export default function AddDonator({ route, navigation }) {
     fontSize: 14,
   };
   let jobs = [
-    { title: " قسم المالية" },
-    { title: " قسم الققة" },
-    { title: " قسم الكفالة" },
-    { title: " قسم التعليم" },
-    { title: " قسم الصحة" },
-    { title: " قسم الصحة" },
-    { title: " قسم الادارة" },
-    { title: " قسم الأنشطة الخيرية" },
-    { title: " قسم الأرامل" },
+    { title: "قسم المالية" },
+    { title: "قسم الققة" },
+    { title: "قسم الأيتام" },
+    { title: "قسم التعليم" },
+    { title: "قسم الصحة" },
+    { title: "وسيط اجتماعي" },
+    { title: "قسم الادارة" },
+    { title: "قسم الأنشطة الخيرية" },
+    { title: "قسم الأرامل" },
   ];
   const ChooseJob = (job) => {
     SetErrors({ ...errors, job: false });

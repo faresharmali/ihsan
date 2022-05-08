@@ -11,10 +11,17 @@ import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { Button } from "react-native-paper";
 import { CreateFamily } from "../api/family";
 import uuid from "react-native-uuid";
+import { useSelector } from "react-redux";
+import Swipable from "../Components/Containers/swipable";
 
 export default function AddFamily({ route, navigation }) {
   const [ErrorMessageVisible, setErrorMessageVisible] = useState(false);
   const [ErrorMessage, setErrorMessage] = useState("");
+  const [isPanelActive, setIsPanelActive] = useState(false);
+  const [showButton, setshowButton] = useState(true);
+  const [wasseet, setwasseet] = useState("الوسيط الاجتماعي");
+  let users = useSelector((state) => state.users).filter((d)=>d.job.trim()=="وسيط اجتماعي");
+  let allUSers = users.map((u) => ({ title: u[0] }));
   const [errors, SetErrors] = useState({
     fatherFirstName: false,
     fatherLastName: false,
@@ -23,6 +30,7 @@ export default function AddFamily({ route, navigation }) {
     salary: false,
     phone: false,
     donation: false,
+    wasseet: false,
   });
   const [userInfos, setuserInfos] = useState({
     id: uuid.v4(),
@@ -33,8 +41,13 @@ export default function AddFamily({ route, navigation }) {
     salary: "",
     phone: "",
     donation: "",
+    wasseet:""
   });
-
+  const openPanel = () => {
+    Keyboard.dismiss();
+    setIsPanelActive(true);
+    setshowButton(false);
+  };
   const handleUserInput = (text, name) => {
     setErrorMessageVisible(false);
     SetErrors({ ...errors, [name]: false });
@@ -86,10 +99,21 @@ export default function AddFamily({ route, navigation }) {
     if (userInfos.donation.trim() == "") {
       (FieldErrors.donation = true), (valid = false);
     }
+    if (userInfos.donation.trim() == "") {
+      (FieldErrors.wasseet = true), (valid = false);
+    }
     SetErrors(FieldErrors);
     return valid;
   };
 
+
+  const ChooseJob = (wasseet) => {
+    SetErrors({ ...errors, wasseet: false });
+    setuserInfos({ ...userInfos, wasseet:wasseet });
+    setwasseet(wasseet);
+    setIsPanelActive(false);
+    setshowButton(true);
+  };
   return (
     <View style={styles.Container}>
       <View style={styles.TitleContainer}>
@@ -271,6 +295,22 @@ export default function AddFamily({ route, navigation }) {
           type={"motherFullName"}
           borderColor={errors.donation ? "#c21a0e" : "grey"}
         />
+          <TouchableWithoutFeedback onPress={() => openPanel()}>
+          <View
+            style={{
+              ...styles.dateContainer,
+              borderColor: errors.wasseet ? "#c21a0e" : "grey",
+            }}
+          >
+            <Icon
+              as={<MaterialIcons name="lock" />}
+              size={5}
+              ml="2"
+              color="#348578"
+            />
+            <Text style={styles.InputText}>{wasseet} </Text>
+          </View>
+        </TouchableWithoutFeedback>
       </Stack>
       {ErrorMessageVisible && (
         <View style={styles.ErrorMessage}>
@@ -279,9 +319,19 @@ export default function AddFamily({ route, navigation }) {
         </View>
       )}
 
+<Swipable
+        title="اختيار الوسيط الاجتماعي"
+        ChooseJob={ChooseJob}
+        data={allUSers}
+        isPanelActive={isPanelActive}
+        setIsPanelActive={setIsPanelActive}
+        setshowButton={setshowButton}
+      />
+      {showButton && 
       <Button style={styles.Button} mode="contained" onPress={CreateNewUser}>
         <Text style={{ fontSize: 16, marginLeft: 10 }}>اضافة </Text>
       </Button>
+      }
     </View>
   );
 }

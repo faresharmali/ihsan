@@ -42,7 +42,7 @@ export default function FamilyInfo({ navigation, title, data }) {
         <Icon as={FontAwesome5} size={6} color="#348578" name="shopping-bag" />
       </View>
       <View style={styles.Info}>
-        <Text style={styles.InfoText}>الوسيط الاجتماعي : فلان بن فلان</Text>
+        <Text style={styles.InfoText}>الوسيط الاجتماعي : {data.wasseet}  </Text>
         <Icon as={FontAwesome} size={6} color="#348578" name="users" />
       </View>
       <View style={styles.Info}>

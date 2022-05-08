@@ -61,7 +61,7 @@ export default function AddUser({ route, navigation }) {
     { title: "قسم الأيتام" },
     { title: "قسم التعليم" },
     { title: "قسم الصحة" },
-    { title: "قسم الصحة" },
+    { title: "وسيط اجتماعي" },
     { title: "قسم الادارة" },
     { title: "قسم الأنشطة الخيرية" },
     { title: "قسم الأرامل" },

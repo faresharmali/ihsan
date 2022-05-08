@@ -31,7 +31,8 @@ export default function OrpahnsDonators({ navigation, drawer }) {
   const openModal = (data) => {
     navigation.navigate("Family", data);
   };
-  let Donators = useSelector((state) => state.Donators);
+  let Donators = useSelector((state) => state.Donators).filter((d)=>d[2].trim()=="قسم الكفالة");
+  console.log(Donators)
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />

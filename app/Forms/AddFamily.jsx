@@ -10,6 +10,8 @@ import { Input, Stack, Icon } from "native-base";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { Button } from "react-native-paper";
 import { CreateFamily } from "../api/family";
+import uuid from "react-native-uuid";
+
 export default function AddFamily({ route, navigation }) {
   const [ErrorMessageVisible, setErrorMessageVisible] = useState(false);
   const [ErrorMessage, setErrorMessage] = useState("");
@@ -23,6 +25,7 @@ export default function AddFamily({ route, navigation }) {
     donation: false,
   });
   const [userInfos, setuserInfos] = useState({
+    id: uuid.v4(),
     fatherFirstName: "",
     fatherLastName: "",
     motherFullName: "",
@@ -48,7 +51,7 @@ export default function AddFamily({ route, navigation }) {
   const CreateNewUser = async () => {
     Keyboard.dismiss();
     if (validate()) {
-      const res = await CreateFamily(user);
+      const res = await CreateFamily(userInfos);
       if (res.ok) {
         route.params.showToast();
         navigation.goBack();
@@ -93,7 +96,7 @@ export default function AddFamily({ route, navigation }) {
         <View style={{ flexDirection: "row-reverse" }}>
           <Icon as={FontAwesome} name="user-plus" size={7} color="#348578" />
 
-          <Text style={styles.PageTitile}>اضافة مستخدم</Text>
+          <Text style={styles.PageTitile}>اضافة عائلة</Text>
         </View>
         <TouchableWithoutFeedback onPress={() => navigation.navigate("Users")}>
           <Icon
@@ -277,7 +280,7 @@ export default function AddFamily({ route, navigation }) {
       )}
 
       <Button style={styles.Button} mode="contained" onPress={CreateNewUser}>
-        <Text style={{ fontSize: 16, marginLeft: 10 }}>اضافة مستخدم </Text>
+        <Text style={{ fontSize: 16, marginLeft: 10 }}>اضافة </Text>
       </Button>
     </View>
   );

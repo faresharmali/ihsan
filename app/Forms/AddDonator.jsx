@@ -1,38 +1,60 @@
-import { StyleSheet, Text, View, TouchableWithoutFeedback } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
 import React, { useState } from "react";
-import { Input, Stack, Icon } from "native-base";
+import { Input, Stack, Icon, Radio } from "native-base";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { Button } from "react-native-paper";
 import { useDispatch } from "react-redux";
 import Gamer from "../../assets/avatars/gamer.png";
 import Swipable from "../Components/Containers/swipable";
 import { useSelector } from "react-redux";
+import { CreateDonator } from "../api/user";
 export default function AddDonator({ route, navigation }) {
+  const [ErrorMessageVisible, setErrorMessageVisible] = useState(false);
   const [isPanelActive, setIsPanelActive] = useState(false);
   const [isUsersPannel, setisUsersPannel] = useState(false);
   const [showButton, setshowButton] = useState(true);
   const [job, setJob] = useState("القسم");
   const [user, setUser] = useState("الوسيط");
+  const [DonatorType, setDonatorType] = useState("kafel");
+  const [ErrorMessage, setErrorMessage] = useState("");
+  const [errors, SetErrors] = useState({
+    name: false,
+    phone: false,
+    job: false,
+    user: false,
+  });
   const [userInfos, setuserInfos] = useState({
     name: "",
     phone: "",
-    adresse: "",
     job: "",
     user: "",
   });
   const handleUserInput = (text, name) => {
+    setErrorMessageVisible(false);
+    SetErrors({ ...errors, [name]: false });
     setuserInfos({ ...userInfos, [name]: text });
   };
+
   const openPanel = () => {
+    Keyboard.dismiss();
+
     setIsPanelActive(true);
     setshowButton(false);
   };
   const openUsersPanel = () => {
+    Keyboard.dismiss();
+
     setisUsersPannel(true);
     setshowButton(false);
   };
-  let users =useSelector(state=>state.users)
-let allUSers=users.map((u)=>({title:u[0]})) 
+  let users = useSelector((state) => state.users);
+  let allUSers = users.map((u) => ({ title: u[0] }));
   const dispatch = useDispatch();
   const action = () => {
     return {
@@ -64,16 +86,51 @@ let allUSers=users.map((u)=>({title:u[0]}))
     { title: " قسم الأرامل" },
   ];
   const ChooseJob = (job) => {
+    SetErrors({ ...errors, job: false });
     setuserInfos({ ...userInfos, job });
     setJob(job);
     setIsPanelActive(false);
     setshowButton(true);
   };
   const ChooseUser = (user) => {
+    SetErrors({ ...errors, user: false });
     setuserInfos({ ...userInfos, user });
     setUser(user);
     setisUsersPannel(false);
     setshowButton(true);
+  };
+  const validate = () => {
+    let valid = true;
+    let FieldErrors = { ...errors };
+    if (userInfos.name.trim() == "") {
+      (FieldErrors.name = true), (valid = false);
+    }
+    if (userInfos.phone.trim() == "") {
+      (FieldErrors.phone = true), (valid = false);
+    }
+    if (userInfos.job.trim() == "") {
+      (FieldErrors.job = true), (valid = false);
+    }
+    if (userInfos.user.trim() == "") {
+      (FieldErrors.user = true), (valid = false);
+    }
+    SetErrors(FieldErrors);
+    console.log(FieldErrors);
+    return valid;
+  };
+  const AddDonator = async () => {
+    Keyboard.dismiss();
+    if (validate()) {
+      const res = await CreateDonator({ ...userInfos, type:DonatorType });
+      if (res.ok) {
+        route.params.showToast();
+        navigation.goBack();
+      } else {
+      }
+    } else {
+      setErrorMessage("كل الخانات اجبارية");
+      setErrorMessageVisible(true);
+    }
   };
   return (
     <View style={styles.Container}>
@@ -114,6 +171,8 @@ let allUSers=users.map((u)=>({title:u[0]}))
           textAlign="right"
           placeholder="الاسم و اللقب"
           {...styling}
+          borderWidth={1}
+          borderColor={errors.name ? "#c21a0e" : "grey"}
           onChangeText={(text) => handleUserInput(text, "name")}
         />
         <Input
@@ -133,32 +192,19 @@ let allUSers=users.map((u)=>({title:u[0]}))
           h={50}
           textAlign="right"
           placeholder="رقم الهاتف"
+          {...styling}
+          borderWidth={1}
+          borderColor={errors.phone ? "#c21a0e" : "grey"}
           onChangeText={(text) => handleUserInput(text, "phone")}
-          {...styling}
-        />
-        <Input
-          InputRightElement={
-            <Icon
-              style={{ marginRight: 10 }}
-              as={<FontAwesome name="map-marker" />}
-              size={5}
-              ml="2"
-              color="#348578"
-            />
-          }
-          w={{
-            base: "95%",
-            md: "25%",
-          }}
-          h={50}
-          textAlign="right"
-          placeholder="العنوان"
-          {...styling}
-          onChangeText={(text) => handleUserInput(text, "adresse")}
         />
 
         <TouchableWithoutFeedback onPress={() => openPanel()}>
-          <View style={styles.dateContainer}>
+          <View
+            style={{
+              ...styles.dateContainer,
+              borderColor: errors.job ? "#c21a0e" : "grey",
+            }}
+          >
             <Icon
               as={<MaterialIcons name="lock" />}
               size={5}
@@ -169,7 +215,12 @@ let allUSers=users.map((u)=>({title:u[0]}))
           </View>
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback onPress={() => openUsersPanel()}>
-          <View style={styles.dateContainer}>
+          <View
+            style={{
+              ...styles.dateContainer,
+              borderColor: errors.user ? "#c21a0e" : "grey",
+            }}
+          >
             <Icon
               as={<MaterialIcons name="lock" />}
               size={5}
@@ -179,24 +230,42 @@ let allUSers=users.map((u)=>({title:u[0]}))
             <Text style={styles.InputText}>{user} </Text>
           </View>
         </TouchableWithoutFeedback>
-      </Stack>
-      {showButton && (
-        <Button
-          style={styles.Button}
-          mode="contained"
-          onPress={() => {
-            dispatch(action());
-            navigation.navigate("Kofal");
-            setTimeout(() => {
-              route.params.showToast();
-            });
+        <Radio.Group
+          value={DonatorType}
+          style={{ flexDirection: "row" }}
+          name="myRadioGroup"
+          accessibilityLabel="favorite number"
+          onChange={(type) => {
+            setDonatorType(type);
           }}
         >
-          <Text style={{ fontSize: 16, marginLeft: 10 }}>اضافة مستخدم </Text>
+          <Radio size="lg" colorScheme="rgb(52, 133, 120)" value="kafel" my={1}>
+            كافل
+          </Radio>
+          <Radio
+            size="lg"
+            colorScheme="rgb(52, 133, 120)"
+            style={{ marginLeft: 20 }}
+            value="Mohsin"
+            my={1}
+          >
+            محسن
+          </Radio>
+        </Radio.Group>
+      </Stack>
+      {ErrorMessageVisible && (
+        <View style={styles.ErrorMessage}>
+          <FontAwesome name="exclamation-triangle" size={20} color="#BE123C" />
+          <Text style={styles.errorText}>{ErrorMessage}</Text>
+        </View>
+      )}
+      {showButton && (
+        <Button style={styles.Button} mode="contained" onPress={AddDonator}>
+          <Text style={{ fontSize: 16, marginLeft: 10 }}>اضافة</Text>
         </Button>
       )}
       <Swipable
-      title="اختيار القسم"
+        title="اختيار القسم"
         ChooseJob={ChooseJob}
         data={jobs}
         isPanelActive={isPanelActive}
@@ -204,8 +273,7 @@ let allUSers=users.map((u)=>({title:u[0]}))
         setshowButton={setshowButton}
       />
       <Swipable
-            title="اختيار الوسيط"
-
+        title="اختيار الوسيط"
         ChooseJob={ChooseUser}
         data={allUSers}
         isPanelActive={isUsersPannel}
@@ -221,7 +289,7 @@ const styles = StyleSheet.create({
     width: "95%",
     height: 50,
     borderColor: "#000",
-    borderWidth: 0.5,
+    borderWidth: 1,
     borderRadius: 5,
     flexDirection: "row-reverse",
     justifyContent: "flex-start",
@@ -279,5 +347,20 @@ const styles = StyleSheet.create({
   },
   Modal: {
     width: "100%",
+  },
+  ErrorMessage: {
+    width: "80%",
+    height: 40,
+    backgroundColor: "#FECDD3",
+    marginTop: 10,
+    flexDirection: "row-reverse",
+    alignItems: "center",
+    borderRadius: 10,
+    paddingLeft: 10,
+  },
+  errorText: {
+    fontFamily: "Tajawal-Medium",
+    marginRight: 10,
+    fontSize: 13,
   },
 });

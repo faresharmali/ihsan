@@ -9,7 +9,7 @@ import React, { useState } from "react";
 import { Input, Stack, Icon } from "native-base";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { Button } from "react-native-paper";
-
+import uuid from 'react-native-uuid';
 import Swipable from "../Components/Containers/swipable";
 import { CreateUser } from "../api/user";
 export default function AddUser({ route, navigation }) {
@@ -28,6 +28,7 @@ export default function AddUser({ route, navigation }) {
   });
 
   const [userInfos, setuserInfos] = useState({
+    id:uuid.v4(),
     name: "",
     phone: "",
     username: "",
@@ -55,15 +56,15 @@ export default function AddUser({ route, navigation }) {
     fontSize: 14,
   };
   let jobs = [
-    { title: " قسم المالية" },
-    { title: " قسم الققة" },
-    { title: " قسم الكفالة" },
-    { title: " قسم التعليم" },
-    { title: " قسم الصحة" },
-    { title: " قسم الصحة" },
-    { title: " قسم الادارة" },
-    { title: " قسم الأنشطة الخيرية" },
-    { title: " قسم الأرامل" },
+    { title: "قسم المالية" },
+    { title: "قسم الققة" },
+    { title: "قسم الأيتام" },
+    { title: "قسم التعليم" },
+    { title: "قسم الصحة" },
+    { title: "قسم الصحة" },
+    { title: "قسم الادارة" },
+    { title: "قسم الأنشطة الخيرية" },
+    { title: "قسم الأرامل" },
   ];
   const ChooseJob = (dp) => {
     SetErrors({ ...errors, job: false });

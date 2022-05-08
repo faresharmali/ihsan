@@ -16,23 +16,18 @@ import { useSelector } from "react-redux";
 import { LogBox } from "react-native";
 import Toast from "react-native-toast-message";
 import toastConfig from "../../Components/ToastConfiguration";
+import Man from "../../../assets/avatars/man.png";
 LogBox.ignoreAllLogs();
 export default function Members({ navigation, drawer }) {
-  const [active, setActive] = useState(6);
-
   const openModal = (u) => {
-    navigation.navigate("AdminProfile", {
+    navigation.navigate("MemberProfile", {
       ...u,
     });
   };
-  let users = useSelector((state) => state.users);
-  const showToast = () => {
-    Toast.show({
-      type: "success",
-      text1: "نجحت العملية",
-      text2: " تمت اضافة المستخدم بنجاح  👋",
-    });
-  };
+  let users = useSelector((state) => state.users).filter(
+    (u) => u[2].trim() == "قسم الأيتام"
+  );
+
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />
@@ -57,7 +52,7 @@ export default function Members({ navigation, drawer }) {
               key={u[0]}
               AvatarSize={40}
               data={u}
-              pic={u.pic}
+              pic={Man}
               openFamily={() => openModal(u)}
             />
           ))}

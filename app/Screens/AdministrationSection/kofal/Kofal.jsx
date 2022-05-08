@@ -6,17 +6,21 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import BottomBar from "../../../Navigation/BottomBar";
-import { Icon } from "native-base";
 import { FontAwesome5, Entypo, MaterialIcons } from "@expo/vector-icons";
 import Family from "../../../../assets/icons/user.png";
-import { Input, Stack } from "native-base";
+import { Input, Icon } from "native-base";
 import { useSelector } from "react-redux";
 import toastConfig from "../../../Components/ToastConfiguration";
 import Toast from "react-native-toast-message";
 import DataContainer from "../../../Components/DataContainer";
+import { getDonators } from "../../../api/user";
+import { useDispatch } from "react-redux";
+
 export default function Kofal({ navigation, drawer }) {
+  const dispatch = useDispatch();
+
   const [active, setActive] = useState(1);
   const showToast = () => {
     Toast.show({
@@ -33,6 +37,29 @@ export default function Kofal({ navigation, drawer }) {
     navigation.navigate("Family", data);
   };
   let Donators = useSelector((state) => state.Donators);
+  const updateState = (data) => {
+    return {
+      type: "updateDonatorsList",
+      data: data,
+    };
+  };
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", async () => {
+      const res = await getDonators();
+      dispatch(
+        updateState(
+          res.data.result.map((user) => ({
+            0: user.name,
+            1: user.phone,
+            2: user.job,
+          }))
+        )
+      );
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />
@@ -75,6 +102,7 @@ export default function Kofal({ navigation, drawer }) {
         <ScrollView style={styles.Content}>
           {Donators.map((f) => (
             <DataContainer
+            key={f.name}
               AvatarSize={22}
               data={f}
               pic={Family}

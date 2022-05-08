@@ -42,7 +42,6 @@ export default function Families({ navigation, drawer }) {
     navigation.navigate("Family", data);
   };
   let MyFamilies = useSelector((state) => state.Families);
-
   const updateState = (data) => {
     return {
       type: "updateFamiliesList",

@@ -27,9 +27,12 @@ export default function Families({ navigation, drawer }) {
     marginTop: 5,
   };
   const openModal = (data) => {
-    navigation.navigate("Family", data);
+    navigation.navigate("FamilyInfos", data);
   };
-  let MyFamilies = useSelector((state) => state.Families);
+  let MyFamilies = useSelector((state) => state.Families).filter(
+    (f) => f.donation > 0
+  );
+
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />
@@ -72,6 +75,7 @@ export default function Families({ navigation, drawer }) {
         <ScrollView style={styles.Content}>
           {MyFamilies.map((f) => (
             <FamilyInfosContainer
+              key={f._id}
               AvatarSize={40}
               data={f}
               pic={Family}

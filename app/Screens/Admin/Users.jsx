@@ -18,6 +18,7 @@ import Toast from "react-native-toast-message";
 import toastConfig from "../../Components/ToastConfiguration";
 import { useDispatch } from "react-redux";
 import { getUsers } from "../../api/user";
+
 import Man from "../../../assets/avatars/man.png";
 LogBox.ignoreAllLogs();
 export default function Users({ navigation, drawer }) {

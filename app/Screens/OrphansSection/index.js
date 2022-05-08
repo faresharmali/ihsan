@@ -8,6 +8,9 @@ import Families from "./Families.jsx";
 import Members from "./Members.jsx";
 import Bureau from "./Bureau";
 import AddReservation from "../../Forms/AddReservation.jsx";
+import Family from "../AdministrationSection/Famillies/Family"
+import AdminProfile from "../Profiles/adminProfile";
+
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
@@ -41,6 +44,16 @@ export default function OrpahansSection({ navigation }) {
         options={TransitionFromBottom}
         name="AddReservation"
         component={AddReservation}
+      />
+      <Stack.Screen
+        options={TransitionFromBottom}
+        name="FamilyInfos"
+        component={Family}
+      />
+      <Stack.Screen
+        options={TransitionFromBottom}
+        name="MemberProfile"
+        component={AdminProfile}
       />
     </Stack.Navigator>
   );

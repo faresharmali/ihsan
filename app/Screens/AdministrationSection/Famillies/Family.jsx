@@ -132,7 +132,7 @@ export default function FamilyScreen({route,navigation }) {
         text2: " تمت اضافة الأبن بنجاح  👋",
       });
     }
-  let family = useSelector(state=>state.Families.filter((f)=>f.id==route.params.id)[0])
+  let family = useSelector(state=>state.Families.filter((f)=>f._id==route.params._id)[0])
   return (
     <View style={styles.container}>
       <StatusBar style="light" />
@@ -148,7 +148,7 @@ export default function FamilyScreen({route,navigation }) {
           />
         </View>
         <Image style={styles.EntityImage} source={Family} />
-        <Text style={styles.EntityTitle}>{`عائلة ${family.Mother} ارملة ${family.FatherFirstName}  ${family.FatherLastName}`}</Text>
+        <Text style={styles.EntityTitle}>{`عائلة ${family.motherFullName} ارملة ${family.fatherFirstName}  ${family.fatherLastName}`}</Text>
         <View style={styles.Navigation}>
           <TouchableOpacity onPress={() => setSection("infos")}>
             <View style={styles.NavigationItem}>

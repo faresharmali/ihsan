@@ -31,7 +31,7 @@ export default function Swipable({
       <Text style={styles.title}>{title}</Text>
       <View style={styles.container}>
         {data.map((d) => (
-          <TouchableOpacity onPress={()=>ChooseJob(d.title)} style={styles.ItemContainer}>
+          <TouchableOpacity key={d.title} onPress={()=>ChooseJob(d.title)} style={styles.ItemContainer}>
             <Text style={styles.Item}>{d.title}</Text>
           </TouchableOpacity>
         ))}

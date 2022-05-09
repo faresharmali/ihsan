@@ -1,43 +1,75 @@
-import { StyleSheet, Text, View, TouchableWithoutFeedback } from "react-native";
-import React,{useState} from "react";
-import { Input, Stack, Icon } from "native-base";
-import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
+import React, { useState } from "react";
+import { Input, Stack, Icon, Radio } from "native-base";
+import { FontAwesome } from "@expo/vector-icons";
 import { Button } from "react-native-paper";
 import { useDispatch } from "react-redux";
-import store from "../store";
-export default function AddChild({route, navigation }) {
+import { AddKid } from "../api/family";
+import uuid from "react-native-uuid";
+
+export default function AddChild({ route, navigation }) {
+  const [ErrorMessageVisible, setErrorMessageVisible] = useState(false);
+  const [ErrorMessage, setErrorMessage] = useState("");
+  const [gender, setgender] = useState("ذكر");
   const [ChildData, setChildData] = useState({
-    Name: "",
-    Age: "",
-    Sexe: "",
-    Level: "",
+    id: uuid.v4(),
+    name: "",
+    age: "",
+    gender: "",
+    scolarity: "",
   });
-  const myAction = () => {
-    return {
-      type: "AddChild",
-      id:route.params.id,
-      data:{
-        ...ChildData,
-        Father:route.params.FatherLastName
-      }
-    };
+  const [errors, SetErrors] = useState({
+    name: false,
+    age: false,
+    scolarity: false,
+  });
+
+  const validate = () => {
+    let valid = true;
+    let FieldErrors = { ...errors };
+    if (ChildData.name.trim() == "") {
+      (FieldErrors.name = true), (valid = false);
+    }
+    if (ChildData.age.trim() == "") {
+      (FieldErrors.age = true), (valid = false);
+    }
+    if (ChildData.scolarity.trim() == "") {
+      (FieldErrors.scolarity = true), (valid = false);
+    }
+
+    SetErrors(FieldErrors);
+    return valid;
   };
-  let dispatch = useDispatch();
   const styling = {
     borderColor: "#000",
     borderWidth: 0.5,
   };
-const add=()=>{
-  dispatch(myAction())
-  navigation.goBack()
-  setTimeout(() => {
-    route.params.showToast()
-  }, (600));
-} 
-const inputHandler = (e, name) => {
-  setChildData({ ...ChildData, [name]: e });
-};
- return (
+
+  const CreateKid = async () => {
+    Keyboard.dismiss();
+    if (validate()) {
+      const res = await AddKid(ChildData);
+      if (res.ok) {
+        route.params.showToast();
+        navigation.goBack();
+      } else {
+      }
+    } else {
+      setErrorMessage("كل الخانات اجبارية");
+      setErrorMessageVisible(true);
+    }
+  };
+
+  const inputHandler = (e, name) => {
+    setChildData({ ...ChildData, [name]: e });
+  };
+  return (
     <View style={styles.Container}>
       <View style={styles.TitleContainer}>
         <View style={{ flexDirection: "row-reverse" }}>
@@ -75,7 +107,9 @@ const inputHandler = (e, name) => {
           textAlign="right"
           placeholder="الاسم"
           {...styling}
-          onChangeText={(text) => inputHandler(text, "Name")}
+          borderWidth={1}
+          borderColor={errors.name ? "#c21a0e" : "grey"}
+          onChangeText={(text) => inputHandler(text, "name")}
         />
         <Input
           InputRightElement={
@@ -95,30 +129,11 @@ const inputHandler = (e, name) => {
           textAlign="right"
           placeholder="العمر "
           {...styling}
-          onChangeText={(text) => inputHandler(text, "Age")}
-
+          borderWidth={1}
+          borderColor={errors.age ? "#c21a0e" : "grey"}
+          onChangeText={(text) => inputHandler(text, "age")}
         />
-        <Input
-          InputRightElement={
-            <Icon
-              style={{ marginRight: 10 }}
-              as={<FontAwesome name="intersex" />}
-              size={5}
-              ml="2"
-              color="#348578"
-            />
-          }
-          w={{
-            base: "95%",
-            md: "25%",
-          }}
-          h={50}
-          textAlign="right"
-          placeholder="الجنس"
-          {...styling}
-          onChangeText={(text) => inputHandler(text, "Sexe")}
 
-        />
         <Input
           InputRightElement={
             <Icon
@@ -137,11 +152,44 @@ const inputHandler = (e, name) => {
           textAlign="right"
           placeholder="المستوى الدراسي"
           {...styling}
-          onChangeText={(text) => inputHandler(text, "Level")}
-
+          borderWidth={1}
+          borderColor={errors.scolarity ? "#c21a0e" : "grey"}
+          onChangeText={(text) => inputHandler(text, "scolarity")}
         />
+        <Radio.Group
+          value={gender}
+          style={{ flexDirection: "row" }}
+          name="myRadioGroup"
+          accessibilityLabel="favorite number"
+          onChange={(gender) => {
+            setgender(gender);
+          }}
+        >
+          <Radio size="lg" colorScheme="rgb(52, 133, 120)" value="ذكر" my={1}>
+            ذكر
+          </Radio>
+          <Radio
+            size="lg"
+            colorScheme="rgb(52, 133, 120)"
+            style={{ marginLeft: 20 }}
+            value="أنثى"
+            my={1}
+          >
+            أنثى
+          </Radio>
+        </Radio.Group>
+        {ErrorMessageVisible && (
+          <View style={styles.ErrorMessage}>
+            <FontAwesome
+              name="exclamation-triangle"
+              size={20}
+              color="#BE123C"
+            />
+            <Text style={styles.errorText}>{ErrorMessage}</Text>
+          </View>
+        )}
       </Stack>
-      <Button style={styles.Button} mode="contained" onPress={() => add()}>
+      <Button style={styles.Button} mode="contained" onPress={CreateKid}>
         <Text style={{ fontSize: 16, marginLeft: 10 }}>اضافة </Text>
       </Button>
     </View>
@@ -194,5 +242,20 @@ const styles = StyleSheet.create({
   },
   back: {
     left: 0,
+  },
+  ErrorMessage: {
+    width: "80%",
+    height: 40,
+    backgroundColor: "#FECDD3",
+    marginTop: 10,
+    flexDirection: "row-reverse",
+    alignItems: "center",
+    borderRadius: 10,
+    paddingLeft: 10,
+  },
+  errorText: {
+    fontFamily: "Tajawal-Medium",
+    marginRight: 10,
+    fontSize: 13,
   },
 });

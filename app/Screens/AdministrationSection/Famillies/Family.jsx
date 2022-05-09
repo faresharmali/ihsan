@@ -176,7 +176,7 @@ export default function FamilyScreen({route,navigation }) {
 
       {section == "children" &&
         <ScrollView style={styles.Content}>
-         <Kids kids={family.Children} />
+         <Kids kids={family.kids} lastName={family.fatherLastName} />
           <Box position="relative" h={100} w="100%">
             <Fab
               onPress={() => navigation.navigate("AddChild",{...route.params,showToast})}

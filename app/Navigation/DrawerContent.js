@@ -18,14 +18,18 @@ import {
 } from "@expo/vector-icons";
 import { Icon } from "native-base";
 import Logo from "../../assets/Logo3.png";
+import { useSelector } from "react-redux";
+
 export default function DrawerContent(props) {
+  let LoggedUser = useSelector((state) => state.Auth);
+console.log()
   return (
     <View style={styles.container}>
       <View style={styles.userInfoSection}>
         <View style={{ flexDirection: "row", marginTop: 15, marginBottom: 30 }}>
           <View style={{ marginLeft: 15, flexDirection: "column" }}>
             <Title style={styles.title}>جمعية إحسان</Title>
-            <Caption style={styles.caption}>فارس حرمالي</Caption>
+            <Caption style={styles.caption}>{LoggedUser.name} / {LoggedUser.job}</Caption>
           </View>
           <Image source={Logo} style={styles.logo} />
         </View>

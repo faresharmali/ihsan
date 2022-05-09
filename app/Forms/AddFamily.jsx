@@ -13,7 +13,6 @@ import { CreateFamily } from "../api/family";
 import uuid from "react-native-uuid";
 import { useSelector } from "react-redux";
 import Swipable from "../Components/Containers/swipable";
-
 export default function AddFamily({ route, navigation }) {
   const [ErrorMessageVisible, setErrorMessageVisible] = useState(false);
   const [ErrorMessage, setErrorMessage] = useState("");
@@ -21,6 +20,7 @@ export default function AddFamily({ route, navigation }) {
   const [showButton, setshowButton] = useState(true);
   const [wasseet, setwasseet] = useState("الوسيط الاجتماعي");
   let users = useSelector((state) => state.users).filter((d)=>d.job.trim()=="وسيط اجتماعي");
+  
   let allUSers = users.map((u) => ({ title: u[0] }));
   const [errors, SetErrors] = useState({
     fatherFirstName: false,

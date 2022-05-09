@@ -11,7 +11,7 @@ export default function Kids(props) {
       <TouchableOpacity onLongPress={()=>alert("wech ?")} key={k.name} style={styles.DataContainer}>
         <Image source={Kid} style={styles.avatar} />
         <View style={styles.infos}>
-          <Text style={styles.UserPersonal}>{k.Name} </Text>
+          <Text style={styles.UserPersonal}>{k.name} {props.lastName} </Text>
           <View style={styles.secondaryInfos}>
             <Icon
               as={MaterialIcons}
@@ -19,7 +19,7 @@ export default function Kids(props) {
               size={4}
               color="#000"
             />
-            <Text> الجنس : {k.Sexe}</Text>
+            <Text> الجنس : {k.gender}</Text>
             <Icon
               style={{ marginRight: 10, marginLeft: 5 }}
               as={Entypo}
@@ -27,7 +27,7 @@ export default function Kids(props) {
               size={4}
               color="#000"
             />
-            <Text>العمر : {k.Age} </Text>
+            <Text>العمر : {k.age} </Text>
             <Icon
               style={{ marginRight: 10, marginLeft: 5 }}
               as={Entypo}
@@ -35,7 +35,7 @@ export default function Kids(props) {
               size={4}
               color="#000"
             />
-            <Text>المستوى : {k.Level} </Text>
+            <Text>المستوى : {k.scolarity} </Text>
           </View>
         </View>
       </TouchableOpacity>

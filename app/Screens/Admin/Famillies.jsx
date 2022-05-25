@@ -52,7 +52,6 @@ export default function Families({ navigation, drawer }) {
     const unsubscribe = navigation.addListener("focus", async () => {
       const res = await getFamilies();
       dispatch(updateState(res.data.result));
-      console.log("families",res.data.result)
     });
 
     return unsubscribe;

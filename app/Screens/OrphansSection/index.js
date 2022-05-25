@@ -10,14 +10,16 @@ import Bureau from "./Bureau";
 import AddReservation from "../../Forms/AddReservation.jsx";
 import Family from "../AdministrationSection/Famillies/Family"
 import AdminProfile from "../Profiles/adminProfile";
-
+import OrpahnsSectionBottomBar from "../../Navigation/OrpahansSectionBottomBar.js";
+import DonationsStatus from "./Donationstatus.jsx";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
 export default function OrpahansSection({ navigation }) {
   return (
-    <Stack.Navigator
-      initialRouteName="OrpahnsDonators"
+    <>
+     <Stack.Navigator
+      initialRouteName="DonationsStatus"
       screenOptions={{
         gestureEnabled: true,
         gestureDirection: "vertical",
@@ -55,6 +57,14 @@ export default function OrpahansSection({ navigation }) {
         name="MemberProfile"
         component={AdminProfile}
       />
+      <Stack.Screen
+        options={TransitionFromBottom}
+        name="DonationsStatus"
+        component={DonationsStatus}
+      />
     </Stack.Navigator>
+    <OrpahnsSectionBottomBar />
+    </>
+   
   );
 }

@@ -22,7 +22,6 @@ import { getUsers } from "../../api/user";
 import Man from "../../../assets/avatars/man.png";
 LogBox.ignoreAllLogs();
 export default function Users({ navigation, drawer }) {
-  const dispatch = useDispatch();
   const [active, setActive] = useState(6);
   const openModal = (u) => {
     navigation.navigate("AdminProfile", {
@@ -37,6 +36,7 @@ export default function Users({ navigation, drawer }) {
       text2: " تمت اضافة المستخدم بنجاح  👋",
     });
   };
+  const dispatch = useDispatch();
   const updateState = (data) => {
     return {
       type: "updateUserList",

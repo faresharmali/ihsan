@@ -4,53 +4,61 @@ import {
   View,
   TouchableWithoutFeedback,
   Keyboard,
-  BackHandler
+  BackHandler,
 } from "react-native";
-import React, { useState,useEffect } from "react";
-import { Input, Stack, Icon, Radio } from "native-base";
+import React, { useState, useEffect } from "react";
+import { Input, Stack, Icon, TextArea } from "native-base";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { Button } from "react-native-paper";
 import Swipable from "../Components/Containers/swipable";
 import { useSelector } from "react-redux";
-import { CreateDonator } from "../api/user";
-export default function AddDonator({ route, navigation }) {
+import { CreateReport } from "../api/report";
+import uuid from "react-native-uuid";
+export default function AddReport({ route, navigation }) {
   const [ErrorMessageVisible, setErrorMessageVisible] = useState(false);
   const [isPanelActive, setIsPanelActive] = useState(false);
   const [isUsersPannel, setisUsersPannel] = useState(false);
   const [showButton, setshowButton] = useState(true);
-  const [job, setJob] = useState("القسم");
-  const [user, setUser] = useState("الوسيط");
-  const [DonatorType, setDonatorType] = useState("kafel");
+  const [type, setType] = useState("نوع التقرير");
+  const [benificier, setSelectedwidow] = useState("الأرملة");
   const [ErrorMessage, setErrorMessage] = useState("");
   const [errors, SetErrors] = useState({
-    name: false,
-    phone: false,
-    job: false,
-    user: false,
+    title: false,
+    type: false,
+    benificier: false,
+    content: false,
   });
-  const [userInfos, setuserInfos] = useState({
-    name: "",
-    phone: "",
-    job: "",
-    user: "",
+  const [Reportinfos, setuserInfos] = useState({
+    id: uuid.v4(),
+    title: "",
+    type: "",
+    benificier: "",
+    content: "",
+    section: "قسم الأرامل",
+    date: new Date(),
+    author: useSelector((state)=>state.Auth).name,
   });
+  const auth=useSelector((state)=>state.Auth)
   useEffect(() => {
-    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-      if(isPanelActive || isUsersPannel){
-        setIsPanelActive(false)
-        setisUsersPannel(false)
-        return true
-      }else{
-        return false
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => {
+        if (isPanelActive || isUsersPannel) {
+          setIsPanelActive(false);
+          setisUsersPannel(false);
+          return true;
+        } else {
+          return false;
+        }
       }
-    })
-    return () => backHandler.remove()
-  }, [isPanelActive,isUsersPannel])
+    );
+    return () => backHandler.remove();
+  }, [isPanelActive, isUsersPannel]);
 
   const handleUserInput = (text, name) => {
     setErrorMessageVisible(false);
     SetErrors({ ...errors, [name]: false });
-    setuserInfos({ ...userInfos, [name]: text });
+    setuserInfos({ ...Reportinfos, [name]: text });
   };
 
   const openPanel = () => {
@@ -63,61 +71,63 @@ export default function AddDonator({ route, navigation }) {
     setisUsersPannel(true);
     setshowButton(false);
   };
-  let users = useSelector((state) => state.users);
-  let allUSers = users.map((u) => ({ title: u[0] }));
+  let Widows = useSelector((state) => state.Families);
+  let allWidows = Widows.map((u) => ({ title: u.motherFullName }));
+
+  let ReportTypes = [
+    { title: "استفادة" },
+    { title: "طلب" },
+    { title: "معلومة" },
+  ];
   const styling = {
     borderColor: "#000",
     borderWidth: 0.5,
     fontFamily: "Tajawal-Medium",
     fontSize: 14,
   };
-  let jobs = [
-    { title: "قسم المالية" },
-    { title: "قسم الققة" },
-    { title: "قسم الأيتام" },
-    { title: "قسم التعليم" },
-    { title: "قسم الصحة" },
-    { title: "وسيط اجتماعي" },
-    { title: "قسم الادارة" },
-    { title: "قسم الأنشطة الخيرية" },
-    { title: "قسم الأرامل" },
-  ];
-  const ChooseJob = (job) => {
-    SetErrors({ ...errors, job: false });
-    setuserInfos({ ...userInfos, job });
-    setJob(job);
+  let TextAreaStyle = {
+    borderColor: errors.content ? "#c21a0e" : "grey",
+    fontSize: 17,
+    fontFamily: "Tajawal-Medium",
+    color: "#000",
+  };
+  const ChooseJob = (benificier) => {
+    SetErrors({ ...errors, benificier: false });
+    setuserInfos({ ...Reportinfos, benificier });
+    setSelectedwidow(benificier);
     setIsPanelActive(false);
     setshowButton(true);
   };
-  const ChooseUser = (user) => {
-    SetErrors({ ...errors, user: false });
-    setuserInfos({ ...userInfos, user });
-    setUser(user);
+  const ChooseUser = (type) => {
+    SetErrors({ ...errors, type: false });
+    setuserInfos({ ...Reportinfos, type });
+    setType(type);
     setisUsersPannel(false);
     setshowButton(true);
   };
   const validate = () => {
     let valid = true;
     let FieldErrors = { ...errors };
-    if (userInfos.name.trim() == "") {
-      (FieldErrors.name = true), (valid = false);
+    if (Reportinfos.title.trim() == "") {
+      (FieldErrors.title = true), (valid = false);
     }
-    if (userInfos.phone.trim() == "") {
-      (FieldErrors.phone = true), (valid = false);
+    if (Reportinfos.type.trim() == "") {
+      (FieldErrors.type = true), (valid = false);
     }
-    if (userInfos.job.trim() == "") {
-      (FieldErrors.job = true), (valid = false);
+    if (Reportinfos.content.trim() == "") {
+      (FieldErrors.content = true), (valid = false);
     }
-    if (userInfos.user.trim() == "") {
-      (FieldErrors.user = true), (valid = false);
+    if (Reportinfos.benificier.trim() == "") {
+      (FieldErrors.benificier = true), (valid = false);
     }
     SetErrors(FieldErrors);
     return valid;
   };
   const AddDonator = async () => {
+  
     Keyboard.dismiss();
     if (validate()) {
-      const res = await CreateDonator({ ...userInfos, type:DonatorType });
+      const res = await CreateReport({ ...Reportinfos });
       if (res.ok) {
         route.params.showToast();
         navigation.goBack();
@@ -127,6 +137,7 @@ export default function AddDonator({ route, navigation }) {
       setErrorMessage("كل الخانات اجبارية");
       setErrorMessageVisible(true);
     }
+    
   };
   return (
     <View style={styles.Container}>
@@ -134,7 +145,7 @@ export default function AddDonator({ route, navigation }) {
         <View style={{ flexDirection: "row-reverse" }}>
           <Icon as={FontAwesome} name="user-plus" size={7} color="#348578" />
 
-          <Text style={styles.PageTitile}>اضافة محسن</Text>
+          <Text style={styles.PageTitile}>اضافة تقرير</Text>
         </View>
         <TouchableWithoutFeedback onPress={() => navigation.navigate("Kofal")}>
           <Icon
@@ -165,56 +176,18 @@ export default function AddDonator({ route, navigation }) {
           h={50}
           name="name"
           textAlign="right"
-          placeholder="الاسم و اللقب"
+          placeholder="عنوان التقرير"
           {...styling}
           borderWidth={1}
-          borderColor={errors.name ? "#c21a0e" : "grey"}
-          onChangeText={(text) => handleUserInput(text, "name")}
-        />
-        <Input
-          InputRightElement={
-            <Icon
-              style={{ marginRight: 10 }}
-              as={<MaterialIcons name="phone" />}
-              size={5}
-              ml="2"
-              color="#348578"
-            />
-          }
-          w={{
-            base: "95%",
-            md: "25%",
-          }}
-          h={50}
-          textAlign="right"
-          placeholder="رقم الهاتف"
-          {...styling}
-          borderWidth={1}
-          borderColor={errors.phone ? "#c21a0e" : "grey"}
-          onChangeText={(text) => handleUserInput(text, "phone")}
+          borderColor={errors.title ? "#c21a0e" : "grey"}
+          onChangeText={(text) => handleUserInput(text, "title")}
         />
 
-        <TouchableWithoutFeedback onPress={() => openPanel()}>
-          <View
-            style={{
-              ...styles.dateContainer,
-              borderColor: errors.job ? "#c21a0e" : "grey",
-            }}
-          >
-            <Icon
-              as={<MaterialIcons name="lock" />}
-              size={5}
-              ml="2"
-              color="#348578"
-            />
-            <Text style={styles.InputText}>{job} </Text>
-          </View>
-        </TouchableWithoutFeedback>
         <TouchableWithoutFeedback onPress={() => openUsersPanel()}>
           <View
             style={{
               ...styles.dateContainer,
-              borderColor: errors.user ? "#c21a0e" : "grey",
+              borderColor: errors.benificier ? "#c21a0e" : "grey",
             }}
           >
             <Icon
@@ -223,31 +196,33 @@ export default function AddDonator({ route, navigation }) {
               ml="2"
               color="#348578"
             />
-            <Text style={styles.InputText}>{user} </Text>
+            <Text style={styles.InputText}> {type}</Text>
           </View>
         </TouchableWithoutFeedback>
-        <Radio.Group
-          value={DonatorType}
-          style={{ flexDirection: "row" }}
-          name="myRadioGroup"
-          accessibilityLabel="favorite number"
-          onChange={(type) => {
-            setDonatorType(type);
-          }}
-        >
-          <Radio size="lg" colorScheme="rgb(52, 133, 120)" value="kafel" my={1}>
-            كافل
-          </Radio>
-          <Radio
-            size="lg"
-            colorScheme="rgb(52, 133, 120)"
-            style={{ marginLeft: 20 }}
-            value="Mohsin"
-            my={1}
+        <TouchableWithoutFeedback onPress={() => openPanel()}>
+          <View
+            style={{
+              ...styles.dateContainer,
+              borderColor: errors.type ? "#c21a0e" : "grey",
+            }}
           >
-            محسن
-          </Radio>
-        </Radio.Group>
+            <Icon
+              as={<MaterialIcons name="lock" />}
+              size={5}
+              ml="2"
+              color="#348578"
+            />
+            <Text style={styles.InputText}> {benificier}</Text>
+          </View>
+        </TouchableWithoutFeedback>
+        <TextArea
+        onChangeText={(text)=>handleUserInput(text,"content")}
+          borderWidth={1}
+          h={200}
+          placeholder="التقرير"
+          w="95%"
+          {...TextAreaStyle}
+        />
       </Stack>
       {ErrorMessageVisible && (
         <View style={styles.ErrorMessage}>
@@ -261,17 +236,17 @@ export default function AddDonator({ route, navigation }) {
         </Button>
       )}
       <Swipable
-        title="اختيار القسم"
+        title="اختيار الأرملة"
         ChooseJob={ChooseJob}
-        data={jobs}
+        data={allWidows}
         isPanelActive={isPanelActive}
         setIsPanelActive={setIsPanelActive}
         setshowButton={setshowButton}
       />
       <Swipable
-        title="اختيار الوسيط"
+        title="اختيار نوع التقرير"
         ChooseJob={ChooseUser}
-        data={allUSers}
+        data={ReportTypes}
         isPanelActive={isUsersPannel}
         setIsPanelActive={setisUsersPannel}
         setshowButton={setshowButton}

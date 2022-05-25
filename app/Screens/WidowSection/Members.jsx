@@ -6,44 +6,49 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import React, { useEffect } from "react";
-import OrpahnsSectionBottomBar from "../../Navigation/OrpahansSectionBottomBar";
+import React, { useState, useEffect } from "react";
 import { Icon } from "native-base";
-import {
-  MaterialCommunityIcons,
-  Entypo,
-  MaterialIcons,
-} from "@expo/vector-icons";
-import FamilyInfosContainer from "../../Components/Containers/FamilyInfosContainer";
-import Family from "../../../assets/avatars/family.png";
-import { Input, Stack } from "native-base";
+import { MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
+import DataContainer from "../../Components/DataContainer";
 import { useSelector } from "react-redux";
-import toastConfig from "../../Components/ToastConfiguration";
+import { LogBox } from "react-native";
 import Toast from "react-native-toast-message";
+import toastConfig from "../../Components/ToastConfiguration";
+import Man from "../../../assets/avatars/man.png";
+import WidowSectionBottomBar from "../../Navigation/WidowSectionBottomBar";
 import { useDispatch } from "react-redux";
-import { getFamilies } from "../../api/family";
-export default function Families({ navigation, drawer }) {
-  const styling = {
-    backgroundColor: "#fff",
-    marginTop: 5,
+import { getUsers } from "../../api/user";
+LogBox.ignoreAllLogs();
+export default function Members({ navigation, drawer }) {
+  const openModal = (u) => {
+    navigation.navigate("MemberProfile", {
+      ...u,
+    });
   };
-  const openModal = (data) => {
-    navigation.navigate("FamilyInfos", data);
-  };
-  let MyFamilies = useSelector((state) => state.Families).filter(
-    (f) => f.donation > 0
+  let users = useSelector((state) => state.users).filter(
+    (u) => (u[2].trim() == "قسم الأرامل")
   );
+
   const dispatch = useDispatch();
   const updateState = (data) => {
     return {
-      type: "updateFamiliesList",
+      type: "updateUserList",
       data: data,
     };
   };
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", async () => {
-      const res = await getFamilies();
-      dispatch(updateState(res.data.result));
+      const res = await getUsers();
+      dispatch(
+        updateState(
+          res.data.result.map((user) => ({
+            0: user.name,
+            1: user.phone,
+            2: user.job,
+            ...user,
+          }))
+        )
+      );
     });
 
     return unsubscribe;
@@ -62,45 +67,25 @@ export default function Families({ navigation, drawer }) {
         </TouchableOpacity>
 
         <View style={styles.containerTitle}>
-          <Text style={styles.ScreenEntityTitle}>العائلات المكفولة</Text>
+          <Text style={styles.ScreenEntityTitle}> الأعضاء : قسم الأرامل </Text>
           <MaterialCommunityIcons name="account-group" size={30} color="#fff" />
         </View>
       </View>
       <View style={styles.Section}>
-        <Input
-          InputRightElement={
-            <Icon
-              style={{ marginRight: 10 }}
-              as={<MaterialIcons name="search" />}
-              size={5}
-              ml="2"
-              color="#348578"
-            />
-          }
-          style={styles.input}
-          w={{
-            base: "90%",
-            md: "50%",
-          }}
-          h={42}
-          textAlign="right"
-          placeholder="البحث عن عائلة"
-          {...styling}
-        />
-
         <ScrollView style={styles.Content}>
-          {MyFamilies.map((f) => (
-            <FamilyInfosContainer
-              key={f._id}
+          {users.map((u) => (
+            <DataContainer
+              key={u[0]}
               AvatarSize={40}
-              data={f}
-              pic={Family}
-              openFamily={() => openModal(f)}
+              data={u}
+              pic={Man}
+              openFamily={() => openModal(u)}
             />
           ))}
         </ScrollView>
       </View>
       <Toast config={toastConfig} />
+      <WidowSectionBottomBar navigation={navigation} />
     </View>
   );
 }
@@ -134,19 +119,8 @@ const styles = StyleSheet.create({
     fontFamily: "Tajawal-Medium",
   },
 
-  Section: {
-    width: "100%",
-    height: "90%",
-    backgroundColor: "#f5f5f5",
-    borderTopRightRadius: 15,
-    borderTopLeftRadius: 15,
-    display: "flex",
-    alignItems: "center",
-  },
   Content: {
     width: "100%",
-    maxHeight: "78%",
-    backgroundColor: "#f5f5f5",
     display: "flex",
     paddingTop: 10,
     paddingLeft: 20,
@@ -161,5 +135,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingLeft: 20,
     paddingRight: 20,
+  },
+  Section: {
+    width: "100%",
+    flex: 1,
+    borderTopRightRadius: 15,
+    borderTopLeftRadius: 15,
+    display: "flex",
+    alignItems: "center",
+    backgroundColor: "#f5f5f5",
   },
 });

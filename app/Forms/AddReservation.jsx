@@ -6,7 +6,7 @@ import { Button } from "react-native-paper";
 import { useDispatch } from "react-redux";
 import store from "../store";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
-
+import { CreateReservation } from "../api/user";
 export default function AddReservation({ route, navigation }) {
   const myAction = () => {
     return {
@@ -19,12 +19,21 @@ export default function AddReservation({ route, navigation }) {
     borderColor: "#000",
     borderWidth: 0.5,
   };
-  const add = () => {
-    dispatch(myAction());
-    navigation.goBack();
-    setTimeout(() => {
-      route.params.showToast();
-    }, 600);
+  const add = async () => {
+    try {
+      const response = await CreateReservation({
+        identifier: "id",
+        description: "اجتماع قسم المالية",
+        date: "25/08/2025",
+        starttime: "10:30",
+        endtime: "11:30",
+      });
+      if(response.ok){
+        alert("ok")
+      }else{
+        alert("nah")
+      }
+    } catch (e) {}
   };
   const [startTime, setstartTime] = useState("");
   const [endTime, setendTime] = useState("");
@@ -46,7 +55,7 @@ export default function AddReservation({ route, navigation }) {
   };
   const HandleEndTime = (date) => {
     if (date.nativeEvent.timestamp) {
-      let MyDate=date.nativeEvent.timestamp
+      let MyDate = date.nativeEvent.timestamp;
       const hours = new Date(MyDate).getHours();
       const minutes = new Date(MyDate).getMinutes();
       let startTime = hours + ":" + minutes;
@@ -68,9 +77,9 @@ export default function AddReservation({ route, navigation }) {
     }
     setshowDatePicker(false);
   };
-  const inputHandler=(e)=>{
-    setReason(e)
-  }
+  const inputHandler = (e) => {
+    setReason(e);
+  };
 
   return (
     <View style={styles.Container}>

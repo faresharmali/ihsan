@@ -7,9 +7,17 @@ import { Input, Stack, Icon } from "native-base";
 import { MaterialIcons, FontAwesome } from "@expo/vector-icons";
 import { Button } from "react-native-paper";
 import { LogUser } from "../api/auth.js";
+import { useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Login({ navigation, PageHandler, SetloggedInUser }) {
+  const dispatch=useDispatch()
+  const SetLoggedUser=(data)=>{
+    return {
+      type:"setLoggedUser",
+      data:data
+    }
+  }
   const [userInput, setUserInput] = useState({ username: "", password: "" });
   const [errors, SetErrors] = useState({ username: false, password: false });
   const [ErrorMessage, setErrorMessage] = useState("");
@@ -47,6 +55,7 @@ export default function Login({ navigation, PageHandler, SetloggedInUser }) {
             JSON.stringify(response.result.user)
           );
           SetloggedInUser(response.result.user);
+          dispatch(SetLoggedUser(response.result.user))
           PageHandler(2);
         } else {
           SetErrors({ username: true, password: true });

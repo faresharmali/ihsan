@@ -8,15 +8,14 @@ import {
   FontAwesome,
 } from "@expo/vector-icons";
 import React from "react";
-import { useNavigation } from "@react-navigation/native";
-export default function OrpahnsSectionBottomBar(props) {
-  const navigation=useNavigation()
+
+export default function HealthSectionBottomBar(props) {
   return (
     <View style={styles.Container}>
       <View style={styles.BottomBar}>
         <View style={styles.itemContainer}>
           <TouchableOpacity
-            onPress={() =>navigation.navigate("Members")}
+            onPress={() => props.navigation.navigate("Members")}
           >
             <View style={styles.bottomBarITem}>
               <Icon
@@ -30,7 +29,7 @@ export default function OrpahnsSectionBottomBar(props) {
             </View>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => navigation.navigate("Families")}
+            onPress={() => props.navigation.navigate("EducationDonators")}
           >
             <View style={styles.bottomBarITem}>
               <Icon
@@ -40,12 +39,12 @@ export default function OrpahnsSectionBottomBar(props) {
                 size={4}
               />
 
-              <Text style={styles.bottomBarITemText}>العائلات</Text>
+              <Text style={styles.bottomBarITemText}>المحسنين</Text>
             </View>
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => navigation.navigate("OrpahnsDonators")}
+            onPress={() => props.navigation.navigate("EducationOrphans")}
           >
             <View style={styles.bottomBarITem}>
               <Icon
@@ -55,32 +54,21 @@ export default function OrpahnsSectionBottomBar(props) {
                 size={4}
               />
 
-              <Text style={styles.bottomBarITemText}>الكفال</Text>
+              <Text style={styles.bottomBarITemText}>المرضى</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate("Bureau")}>
+          <TouchableOpacity onPress={() => props.navigation.navigate("Bureau")}>
+            <View style={styles.bottomBarITem}>
+              <Icon as={FontAwesome} name="building" color={"#ffff"} size={4} />
+
+              <Text style={styles.bottomBarITemText}>التقارير</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => props.navigation.navigate("Bureau")}>
             <View style={styles.bottomBarITem}>
               <Icon as={FontAwesome} name="building" color={"#ffff"} size={4} />
 
               <Text style={styles.bottomBarITemText}>المقر</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("DonationsStatus")}
-          >
-            <View style={styles.bottomBarITem}>
-              <Icon as={FontAwesome5} name="child" color={"#fff"} size={4} />
-
-              <Text style={styles.bottomBarITemText}>الكفالة</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() =>navigation.navigate("Orphans")}
-          >
-            <View style={styles.bottomBarITem}>
-              <Icon as={FontAwesome5} name="child" color={"#fff"} size={4} />
-
-              <Text style={styles.bottomBarITemText}>المالية</Text>
             </View>
           </TouchableOpacity>
         </View>

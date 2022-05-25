@@ -1,4 +1,3 @@
-import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { Icon } from "native-base";
 import {
@@ -9,7 +8,7 @@ import {
 } from "@expo/vector-icons";
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
-export default function OrpahnsSectionBottomBar(props) {
+export default function WidowSectionBottomBar(props) {
   const navigation=useNavigation()
   return (
     <View style={styles.Container}>
@@ -30,7 +29,7 @@ export default function OrpahnsSectionBottomBar(props) {
             </View>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => navigation.navigate("Families")}
+            onPress={() => navigation.navigate("Widows")}
           >
             <View style={styles.bottomBarITem}>
               <Icon
@@ -40,12 +39,12 @@ export default function OrpahnsSectionBottomBar(props) {
                 size={4}
               />
 
-              <Text style={styles.bottomBarITemText}>العائلات</Text>
+              <Text style={styles.bottomBarITemText}>الأرامل</Text>
             </View>
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => navigation.navigate("OrpahnsDonators")}
+            onPress={() => navigation.navigate("Widows")}
           >
             <View style={styles.bottomBarITem}>
               <Icon
@@ -55,7 +54,7 @@ export default function OrpahnsSectionBottomBar(props) {
                 size={4}
               />
 
-              <Text style={styles.bottomBarITemText}>الكفال</Text>
+              <Text style={styles.bottomBarITemText}>المحسنين</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate("Bureau")}>
@@ -66,12 +65,12 @@ export default function OrpahnsSectionBottomBar(props) {
             </View>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => navigation.navigate("DonationsStatus")}
+            onPress={() => navigation.navigate("Reports")}
           >
             <View style={styles.bottomBarITem}>
               <Icon as={FontAwesome5} name="child" color={"#fff"} size={4} />
 
-              <Text style={styles.bottomBarITemText}>الكفالة</Text>
+              <Text style={styles.bottomBarITemText}>التقارير</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity
@@ -83,6 +82,7 @@ export default function OrpahnsSectionBottomBar(props) {
               <Text style={styles.bottomBarITemText}>المالية</Text>
             </View>
           </TouchableOpacity>
+       
         </View>
       </View>
     </View>

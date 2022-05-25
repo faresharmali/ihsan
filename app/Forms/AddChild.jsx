@@ -4,24 +4,29 @@ import {
   View,
   TouchableWithoutFeedback,
   Keyboard,
+  BackHandler,
+  TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
-import { Input, Stack, Icon, Radio } from "native-base";
-import { FontAwesome } from "@expo/vector-icons";
-import { Button } from "react-native-paper";
+import React, { useState, useEffect } from "react";
+import { Input, Stack, Icon, Radio, Checkbox, HStack } from "native-base";
+import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
 import { AddKid } from "../api/family";
 import uuid from "react-native-uuid";
-
+import ScolaritySwipeable from "../Components/Containers/ScolaritySwipable";
 export default function AddChild({ route, navigation }) {
+  console.log(route.params)
+  const dispatch = useDispatch();
   const [ErrorMessageVisible, setErrorMessageVisible] = useState(false);
+  const [LevelChoiceVisible, setLevelChoiceVisible] = useState(false);
   const [ErrorMessage, setErrorMessage] = useState("");
+  const [level, setLevel] = useState("المستوى الدراسي");
   const [gender, setgender] = useState("ذكر");
+  const [Education, setEducation] = useState(false);
   const [ChildData, setChildData] = useState({
     id: uuid.v4(),
     name: "",
     age: "",
-    gender: "",
     scolarity: "",
   });
   const [errors, SetErrors] = useState({
@@ -29,7 +34,12 @@ export default function AddChild({ route, navigation }) {
     age: false,
     scolarity: false,
   });
-
+  const ChooseLevel = (data) => {
+    setLevel(data);
+    SetErrors({ ...errors, scolarity: false });
+    setChildData({ ...ChildData, scolarity: data });
+    setLevelChoiceVisible(false);
+  };
   const validate = () => {
     let valid = true;
     let FieldErrors = { ...errors };
@@ -42,7 +52,7 @@ export default function AddChild({ route, navigation }) {
     if (ChildData.scolarity.trim() == "") {
       (FieldErrors.scolarity = true), (valid = false);
     }
-
+    console.log(FieldErrors);
     SetErrors(FieldErrors);
     return valid;
   };
@@ -50,15 +60,34 @@ export default function AddChild({ route, navigation }) {
     borderColor: "#000",
     borderWidth: 0.5,
   };
+  const addkid = (data) => {
+    return {
+      type: "AddChild",
+      data: data,
+    };
+  };
 
   const CreateKid = async () => {
     Keyboard.dismiss();
     if (validate()) {
-      const res = await AddKid(ChildData);
+      const res = await AddKid({
+        identifier: route.params.identifier,
+        kid: { ...ChildData, gender, Education },
+      });
       if (res.ok) {
+        dispatch(
+          addkid({
+            ...ChildData,
+            gender,
+            Education,
+            identifier: route.params.identifier,
+          })
+        );
         route.params.showToast();
         navigation.goBack();
       } else {
+        setErrorMessage("حدث خطأ يرجى اعادة المحاولة");
+        setErrorMessageVisible(true);
       }
     } else {
       setErrorMessage("كل الخانات اجبارية");
@@ -67,8 +96,30 @@ export default function AddChild({ route, navigation }) {
   };
 
   const inputHandler = (e, name) => {
+    setErrorMessageVisible(false);
+    SetErrors({ ...errors, [name]: false });
     setChildData({ ...ChildData, [name]: e });
   };
+  const openUsersPanel = () => {
+    Keyboard.dismiss();
+    setLevelChoiceVisible(true);
+  };
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => {
+        if (LevelChoiceVisible) {
+          setLevelChoiceVisible(false);
+          return true;
+        } else {
+          return false;
+        }
+      }
+    );
+    return () => backHandler.remove();
+  }, [LevelChoiceVisible]);
+
   return (
     <View style={styles.Container}>
       <View style={styles.TitleContainer}>
@@ -134,28 +185,23 @@ export default function AddChild({ route, navigation }) {
           onChangeText={(text) => inputHandler(text, "age")}
         />
 
-        <Input
-          InputRightElement={
+        <TouchableWithoutFeedback onPress={() => openUsersPanel()}>
+          <View
+            style={{
+              ...styles.dateContainer,
+              borderColor: errors.scolarity ? "#c21a0e" : "grey",
+            }}
+          >
             <Icon
-              style={{ marginRight: 10 }}
-              as={<FontAwesome name="map-marker" />}
+              as={<MaterialIcons name="lock" />}
               size={5}
               ml="2"
               color="#348578"
             />
-          }
-          w={{
-            base: "95%",
-            md: "25%",
-          }}
-          h={50}
-          textAlign="right"
-          placeholder="المستوى الدراسي"
-          {...styling}
-          borderWidth={1}
-          borderColor={errors.scolarity ? "#c21a0e" : "grey"}
-          onChangeText={(text) => inputHandler(text, "scolarity")}
-        />
+            <Text style={styles.InputText}>{level} </Text>
+          </View>
+        </TouchableWithoutFeedback>
+
         <Radio.Group
           value={gender}
           style={{ flexDirection: "row" }}
@@ -178,6 +224,11 @@ export default function AddChild({ route, navigation }) {
             أنثى
           </Radio>
         </Radio.Group>
+        <HStack space={6}>
+          <Checkbox onChange={(e) => setEducation(e)} value="one" my={2}>
+            <Text style={styles.checkBoxText}>يستفيد من قسم التعليم</Text>
+          </Checkbox>
+        </HStack>
         {ErrorMessageVisible && (
           <View style={styles.ErrorMessage}>
             <FontAwesome
@@ -189,9 +240,23 @@ export default function AddChild({ route, navigation }) {
           </View>
         )}
       </Stack>
-      <Button style={styles.Button} mode="contained" onPress={CreateKid}>
-        <Text style={{ fontSize: 16, marginLeft: 10 }}>اضافة </Text>
-      </Button>
+
+      <TouchableOpacity
+        style={styles.Button}
+        mode="contained"
+        onPress={CreateKid}
+      >
+        <Text style={{ fontSize: 17, marginLeft: 10, color: "#fff" }}>
+          اضافة{" "}
+        </Text>
+      </TouchableOpacity>
+
+      <ScolaritySwipeable
+        title="اختيار المستوى الدراسي"
+        ChooseLevel={ChooseLevel}
+        isPanelActive={LevelChoiceVisible}
+        setIsPanelActive={setLevelChoiceVisible}
+      />
     </View>
   );
 }
@@ -208,6 +273,11 @@ const styles = StyleSheet.create({
     fontSize: 25,
     marginRight: 10,
     fontFamily: "Tajawal-Medium",
+  },
+  checkBoxText: {
+    fontFamily: "Tajawal-Medium",
+    fontSize: 17,
+    marginLeft: 10,
   },
   TitleContainer: {
     width: "100%",
@@ -231,14 +301,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#348578",
     marginTop: 25,
     borderRadius: 60,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.5,
-    shadowRadius: 1.41,
-    elevation: 6,
   },
   back: {
     left: 0,
@@ -257,5 +319,16 @@ const styles = StyleSheet.create({
     fontFamily: "Tajawal-Medium",
     marginRight: 10,
     fontSize: 13,
+  },
+  dateContainer: {
+    width: "95%",
+    height: 50,
+    borderColor: "#000",
+    borderWidth: 1,
+    borderRadius: 5,
+    flexDirection: "row-reverse",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    paddingLeft: 10,
   },
 });

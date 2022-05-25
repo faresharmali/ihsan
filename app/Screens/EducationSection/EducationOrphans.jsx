@@ -6,52 +6,38 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import React, { useEffect } from "react";
-import OrpahnsSectionBottomBar from "../../Navigation/OrpahansSectionBottomBar";
-import { Icon,Input } from "native-base";
+import React, { useState } from "react";
+import { Icon } from "native-base";
 import { FontAwesome5, Entypo, MaterialIcons } from "@expo/vector-icons";
-import Family from "../../../assets/icons/user.png";
-import { useSelector,useDispatch } from "react-redux";
+import { Input, Stack } from "native-base";
+import { useSelector } from "react-redux";
 import toastConfig from "../../Components/ToastConfiguration";
 import Toast from "react-native-toast-message";
-import DataContainer from "../../Components/DataContainer";
-import { getDonators } from "../../api/user";
-export default function OrpahnsDonators({ navigation, drawer }) {
+import Kids from "../AdministrationSection/Famillies/Kids";
+import EducationSectionBottomBar from "../../Navigation/EducationSectionBottomBar";
+export default function EducationOrphans({ navigation, drawer }) {
+  const showToast = () => {
+    Toast.show({
+      type: "success",
+      text1: "نجحت العملية",
+      text2: " تمت اضافة العائلة بنجاح  👋",
+    });
+  };
   const styling = {
     backgroundColor: "#fff",
     marginTop: 5,
   };
-  const openModal = (data) => {
-    navigation.navigate("Family", data);
-  };
-  let Donators = useSelector((state) => state.Donators).filter(
-    (d) => d[2].trim() == "قسم الكفالة"
-  );
-  const dispatch = useDispatch();
+  let MyFamilies = useSelector((state) => state.Families);
+  let kids = [];
+  MyFamilies.forEach((f) => {
+    f.kids.forEach((k) => {
 
-  const updateState = (data) => {
-    return {
-      type: "updateDonatorsList",
-      data: data,
-    };
-  };
-  useEffect(() => {
-    const unsubscribe = navigation.addListener("focus", async () => {
-      const res = await getDonators();
-      dispatch(
-        updateState(
-          res.data.result.map((user) => ({
-            0: user.name,
-            1: user.phone,
-            2: user.job,
-          }))
-        )
-      );
+      if (k.Education) {
+        console.log(k.name," ", f.fatherLastName)
+        kids.push({...k,name:(k.name+" "+f.fatherLastName)});
+      }
     });
-
-    return unsubscribe;
-  }, [navigation]);
-
+  });
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />
@@ -65,8 +51,8 @@ export default function OrpahnsDonators({ navigation, drawer }) {
         </TouchableOpacity>
 
         <View style={styles.containerTitle}>
-          <Text style={styles.ScreenEntityTitle}>الكفال : قسم الأيتام </Text>
-          <FontAwesome5 name="hand-holding-heart" size={25} color="#fff" />
+          <Text style={styles.ScreenEntityTitle}>الأيتام المستفيدين </Text>
+          <FontAwesome5 name="child" size={25} color="#fff" />
         </View>
       </View>
       <View style={styles.Section}>
@@ -87,23 +73,16 @@ export default function OrpahnsDonators({ navigation, drawer }) {
           }}
           h={42}
           textAlign="right"
-          placeholder="البحث عن محسن"
+          placeholder="البحث عن يتيم"
           {...styling}
         />
 
         <ScrollView style={styles.Content}>
-          {Donators.map((f) => (
-            <DataContainer
-              AvatarSize={22}
-              data={f}
-              pic={Family}
-              openFamily={() => openModal(f)}
-            />
-          ))}
+          <Kids kids={kids} />
         </ScrollView>
       </View>
       <Toast config={toastConfig} />
-
+      <EducationSectionBottomBar navigation={navigation} />
     </View>
   );
 }

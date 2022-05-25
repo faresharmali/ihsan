@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React, { useEffect } from "react";
-import OrpahnsSectionBottomBar from "../../Navigation/OrpahansSectionBottomBar";
 import { Icon,Input } from "native-base";
 import { FontAwesome5, Entypo, MaterialIcons } from "@expo/vector-icons";
 import Family from "../../../assets/icons/user.png";
@@ -16,7 +15,8 @@ import toastConfig from "../../Components/ToastConfiguration";
 import Toast from "react-native-toast-message";
 import DataContainer from "../../Components/DataContainer";
 import { getDonators } from "../../api/user";
-export default function OrpahnsDonators({ navigation, drawer }) {
+import EducationSectionBottomBar from "../../Navigation/EducationSectionBottomBar";
+export default function EducationDonators({ navigation, drawer }) {
   const styling = {
     backgroundColor: "#fff",
     marginTop: 5,
@@ -25,7 +25,7 @@ export default function OrpahnsDonators({ navigation, drawer }) {
     navigation.navigate("Family", data);
   };
   let Donators = useSelector((state) => state.Donators).filter(
-    (d) => d[2].trim() == "قسم الكفالة"
+    (d) => d[2].trim() == "قسم التعليم"
   );
   const dispatch = useDispatch();
 
@@ -65,7 +65,7 @@ export default function OrpahnsDonators({ navigation, drawer }) {
         </TouchableOpacity>
 
         <View style={styles.containerTitle}>
-          <Text style={styles.ScreenEntityTitle}>الكفال : قسم الأيتام </Text>
+          <Text style={styles.ScreenEntityTitle}>المحسنين : قسم التعليم </Text>
           <FontAwesome5 name="hand-holding-heart" size={25} color="#fff" />
         </View>
       </View>
@@ -104,6 +104,7 @@ export default function OrpahnsDonators({ navigation, drawer }) {
       </View>
       <Toast config={toastConfig} />
 
+      <EducationSectionBottomBar navigation={navigation} />
     </View>
   );
 }

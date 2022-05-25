@@ -7,7 +7,7 @@ import {
   TouchableWithoutFeedback,
   TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import OrpahnsSectionBottomBar from "../../Navigation/OrpahansSectionBottomBar";
 import { Icon } from "native-base";
 import { MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
@@ -17,6 +17,8 @@ import { LogBox } from "react-native";
 import Toast from "react-native-toast-message";
 import toastConfig from "../../Components/ToastConfiguration";
 import Man from "../../../assets/avatars/man.png";
+import { useDispatch } from "react-redux";
+import { getUsers } from "../../api/user";
 LogBox.ignoreAllLogs();
 export default function Members({ navigation, drawer }) {
   const openModal = (u) => {
@@ -27,6 +29,32 @@ export default function Members({ navigation, drawer }) {
   let users = useSelector((state) => state.users).filter(
     (u) => u[2].trim() == "قسم الأيتام"
   );
+
+  
+  const dispatch = useDispatch();
+  const updateState = (data) => {
+    return {
+      type: "updateUserList",
+      data: data,
+    };
+  };
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", async () => {
+      const res = await getUsers();
+      dispatch(
+        updateState(
+          res.data.result.map((user) => ({
+            0: user.name,
+            1: user.phone,
+            2: user.job,
+            ...user,
+          }))
+        )
+      );
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   return (
     <View style={styles.container}>
@@ -59,7 +87,6 @@ export default function Members({ navigation, drawer }) {
         </ScrollView>
       </View>
       <Toast config={toastConfig} />
-      <OrpahnsSectionBottomBar navigation={navigation} />
     </View>
   );
 }

@@ -22,14 +22,14 @@ import { useSelector } from "react-redux";
 
 export default function DrawerContent(props) {
   let LoggedUser = useSelector((state) => state.Auth);
-console.log()
   return (
     <View style={styles.container}>
       <View style={styles.userInfoSection}>
         <View style={{ flexDirection: "row", marginTop: 15, marginBottom: 30 }}>
           <View style={{ marginLeft: 15, flexDirection: "column" }}>
             <Title style={styles.title}>جمعية إحسان</Title>
-            <Caption style={styles.caption}>{LoggedUser.name} / {LoggedUser.job}</Caption>
+            <Caption style={styles.caption}>{LoggedUser.name}</Caption>
+            <Caption style={styles.caption}> {LoggedUser.job}</Caption>
           </View>
           <Image source={Logo} style={styles.logo} />
         </View>
@@ -76,13 +76,27 @@ console.log()
           icon={() => (
             <Icon
               style={styles.icon}
+              size={7}
+              as={<FontAwesome5 name="child" />}
+            />
+          )}
+          label="قسم الأرامل"
+          labelStyle={styles.label}
+          onPress={() => {
+            props.navigation.navigate("WidowSection");
+          }}
+        />
+        <DrawerItem
+          icon={() => (
+            <Icon
+              style={styles.icon}
               as={<FontAwesome5 name="shopping-bag" />}
             />
           )}
           label="قسم القفة"
           labelStyle={styles.label}
           onPress={() => {
-            props.navigation.navigate("venteetachat");
+            props.navigation.navigate("KofaSection");
           }}
         />
         <DrawerItem
@@ -92,7 +106,7 @@ console.log()
           label="قسم التعليم"
           labelStyle={styles.label}
           onPress={() => {
-            props.navigation.navigate("venteetachat");
+            props.navigation.navigate("EducationSection");
           }}
         />
         <DrawerItem
@@ -115,7 +129,7 @@ console.log()
           )}
           labelStyle={styles.label}
           onPress={() => {
-            props.navigation.navigate("venteetachat");
+            props.navigation.navigate("HealthSection");
           }}
         />
         <DrawerItem
@@ -192,7 +206,7 @@ const styles = StyleSheet.create({
     height: "18%",
     alignItems: "flex-end",
     justifyContent: "center",
-    marginBottom: 15,
+    marginBottom: 5,
   },
   title: {
     color: "#fff",
@@ -255,6 +269,7 @@ const styles = StyleSheet.create({
     flexDirection: "row-reverse",
     alignItems: "center",
     padding: 10,
+    paddingTop:5
   },
   logoutIcon: {
     color: "#348578",

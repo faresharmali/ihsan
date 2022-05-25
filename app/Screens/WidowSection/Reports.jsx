@@ -6,44 +6,52 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import React, { useEffect } from "react";
-import OrpahnsSectionBottomBar from "../../Navigation/OrpahansSectionBottomBar";
-import { Icon,Input } from "native-base";
+import React, { useState,useEffect } from "react";
 import { FontAwesome5, Entypo, MaterialIcons } from "@expo/vector-icons";
 import Family from "../../../assets/icons/user.png";
-import { useSelector,useDispatch } from "react-redux";
+import { Input, Icon } from "native-base";
+import { useSelector } from "react-redux";
 import toastConfig from "../../Components/ToastConfiguration";
 import Toast from "react-native-toast-message";
 import DataContainer from "../../Components/DataContainer";
-import { getDonators } from "../../api/user";
-export default function OrpahnsDonators({ navigation, drawer }) {
-  const styling = {
-    backgroundColor: "#fff",
-    marginTop: 5,
+import { getReports } from "../../api/report";
+import { useDispatch } from "react-redux";
+import WidowSectionBottomBar from "../../Navigation/WidowSectionBottomBar";
+
+export default function Reports({ navigation, drawer }) {
+  const dispatch = useDispatch();
+
+  const showToast = () => {
+    Toast.show({
+      type: "success",
+      text1: "نجحت العملية",
+      text2: " تمت اضافة المحسن بنجاح  👋",
+    });
   };
+
   const openModal = (data) => {
     navigation.navigate("Family", data);
   };
-  let Donators = useSelector((state) => state.Donators).filter(
-    (d) => d[2].trim() == "قسم الكفالة"
-  );
-  const dispatch = useDispatch();
-
+  let Reports = useSelector((state) => state.Reports);
+  console.log('widow',Reports)
   const updateState = (data) => {
     return {
-      type: "updateDonatorsList",
+      type: "updateReportsList",
       data: data,
     };
   };
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", async () => {
-      const res = await getDonators();
+      const res = await getReports();
       dispatch(
         updateState(
           res.data.result.map((user) => ({
-            0: user.name,
-            1: user.phone,
-            2: user.job,
+            0: user.title,
+            1: user.type,
+            2: user.benificier,
+            3: user.content,
+            4: user.date,
+            5: user.author,
           }))
         )
       );
@@ -65,35 +73,17 @@ export default function OrpahnsDonators({ navigation, drawer }) {
         </TouchableOpacity>
 
         <View style={styles.containerTitle}>
-          <Text style={styles.ScreenEntityTitle}>الكفال : قسم الأيتام </Text>
+          <Text style={styles.ScreenEntityTitle}>التقارير : قسم الأرامل </Text>
           <FontAwesome5 name="hand-holding-heart" size={25} color="#fff" />
         </View>
       </View>
       <View style={styles.Section}>
-        <Input
-          InputRightElement={
-            <Icon
-              style={{ marginRight: 10 }}
-              as={<MaterialIcons name="search" />}
-              size={5}
-              ml="2"
-              color="#348578"
-            />
-          }
-          style={styles.input}
-          w={{
-            base: "90%",
-            md: "50%",
-          }}
-          h={42}
-          textAlign="right"
-          placeholder="البحث عن محسن"
-          {...styling}
-        />
+       
 
         <ScrollView style={styles.Content}>
-          {Donators.map((f) => (
+          {Reports.map((f) => (
             <DataContainer
+            key={f[3]}
               AvatarSize={22}
               data={f}
               pic={Family}
@@ -103,7 +93,13 @@ export default function OrpahnsDonators({ navigation, drawer }) {
         </ScrollView>
       </View>
       <Toast config={toastConfig} />
-
+      <TouchableOpacity
+        onPress={() => navigation.navigate("AddReport", { showToast })}
+        style={styles.fab}
+      >
+        <Icon as={Entypo} name="plus" size={8} color="#fff" />
+      </TouchableOpacity>
+      <WidowSectionBottomBar navigation={navigation} />
     </View>
   );
 }

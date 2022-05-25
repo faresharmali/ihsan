@@ -7,7 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Icon } from "native-base";
 import {
   MaterialCommunityIcons,
@@ -22,12 +22,12 @@ import icon from "../../../../assets/icons/information.png";
 import store from "../../../store";
 import DataContainer from "../../../Components/DataContainer";
 import { useSelector } from "react-redux";
-import Toast from 'react-native-toast-message';
-import toastConfig from "../../../Components/ToastConfiguration"
-export default function FamilyScreen({route,navigation }) {
+import Toast from "react-native-toast-message";
+import toastConfig from "../../../Components/ToastConfiguration";
+export default function FamilyScreen({ route, navigation }) {
   const [section, setSection] = useState("infos");
   const [refresh, setRefresh] = useState(false);
- 
+
   const users = [
     {
       0: "طلب العائلة 1",
@@ -119,20 +119,20 @@ export default function FamilyScreen({route,navigation }) {
       1: "معلومات الاستفادة",
       2: "معلومات الاستفادة",
     },
-
-   
   ];
-  store.subscribe(()=>{
-    setRefresh(!refresh)
-    })
-    const showToast=()=>{
-      Toast.show({
-        type: "success",
-        text1: "نجحت العملية",
-        text2: " تمت اضافة الأبن بنجاح  👋",
-      });
-    }
-  let family = useSelector(state=>state.Families.filter((f)=>f._id==route.params._id)[0])
+  store.subscribe(() => {
+    setRefresh(!refresh);
+  });
+  const showToast = () => {
+    Toast.show({
+      type: "success",
+      text1: "نجحت العملية",
+      text2: " تمت اضافة الأبن بنجاح  👋",
+    });
+  };
+  let family = useSelector(
+    (state) => state.Families.filter((f) => f._id == route.params._id)[0]
+  );
   return (
     <View style={styles.container}>
       <StatusBar style="light" />
@@ -148,7 +148,9 @@ export default function FamilyScreen({route,navigation }) {
           />
         </View>
         <Image style={styles.EntityImage} source={Family} />
-        <Text style={styles.EntityTitle}>{`عائلة ${family.motherFullName} ارملة ${family.fatherFirstName}  ${family.fatherLastName}`}</Text>
+        <Text
+          style={styles.EntityTitle}
+        >{`عائلة ${family.motherFullName} ارملة ${family.fatherFirstName}  ${family.fatherLastName}`}</Text>
         <View style={styles.Navigation}>
           <TouchableOpacity onPress={() => setSection("infos")}>
             <View style={styles.NavigationItem}>
@@ -173,26 +175,22 @@ export default function FamilyScreen({route,navigation }) {
         </View>
       </View>
 
-
-      {section == "children" &&
-        <ScrollView style={styles.Content}>
-         <Kids kids={family.kids} lastName={family.fatherLastName} />
-          <Box position="relative" h={100} w="100%">
-            <Fab
-              onPress={() => navigation.navigate("AddChild",{...route.params,showToast})}
-              position="absolute"
-              size="sm"
-              backgroundColor="#348578"
-              icon={
-                <Icon color="#fff" as={<AntDesign name="plus" />} size="sm" />
-              }
-            />
-          </Box>
-        </ScrollView>
-        } 
-      {section == "infos" && (
-         <FamilyInfo data={family}/>
+      {section == "children" && (
+        <>
+          <ScrollView style={styles.Content}>
+            <Kids kids={family.kids} lastName={family.fatherLastName} />
+          </ScrollView>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("AddChild", { ...route.params, showToast })
+            }
+            style={styles.Fab}
+          >
+            <Icon color="#fff" as={<AntDesign name="plus" />} size="sm" />
+          </TouchableOpacity>
+        </>
       )}
+      {section == "infos" && <FamilyInfo data={family} />}
       {section == "demands" && (
         <ScrollView style={styles.Content}>
           {users.map((u) => (
@@ -207,8 +205,7 @@ export default function FamilyScreen({route,navigation }) {
           ))}
         </ScrollView>
       )}
-            <Toast config={toastConfig} />
-
+      <Toast config={toastConfig} />
     </View>
   );
 }
@@ -276,5 +273,16 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingLeft: 20,
     paddingRight: 20,
+  },
+  Fab: {
+    width: 50,
+    height: 50,
+    backgroundColor: "#348578",
+    borderRadius: 25,
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    right: 20,
+    bottom: 30,
   },
 });

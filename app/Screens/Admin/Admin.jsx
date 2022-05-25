@@ -6,6 +6,10 @@ import DrawerContent from "../../Navigation/DrawerContent";
 import { NavigationContainer } from "@react-navigation/native";
 import AdminDashboard from "./AdminDashboard";
 import OrpahansSection from "../OrphansSection";
+import EducationSection from "../EducationSection";
+import HealthSection from "../HealthSection";
+import KofaSection from "../KofaSection";
+import WidowSection from "../WidowSection";
 const Drawer = createDrawerNavigator();
 
 export default function Dashboard(props) {
@@ -18,7 +22,7 @@ export default function Dashboard(props) {
             <DrawerContent {...prop} pageHandler={props.pageHandler} />
           )}
           screenOptions={{ headerShown: false }}
-          initialRouteName="Home"
+          initialRouteName="WidowSection"
         >
           <Drawer.Screen name="Home">
             {(props) => (
@@ -33,6 +37,26 @@ export default function Dashboard(props) {
           <Drawer.Screen name="OrpahansSection">
             {(props) => (
               <OrpahansSection {...props} pageHandler={props.pageHandler} />
+            )}
+          </Drawer.Screen>
+          <Drawer.Screen name="EducationSection">
+            {(props) => (
+              <EducationSection {...props} pageHandler={props.pageHandler} />
+            )}
+          </Drawer.Screen>
+          <Drawer.Screen name="HealthSection">
+            {(props) => (
+              <HealthSection {...props} pageHandler={props.pageHandler} />
+            )}
+          </Drawer.Screen>
+          <Drawer.Screen name="KofaSection">
+            {(props) => (
+              <KofaSection {...props} pageHandler={props.pageHandler} />
+            )}
+          </Drawer.Screen>
+          <Drawer.Screen name="WidowSection">
+            {(props) => (
+              <WidowSection {...props} pageHandler={props.pageHandler} />
             )}
           </Drawer.Screen>
         </Drawer.Navigator>

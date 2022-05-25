@@ -6,17 +6,29 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import React, { useEffect } from "react";
-import OrpahnsSectionBottomBar from "../../Navigation/OrpahansSectionBottomBar";
-import { Icon,Input } from "native-base";
+import React, { useState,useEffect } from "react";
 import { FontAwesome5, Entypo, MaterialIcons } from "@expo/vector-icons";
 import Family from "../../../assets/icons/user.png";
-import { useSelector,useDispatch } from "react-redux";
+import { Input, Icon } from "native-base";
+import { useSelector } from "react-redux";
 import toastConfig from "../../Components/ToastConfiguration";
 import Toast from "react-native-toast-message";
 import DataContainer from "../../Components/DataContainer";
 import { getDonators } from "../../api/user";
-export default function OrpahnsDonators({ navigation, drawer }) {
+import { useDispatch } from "react-redux";
+import WidowSectionBottomBar from "../../Navigation/WidowSectionBottomBar";
+
+export default function Widows({ navigation, drawer }) {
+  const dispatch = useDispatch();
+
+  const [active, setActive] = useState(1);
+  const showToast = () => {
+    Toast.show({
+      type: "success",
+      text1: "نجحت العملية",
+      text2: " تمت اضافة المحسن بنجاح  👋",
+    });
+  };
   const styling = {
     backgroundColor: "#fff",
     marginTop: 5,
@@ -24,11 +36,8 @@ export default function OrpahnsDonators({ navigation, drawer }) {
   const openModal = (data) => {
     navigation.navigate("Family", data);
   };
-  let Donators = useSelector((state) => state.Donators).filter(
-    (d) => d[2].trim() == "قسم الكفالة"
-  );
-  const dispatch = useDispatch();
-
+  let Widows = useSelector((state) => state.Families).map((w)=>({0:w.motherFullName,1:w.phone}));
+  console.log('widow',Widows)
   const updateState = (data) => {
     return {
       type: "updateDonatorsList",
@@ -65,35 +74,17 @@ export default function OrpahnsDonators({ navigation, drawer }) {
         </TouchableOpacity>
 
         <View style={styles.containerTitle}>
-          <Text style={styles.ScreenEntityTitle}>الكفال : قسم الأيتام </Text>
+          <Text style={styles.ScreenEntityTitle}>الأرامل : قسم الأرامل </Text>
           <FontAwesome5 name="hand-holding-heart" size={25} color="#fff" />
         </View>
       </View>
       <View style={styles.Section}>
-        <Input
-          InputRightElement={
-            <Icon
-              style={{ marginRight: 10 }}
-              as={<MaterialIcons name="search" />}
-              size={5}
-              ml="2"
-              color="#348578"
-            />
-          }
-          style={styles.input}
-          w={{
-            base: "90%",
-            md: "50%",
-          }}
-          h={42}
-          textAlign="right"
-          placeholder="البحث عن محسن"
-          {...styling}
-        />
+   
 
         <ScrollView style={styles.Content}>
-          {Donators.map((f) => (
+          {Widows.map((f) => (
             <DataContainer
+            key={f.name}
               AvatarSize={22}
               data={f}
               pic={Family}
@@ -103,7 +94,8 @@ export default function OrpahnsDonators({ navigation, drawer }) {
         </ScrollView>
       </View>
       <Toast config={toastConfig} />
-
+      
+      <WidowSectionBottomBar navigation={navigation} />
     </View>
   );
 }

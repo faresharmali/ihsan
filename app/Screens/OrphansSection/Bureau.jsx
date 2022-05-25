@@ -3,12 +3,12 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Icon } from "native-base";
 import { MaterialCommunityIcons, Entypo, AntDesign } from "@expo/vector-icons";
-import OrpahnsSectionBottomBar from "../../Navigation/OrpahansSectionBottomBar"
 import { LocaleConfig, Agenda } from "react-native-calendars";
 import Toast from "react-native-toast-message";
 import toastConfig from "../../Components/ToastConfiguration";
 import { useSelector } from "react-redux";
-
+import { getReservations } from "../../api/user";
+import { useDispatch } from "react-redux";
 export default function Bureau({ navigation, drawer }) {
   const [date, setDate] = useState("2022-04-12");
 
@@ -71,6 +71,21 @@ export default function Bureau({ navigation, drawer }) {
       text2: " تمت اضافة المعلومة بنجاح  👋",
     });
   };
+  const updateState=(data)=>{
+    return  {
+      type:"setMeetings",
+      data:data
+    }
+  }
+  const dispatch=useDispatch()
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", async () => {
+      const res = await getReservations();
+     dispatch(updateState(res.data.result))
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   const renderItem = (item) => {
     return (
@@ -94,10 +109,10 @@ export default function Bureau({ navigation, drawer }) {
             color="#348578"
           />
           <View style={styles.TimeContainer}>
-            <Text style={styles.StartTime}> {item.startTime}</Text>
-            <Text style={styles.EndTime}>{item.endTime}</Text>
+            <Text style={styles.StartTime}> {item.starttime}</Text>
+            <Text style={styles.EndTime}>{item.endtime}</Text>
           </View>
-          <Text style={styles.ItemDetails}>{item.name}</Text>
+          <Text style={styles.ItemDetails}>{item.description}</Text>
         </View>
       </View>
     );
@@ -156,7 +171,6 @@ export default function Bureau({ navigation, drawer }) {
       >
         <Icon as={Entypo} name="plus" size={8} color="#fff" />
       </TouchableOpacity>
-      <OrpahnsSectionBottomBar navigation={navigation} />
       <Toast config={toastConfig} />
     </View>
   );

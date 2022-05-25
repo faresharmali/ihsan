@@ -9,7 +9,7 @@ import {
 } from "@expo/vector-icons";
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
-export default function OrpahnsSectionBottomBar(props) {
+export default function KofaSectionBottomBar(props) {
   const navigation=useNavigation()
   return (
     <View style={styles.Container}>
@@ -71,7 +71,7 @@ export default function OrpahnsSectionBottomBar(props) {
             <View style={styles.bottomBarITem}>
               <Icon as={FontAwesome5} name="child" color={"#fff"} size={4} />
 
-              <Text style={styles.bottomBarITemText}>الكفالة</Text>
+              <Text style={styles.bottomBarITemText}>المكونات</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity
@@ -81,6 +81,15 @@ export default function OrpahnsSectionBottomBar(props) {
               <Icon as={FontAwesome5} name="child" color={"#fff"} size={4} />
 
               <Text style={styles.bottomBarITemText}>المالية</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>navigation.navigate("Orphans")}
+          >
+            <View style={styles.bottomBarITem}>
+              <Icon as={FontAwesome5} name="child" color={"#fff"} size={4} />
+
+              <Text style={styles.bottomBarITemText}>الحالة</Text>
             </View>
           </TouchableOpacity>
         </View>

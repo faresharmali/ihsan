@@ -30,7 +30,7 @@ export default function Orphans({ navigation, drawer }) {
   let MyFamilies = useSelector((state) => state.Families);
   let kids=[]
   MyFamilies.forEach((f)=>{
-    f.Children.forEach((k)=>{
+    f.kids.forEach((k)=>{
       kids.push(k)
     })
   })

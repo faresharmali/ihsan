@@ -4,7 +4,7 @@ import { Icon } from "native-base";
 import { MaterialIcons, Entypo } from "@expo/vector-icons";
 import Kid from "../../../../assets/icons/kid.png";
 export default function Kids(props) {
-  console.log(props)
+  console.log(props.kids)
   return (
     <View>
     {props.kids.map((k) => (

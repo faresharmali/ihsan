@@ -5,6 +5,7 @@ import InformationsReducer from "./InformationsReducer.js";
 import MeetingReducer from "./MeetingReducer.js";
 import AuthReducer from "./AuthReducer";
 import DonatorsReducer from "./DonatorsReducer"
+import ReportsReducer from "./ReportsReducer.js";
 export default reducer = combineReducers({
     users:UserReducer,
     Families:FamilyReducer,
@@ -12,5 +13,6 @@ export default reducer = combineReducers({
     Meetings:MeetingReducer,
     Donators:DonatorsReducer,
     Auth:AuthReducer,
+    Reports:ReportsReducer,
 
 })

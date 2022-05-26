@@ -71,7 +71,7 @@ export default function AddChild({ route, navigation }) {
     Keyboard.dismiss();
     if (validate()) {
       const res = await AddKid({
-        identifier: route.params.identifier,
+        id: route.params.id,
         kid: { ...ChildData, gender, Education },
       });
       if (res.ok) {
@@ -80,7 +80,7 @@ export default function AddChild({ route, navigation }) {
             ...ChildData,
             gender,
             Education,
-            identifier: route.params.identifier,
+            id: route.params.id,
           })
         );
         route.params.showToast();

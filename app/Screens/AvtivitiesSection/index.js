@@ -11,7 +11,8 @@ import WidowsDonators from "./Donators.jsx";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
-export default function WidowSection({ navigation }) {
+import AddActivity from "../../Forms/AddActivity.jsx";
+export default function  ActivitiesSection({ navigation }) {
   return (
     <Stack.Navigator
       initialRouteName="Members"
@@ -45,6 +46,11 @@ export default function WidowSection({ navigation }) {
         options={slideFromRight}
         name="WidowsDonators"
         component={WidowsDonators}
+      />
+      <Stack.Screen
+        options={TransitionFromBottom}
+        name="AddActivity"
+        component={AddActivity}
       />
 
 

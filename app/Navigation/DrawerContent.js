@@ -119,7 +119,7 @@ export default function DrawerContent(props) {
           )}
           labelStyle={styles.label}
           onPress={() => {
-            props.navigation.navigate("venteetachat");
+            props.navigation.navigate("ActivitiesSection");
           }}
         />
         <DrawerItem

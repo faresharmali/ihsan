@@ -2,7 +2,7 @@ const Famillies = [];
 
 const AddChild = (state, action) => {
   state.forEach((family) => {
-    if (family.identifier == action.data.identifier) {
+    if (family.id == action.data.id) {
       console.log("dom toreto",family);
       family.kids=[...family.kids,action.data]
     }

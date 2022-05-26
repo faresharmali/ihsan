@@ -1,6 +1,6 @@
 const Reports = [];
 
-export default ReportsReducer = (state = Reports, action) => {
+export default ActivityReducer = (state = Reports, action) => {
   switch (action.type) {
     
     case "updateReportsList":

@@ -10,6 +10,7 @@ import EducationSection from "../EducationSection";
 import HealthSection from "../HealthSection";
 import KofaSection from "../KofaSection";
 import WidowSection from "../WidowSection";
+import ActivitiesSection from "../AvtivitiesSection";
 const Drawer = createDrawerNavigator();
 
 export default function Dashboard(props) {
@@ -57,6 +58,11 @@ export default function Dashboard(props) {
           <Drawer.Screen name="WidowSection">
             {(props) => (
               <WidowSection {...props} pageHandler={props.pageHandler} />
+            )}
+          </Drawer.Screen>
+          <Drawer.Screen name="ActivitiesSection">
+            {(props) => (
+              <ActivitiesSection {...props} pageHandler={props.pageHandler} />
             )}
           </Drawer.Screen>
         </Drawer.Navigator>

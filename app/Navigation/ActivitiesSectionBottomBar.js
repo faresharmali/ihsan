@@ -8,7 +8,7 @@ import {
 } from "@expo/vector-icons";
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
-export default function WidowSectionBottomBar(props) {
+export default function ActivitiesSectionBottomBar(props) {
   const navigation=useNavigation()
   return (
     <View style={styles.Container}>
@@ -28,20 +28,7 @@ export default function WidowSectionBottomBar(props) {
               <Text style={styles.bottomBarITemText}>الأعضاء</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("Widows")}
-          >
-            <View style={styles.bottomBarITem}>
-              <Icon
-                as={MaterialIcons}
-                name="family-restroom"
-                color={"#fff"}
-                size={4}
-              />
-
-              <Text style={styles.bottomBarITemText}>الأرامل</Text>
-            </View>
-          </TouchableOpacity>
+        
 
           <TouchableOpacity
             onPress={() => navigation.navigate("WidowsDonators")}
@@ -57,11 +44,14 @@ export default function WidowSectionBottomBar(props) {
               <Text style={styles.bottomBarITemText}>المحسنين</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate("Bureau")}>
+         
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Reports")}
+          >
             <View style={styles.bottomBarITem}>
-              <Icon as={FontAwesome} name="building" color={"#ffff"} size={4} />
+              <Icon as={FontAwesome5} name="child" color={"#fff"} size={4} />
 
-              <Text style={styles.bottomBarITemText}>المقر</Text>
+              <Text style={styles.bottomBarITemText}>الأنشطة</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity
@@ -70,7 +60,14 @@ export default function WidowSectionBottomBar(props) {
             <View style={styles.bottomBarITem}>
               <Icon as={FontAwesome5} name="child" color={"#fff"} size={4} />
 
-              <Text style={styles.bottomBarITemText}>التقارير</Text>
+              <Text style={styles.bottomBarITemText}>البرنامج</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("Bureau")}>
+            <View style={styles.bottomBarITem}>
+              <Icon as={FontAwesome} name="building" color={"#ffff"} size={4} />
+
+              <Text style={styles.bottomBarITemText}>المقر</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity

@@ -15,7 +15,7 @@ export default function ActivitiesSectionBottomBar(props) {
       <View style={styles.BottomBar}>
         <View style={styles.itemContainer}>
           <TouchableOpacity
-            onPress={() =>navigation.navigate("Members")}
+            onPress={() =>navigation.navigate("ActivitiesMembers")}
           >
             <View style={styles.bottomBarITem}>
               <Icon
@@ -31,7 +31,7 @@ export default function ActivitiesSectionBottomBar(props) {
         
 
           <TouchableOpacity
-            onPress={() => navigation.navigate("WidowsDonators")}
+            onPress={() => navigation.navigate("ActivityDonators")}
           >
             <View style={styles.bottomBarITem}>
               <Icon
@@ -46,7 +46,7 @@ export default function ActivitiesSectionBottomBar(props) {
           </TouchableOpacity>
          
           <TouchableOpacity
-            onPress={() => navigation.navigate("Reports")}
+            onPress={() => navigation.navigate("Activities")}
           >
             <View style={styles.bottomBarITem}>
               <Icon as={FontAwesome5} name="child" color={"#fff"} size={4} />
@@ -55,7 +55,7 @@ export default function ActivitiesSectionBottomBar(props) {
             </View>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => navigation.navigate("Reports")}
+            onPress={() => navigation.navigate("Activities")}
           >
             <View style={styles.bottomBarITem}>
               <Icon as={FontAwesome5} name="child" color={"#fff"} size={4} />

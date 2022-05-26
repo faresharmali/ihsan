@@ -6,56 +6,39 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesome5, Entypo, MaterialIcons } from "@expo/vector-icons";
 import Family from "../../../assets/icons/user.png";
-import { Input, Icon } from "native-base";
+import { Icon } from "native-base";
 import { useSelector } from "react-redux";
 import toastConfig from "../../Components/ToastConfiguration";
 import Toast from "react-native-toast-message";
 import DataContainer from "../../Components/DataContainer";
-import { getDonators } from "../../api/user";
+import { getFamilies } from "../../api/family";
 import { useDispatch } from "react-redux";
 import WidowSectionBottomBar from "../../Navigation/WidowSectionBottomBar";
 
 export default function Widows({ navigation, drawer }) {
   const dispatch = useDispatch();
 
-  const [active, setActive] = useState(1);
-  const showToast = () => {
-    Toast.show({
-      type: "success",
-      text1: "نجحت العملية",
-      text2: " تمت اضافة المحسن بنجاح  👋",
-    });
-  };
-  const styling = {
-    backgroundColor: "#fff",
-    marginTop: 5,
-  };
+
   const openModal = (data) => {
     navigation.navigate("Family", data);
   };
-  let Widows = useSelector((state) => state.Families).map((w)=>({0:w.motherFullName,1:w.phone}));
-  console.log('widow',Widows)
+  let Widows = useSelector((state) => state.Families).map((w) => ({
+    0: w.motherFullName,
+    1: w.phone,
+  }));
   const updateState = (data) => {
     return {
-      type: "updateDonatorsList",
+      type: "updateFamiliesList",
       data: data,
     };
   };
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", async () => {
-      const res = await getDonators();
-      dispatch(
-        updateState(
-          res.data.result.map((user) => ({
-            0: user.name,
-            1: user.phone,
-            2: user.job,
-          }))
-        )
-      );
+      const res = await getFamilies();
+      dispatch(updateState(res.data.result));
     });
 
     return unsubscribe;
@@ -79,12 +62,10 @@ export default function Widows({ navigation, drawer }) {
         </View>
       </View>
       <View style={styles.Section}>
-   
-
         <ScrollView style={styles.Content}>
           {Widows.map((f) => (
             <DataContainer
-            key={f.name}
+              key={f.name}
               AvatarSize={22}
               data={f}
               pic={Family}
@@ -94,7 +75,7 @@ export default function Widows({ navigation, drawer }) {
         </ScrollView>
       </View>
       <Toast config={toastConfig} />
-      
+
       <WidowSectionBottomBar navigation={navigation} />
     </View>
   );

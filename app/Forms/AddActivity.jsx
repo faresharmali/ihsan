@@ -13,7 +13,9 @@ import { Button } from "react-native-paper";
 import MultipleOptionSwipable from "../Components/Containers/MultipleOptionSwipable";
 import Swipable from "../Components/Containers/swipable";
 import { useSelector } from "react-redux";
-import { CreateReport } from "../api/report";
+import { CreateActivity } from "../api/activities";
+import RNDateTimePicker from "@react-native-community/datetimepicker";
+
 import uuid from "react-native-uuid";
 export default function AddActivity({ route, navigation }) {
   const [ErrorMessageVisible, setErrorMessageVisible] = useState(false);
@@ -28,21 +30,21 @@ export default function AddActivity({ route, navigation }) {
   const [selectedFamilies, setselectedFamilies] = useState([]);
   const [ErrorMessage, setErrorMessage] = useState("");
   const [ActivityType, setActivityType] = useState("family");
+  const [chosenDate, setChosenDate] = useState("");
+
   const [errors, SetErrors] = useState({
     title: false,
     type: false,
-    content: false,
+    selections: false,
   });
-  const [Reportinfos, setuserInfos] = useState({
+  const [ActivityInfos, setuserInfos] = useState({
     id: uuid.v4(),
     title: "",
     type: "",
-    content: "",
     section: "قسم الأرامل",
     date: new Date(),
     author: useSelector((state) => state.Auth).name,
   });
-  const auth = useSelector((state) => state.Auth);
 
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
@@ -64,30 +66,30 @@ export default function AddActivity({ route, navigation }) {
   const handleUserInput = (text, name) => {
     setErrorMessageVisible(false);
     SetErrors({ ...errors, [name]: false });
-    setuserInfos({ ...Reportinfos, [name]: text });
+    setuserInfos({ ...ActivityInfos, [name]: text });
   };
 
   const openPanel = () => {
+    SetErrors({ ...errors, selections: false });
     Keyboard.dismiss();
     setIsPanelActive(true);
     setshowButton(false);
   };
   const openFamilyPannel = () => {
     Keyboard.dismiss();
+    SetErrors({ ...errors, selections: false });
+
     setIsFamiltPanelActive(true);
     setshowButton(false);
   };
   const openUsersPanel = () => {
+    SetErrors({ ...errors, type: false });
+
     Keyboard.dismiss();
     setIsTypePannel(true);
     setshowButton(false);
   };
 
-  let ReportTypes = [
-    { title: "استفادة" },
-    { title: "طلب" },
-    { title: "معلومة" },
-  ];
   const styling = {
     borderColor: "#000",
     borderWidth: 0.5,
@@ -97,7 +99,7 @@ export default function AddActivity({ route, navigation }) {
 
   const ChooseType = (type) => {
     SetErrors({ ...errors, type: false });
-    setuserInfos({ ...Reportinfos, type });
+    setuserInfos({ ...ActivityInfos, type });
     setType(type);
     setIsTypePannel(false);
     setshowButton(true);
@@ -105,23 +107,24 @@ export default function AddActivity({ route, navigation }) {
   const validate = () => {
     let valid = true;
     let FieldErrors = { ...errors };
-    if (Reportinfos.title.trim() == "") {
+    if (ActivityInfos.title.trim() == "") {
       (FieldErrors.title = true), (valid = false);
     }
-    if (Reportinfos.type.trim() == "") {
+    if (ActivityInfos.type.trim() == "") {
       (FieldErrors.type = true), (valid = false);
     }
-    if (Reportinfos.content.trim() == "") {
-      (FieldErrors.content = true), (valid = false);
-    }
 
+    if (selectedOrpahns.length == 0 && selectedFamilies.length == 0) {
+      (FieldErrors.selections = true), (valid = false);
+    }
     SetErrors(FieldErrors);
     return valid;
   };
-  const AddDonator = async () => {
+  const AddActivity = async () => {
     Keyboard.dismiss();
     if (validate()) {
-      const res = await CreateReport({ ...Reportinfos });
+  
+      const res = await CreateActivity({ ...ActivityInfos,kids:selectedOrpahns,famillies:selectedFamilies,date:chosenDate,benificier:ActivityType });
       if (res.ok) {
         route.params.showToast();
         navigation.goBack();
@@ -143,7 +146,6 @@ export default function AddActivity({ route, navigation }) {
 
   const getSelectedData = (data, type) => {
     let overFlow = data.length > 2 ? `... و ${data.length - 2} اخرين` : "";
-
     if (type == "orpahn") {
       if (data.length > 0) {
         setSelectedOrphan(
@@ -153,14 +155,14 @@ export default function AddActivity({ route, navigation }) {
             .join(",") + overFlow
         );
         setSelectedOrpahns(
-          data.map((o) => ({ name: o.title, id: o.id, age: o.age }))
+          data.map((o) => ({ name: o.title, id: o.id, age: o.age ,gender:o.gender,scolarity:o.scolarity ,}))
         );
       } else {
+        setSelectedOrpahns([]);
         setSelectedOrphan("اختيار الأيتام");
       }
     } else {
       if (data.length > 0) {
-        console.log("data", data);
         setFamilyPlaceholder(
           data
             .map((d) => " عائلة " + d.fatherLastName + " ")
@@ -169,6 +171,7 @@ export default function AddActivity({ route, navigation }) {
         );
         setselectedFamilies(data.map((o) => ({ name: o.title, id: o.id })));
       } else {
+        setselectedFamilies([]);
         setFamilyPlaceholder("اختيار العائلات");
       }
     }
@@ -184,6 +187,24 @@ export default function AddActivity({ route, navigation }) {
     "شتاء دافئ",
     "نشاط اخر",
   ];
+  const [showDatePicker, setshowDatePicker] = useState(false);
+
+  const [date, setdate] = useState("");
+  const HandleDate = (date) => {
+    if (date.nativeEvent.timestamp) {
+      let MyDate = new Date(date.nativeEvent.timestamp);
+      setChosenDate(MyDate)
+      setdate(
+        MyDate.getFullYear() +
+          "-" +
+          (MyDate.getMonth() + 1) +
+          "-" +
+          MyDate.getDate()
+      );
+    } else {
+    }
+    setshowDatePicker(false);
+  };
   return (
     <View style={styles.Container}>
       <View style={styles.TitleContainer}>
@@ -276,7 +297,7 @@ export default function AddActivity({ route, navigation }) {
             <View
               style={{
                 ...styles.dateContainer,
-                borderColor: errors.type ? "#c21a0e" : "grey",
+                borderColor: errors.selections ? "#c21a0e" : "grey",
               }}
             >
               <Icon
@@ -294,7 +315,7 @@ export default function AddActivity({ route, navigation }) {
             <View
               style={{
                 ...styles.dateContainer,
-                borderColor: errors.type ? "#c21a0e" : "grey",
+                borderColor: errors.selections ? "#c21a0e" : "grey",
               }}
             >
               <Icon
@@ -307,6 +328,12 @@ export default function AddActivity({ route, navigation }) {
             </View>
           </TouchableWithoutFeedback>
         )}
+        <Text style={{width:"95%",fontSize:17,fontFamily: "Tajawal-Medium"}}>التاريخ</Text>
+          <TouchableWithoutFeedback onPress={() => setshowDatePicker(true)}>
+          <View style={styles.dateContainer}>
+            <Text style={styles.InputText}> {date}</Text>
+          </View>
+        </TouchableWithoutFeedback>
       </Stack>
       {ErrorMessageVisible && (
         <View style={styles.ErrorMessage}>
@@ -315,7 +342,7 @@ export default function AddActivity({ route, navigation }) {
         </View>
       )}
       {showButton && (
-        <Button style={styles.Button} mode="contained" onPress={AddDonator}>
+        <Button style={styles.Button} mode="contained" onPress={AddActivity}>
           <Text style={{ fontSize: 16, marginLeft: 10 }}>اضافة</Text>
         </Button>
       )}
@@ -346,6 +373,15 @@ export default function AddActivity({ route, navigation }) {
         setIsPanelActive={setIsTypePannel}
         setshowButton={setshowButton}
       />
+        {showDatePicker && (
+          <RNDateTimePicker
+            is24Hour={true}
+            locale="ar-dz"
+            mode="date"
+            value={new Date()}
+            onChange={HandleDate}
+          />
+        )}
     </View>
   );
 }

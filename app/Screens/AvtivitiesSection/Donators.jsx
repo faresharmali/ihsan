@@ -16,7 +16,7 @@ import Toast from "react-native-toast-message";
 import DataContainer from "../../Components/DataContainer";
 import { getDonators } from "../../api/user";
 import ActivitiesSectionBottomBar from "../../Navigation/ActivitiesSectionBottomBar";
-export default function Donators({ navigation, drawer }) {
+export default function ActivityDonators({ navigation, drawer }) {
   const styling = {
     backgroundColor: "#fff",
     marginTop: 5,

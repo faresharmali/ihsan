@@ -16,13 +16,7 @@ import toastConfig from "../../../Components/ToastConfiguration";
 import Toast from "react-native-toast-message";
 import Kids from "../Famillies/Kids";
 export default function Orphans({ navigation, drawer }) {
-  const showToast = () => {
-    Toast.show({
-      type: "success",
-      text1: "نجحت العملية",
-      text2: " تمت اضافة العائلة بنجاح  👋",
-    });
-  };
+
   const styling = {
     backgroundColor: "#fff",
     marginTop: 5,

@@ -23,7 +23,7 @@ export default function Dashboard(props) {
             <DrawerContent {...prop} pageHandler={props.pageHandler} />
           )}
           screenOptions={{ headerShown: false }}
-          initialRouteName="WidowSection"
+          initialRouteName="ActivitiesSection"
         >
           <Drawer.Screen name="Home">
             {(props) => (

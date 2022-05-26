@@ -35,7 +35,7 @@ export default function Kids(props) {
               size={4}
               color="#000"
             />
-            <Text>المستوى : {k.scolarity} </Text>
+            <Text>المستوى : {k.scolarity.replace("السنة","").replace("ال","")} </Text>
           </View>
         </View>
       </TouchableOpacity>

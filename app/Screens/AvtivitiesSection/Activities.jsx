@@ -18,19 +18,19 @@ import { getActivities } from "../../api/activities";
 import { useDispatch } from "react-redux";
 import ActivitiesSectionBottomBar from "../../Navigation/ActivitiesSectionBottomBar";
 
-export default function Reports({ navigation, drawer }) {
+export default function Activities({ navigation, drawer }) {
   const dispatch = useDispatch();
 
   const showToast = () => {
     Toast.show({
       type: "success",
       text1: "نجحت العملية",
-      text2: " تمت اضافة المحسن بنجاح  👋",
+      text2: " تمت اضافة النشاط بنجاح  👋",
     });
   };
 
   const openModal = (data) => {
-    navigation.navigate("Family", data);
+    navigation.navigate("Activity", data);
   };
   let Reports = useSelector((state) => state.Reports);
   let LoggedUser = useSelector((state) => state.Auth);
@@ -49,10 +49,11 @@ export default function Reports({ navigation, drawer }) {
           res.data.result.map((user) => ({
             0: user.title,
             1: user.type,
-            2: user.benificier,
-            3: user.content,
-            4: user.date,
-            5: user.author,
+            kids: user.kids,
+            famillies: user.famillies,
+            type: user.type,
+            author: user.author,
+            benificier: user.benificier,
           }))
         )
       );
@@ -84,7 +85,7 @@ export default function Reports({ navigation, drawer }) {
         <ScrollView style={styles.Content}>
           {Reports.map((f) => (
             <DataContainer
-              key={f[3]}
+              key={f.id}
               AvatarSize={22}
               data={f}
               pic={Family}

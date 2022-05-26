@@ -24,7 +24,6 @@ import { getFamilies } from "../../api/family";
 import { useDispatch } from "react-redux";
 
 export default function Families({ navigation, drawer }) {
-  const [active, setActive] = useState(1);
   const dispatch = useDispatch();
 
   const showToast = () => {

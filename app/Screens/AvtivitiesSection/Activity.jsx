@@ -86,22 +86,15 @@ export default function Activity({ route, navigation }) {
           {route.params.benificier == "orphan" && (
             <Kids kids={route.params.kids} />
           )}
-          {route.params.benificier == "family" && (
-            route.params.famillies.map((f)=>(
-              <TouchableOpacity  style={styles.DataContainer}>
-              <Image
-                source={Family}
-                style={{ width: 40, height: 40 }}
-              />
-              <View style={styles.infos}>
-                <Text style={styles.UserPersonal}>
-                  {`عائلة ${f.name}`}
-                </Text>
-          
-              </View>
-            </TouchableOpacity>
-            ))
-          )}
+          {route.params.benificier == "family" &&
+            route.params.famillies.map((f) => (
+              <TouchableOpacity style={styles.DataContainer}>
+                <Image source={Family} style={{ width: 40, height: 40 }} />
+                <View style={styles.infos}>
+                  <Text style={styles.UserPersonal}>{`عائلة ${f.name}`}</Text>
+                </View>
+              </TouchableOpacity>
+            ))}
         </View>
       </ScrollView>
 

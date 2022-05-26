@@ -55,7 +55,7 @@ export default function ActivitiesSectionBottomBar(props) {
             </View>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => navigation.navigate("Activities")}
+            onPress={() => navigation.navigate("ActivitiesProgram")}
           >
             <View style={styles.bottomBarITem}>
               <Icon as={FontAwesome5} name="child" color={"#fff"} size={4} />

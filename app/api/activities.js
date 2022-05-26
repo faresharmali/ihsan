@@ -26,3 +26,15 @@ export const getActivities = async (token) => {
     console.error("error", e);
   }
 };
+export const CreateProgramItem = async (token) => {
+  try {
+    const res = await axios.get(api+"/addprogram", {
+      headers: {
+        token: token,
+      },
+    });
+    return res;
+  } catch (e) {
+    console.error("error", e);
+  }
+};

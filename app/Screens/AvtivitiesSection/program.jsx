@@ -3,18 +3,25 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React, { useState, useEffect } from "react";
 import { Icon } from "native-base";
 import { MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
-
 import { LogBox } from "react-native";
 import Toast from "react-native-toast-message";
 import toastConfig from "../../Components/ToastConfiguration";
 import ActivitiesSectionBottomBar from "../../Navigation/ActivitiesSectionBottomBar";
-
-import ProgramItem from "./ProgramItem"
+import { getProgram } from "../../api/activities";
+import { useSelector } from "react-redux";
+import DeleteSwipable from "../../Components/Containers/DeleteSwipable";
+import ProgramItem from "./ProgramItem";
 LogBox.ignoreAllLogs();
 export default function ActivitiesProgram({ navigation, drawer }) {
-  useEffect(() => {
-    const unsubscribe = navigation.addListener("focus", async () => {});
+  const [program, setProgram] = useState({ items: [] });
+  const [DeletePannelActive, setDeletePannelActive] = useState(false);
+  const [PressedProgram, setPressedProgram] = useState(false);
 
+  const user = useSelector((state) => state.Auth).token;
+  useEffect(async () => {
+    const unsubscribe = navigation.addListener("focus", async () => {
+      await fetchProgram();
+    });
     return unsubscribe;
   }, [navigation]);
 
@@ -24,6 +31,13 @@ export default function ActivitiesProgram({ navigation, drawer }) {
       text1: "نجحت العملية",
       text2: " تمت اضافة الأبن بنجاح  👋",
     });
+  };
+  const fetchProgram = async () => {
+    const res = await getProgram({ departement: "activities" }, user);
+    if (res.data.ok) {
+      setProgram(res.data.data);
+    } else {
+    }
   };
   return (
     <View style={styles.container}>
@@ -46,21 +60,31 @@ export default function ActivitiesProgram({ navigation, drawer }) {
         </View>
       </View>
       <View style={styles.Section}>
-          <Text style={styles.title}>البرنامج</Text>
-          <ProgramItem />
-          <ProgramItem />
-          <ProgramItem />
-          <ProgramItem />
-          <ProgramItem />
+        <Text style={styles.title}>البرنامج</Text>
+        {program.items.map((program) => (
+          <ProgramItem
+            setDeletePannelActive={setDeletePannelActive}
+            setPressedProgram={setPressedProgram}
+            program={program}
+          />
+        ))}
       </View>
       <Toast config={toastConfig} />
       <TouchableOpacity
-        onPress={() => navigation.navigate("AddProgramItem", { showToast })}
+        onPress={() =>
+          navigation.navigate("AddProgramItem", { showToast, fetchProgram })
+        }
         style={styles.fab}
       >
         <Icon as={Entypo} name="plus" size={8} color="#fff" />
       </TouchableOpacity>
-    
+
+      <DeleteSwipable
+        PressedItem={PressedProgram}
+        title="اختيار الوسيط"
+        isPanelActive={DeletePannelActive}
+        setIsPanelActive={setDeletePannelActive}
+      />
       <ActivitiesSectionBottomBar navigation={navigation} />
     </View>
   );
@@ -95,7 +119,6 @@ const styles = StyleSheet.create({
     fontFamily: "Tajawal-Medium",
   },
 
-
   menuContainer: {
     width: 35,
     height: 35,
@@ -115,11 +138,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#f5f5f5",
   },
-  title:{
-      fontSize:20,
-      margin:10,
-      fontFamily: "Tajawal-Medium",
-
+  title: {
+    fontSize: 20,
+    margin: 10,
+    fontFamily: "Tajawal-Medium",
   },
   fab: {
     width: 50,

@@ -21,22 +21,21 @@ export default function AddProgramItem({ route, navigation }) {
   const [ErrorMessage, setErrorMessage] = useState("");
   const [chosenDate, setChosenDate] = useState("");
   const [showDatePicker, setshowDatePicker] = useState(false);
-
+  const user=useSelector((state) => state.Auth).token
   const [errors, SetErrors] = useState({
     title: false,
     selections: false,
   });
-  const [ActivityInfos, setuserInfos] = useState({
+  const [ProgramInfos, setuserInfos] = useState({
     id: uuid.v4(),
     title: "",
-    date: new Date(),
     author: useSelector((state) => state.Auth).name,
   });
 
   const handleUserInput = (text, name) => {
     setErrorMessageVisible(false);
     SetErrors({ ...errors, [name]: false });
-    setuserInfos({ ...ActivityInfos, [name]: text });
+    setuserInfos({ ...ProgramInfos, [name]: text });
   };
 
   const styling = {
@@ -49,7 +48,7 @@ export default function AddProgramItem({ route, navigation }) {
   const validate = () => {
     let valid = true;
     let FieldErrors = { ...errors };
-    if (ActivityInfos.title.trim() == "") {
+    if (ProgramInfos.title.trim() == "") {
       (FieldErrors.title = true), (valid = false);
     }
     SetErrors(FieldErrors);
@@ -58,11 +57,15 @@ export default function AddProgramItem({ route, navigation }) {
   const AddActivity = async () => {
     Keyboard.dismiss();
     if (validate()) {
-      const res = await CreateProgramItem({ ...ActivityInfos },useSelector((state) => state.Auth).token);
-      if (res.ok) {
-        route.params.showToast();
+      const res = await CreateProgramItem({id:"1",program:{...ProgramInfos,date:chosenDate} },user);
+      console.log(res.data)
+      if (res.data.ok) {
+        route.params.fetchProgram();
         navigation.goBack();
+        route.params.showToast();
       } else {
+        navigation.goBack();
+        route.params.showToast();
       }
     } else {
       setErrorMessage("كل الخانات اجبارية");

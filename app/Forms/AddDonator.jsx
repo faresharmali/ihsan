@@ -4,9 +4,9 @@ import {
   View,
   TouchableWithoutFeedback,
   Keyboard,
-  BackHandler
+  BackHandler,
 } from "react-native";
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Input, Stack, Icon, Radio } from "native-base";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { Button } from "react-native-paper";
@@ -25,7 +25,6 @@ export default function AddDonator({ route, navigation }) {
   const [errors, SetErrors] = useState({
     name: false,
     phone: false,
-    job: false,
     user: false,
   });
   const [userInfos, setuserInfos] = useState({
@@ -35,17 +34,20 @@ export default function AddDonator({ route, navigation }) {
     user: "",
   });
   useEffect(() => {
-    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-      if(isPanelActive || isUsersPannel){
-        setIsPanelActive(false)
-        setisUsersPannel(false)
-        return true
-      }else{
-        return false
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => {
+        if (isPanelActive || isUsersPannel) {
+          setIsPanelActive(false);
+          setisUsersPannel(false);
+          return true;
+        } else {
+          return false;
+        }
       }
-    })
-    return () => backHandler.remove()
-  }, [isPanelActive,isUsersPannel])
+    );
+    return () => backHandler.remove();
+  }, [isPanelActive, isUsersPannel]);
 
   const handleUserInput = (text, name) => {
     setErrorMessageVisible(false);
@@ -72,15 +74,13 @@ export default function AddDonator({ route, navigation }) {
     fontSize: 14,
   };
   let jobs = [
-    { title: "قسم المالية" },
-    { title: "قسم الققة" },
     { title: "قسم الأيتام" },
+    { title: "قسم القفة" },
     { title: "قسم التعليم" },
     { title: "قسم الصحة" },
-    { title: "وسيط اجتماعي" },
-    { title: "قسم الادارة" },
     { title: "قسم الأنشطة الخيرية" },
     { title: "قسم الأرامل" },
+    { title: "قسم المالية" },
   ];
   const ChooseJob = (job) => {
     SetErrors({ ...errors, job: false });
@@ -105,9 +105,6 @@ export default function AddDonator({ route, navigation }) {
     if (userInfos.phone.trim() == "") {
       (FieldErrors.phone = true), (valid = false);
     }
-    if (userInfos.job.trim() == "") {
-      (FieldErrors.job = true), (valid = false);
-    }
     if (userInfos.user.trim() == "") {
       (FieldErrors.user = true), (valid = false);
     }
@@ -117,7 +114,11 @@ export default function AddDonator({ route, navigation }) {
   const AddDonator = async () => {
     Keyboard.dismiss();
     if (validate()) {
-      const res = await CreateDonator({ ...userInfos, type:DonatorType });
+      const res = await CreateDonator({
+        ...userInfos,
+        type: DonatorType,
+        job: DonatorType == "kafel" ? "كافل" : userInfos.job,
+      });
       if (res.ok) {
         route.params.showToast();
         navigation.goBack();
@@ -194,38 +195,6 @@ export default function AddDonator({ route, navigation }) {
           onChangeText={(text) => handleUserInput(text, "phone")}
         />
 
-        <TouchableWithoutFeedback onPress={() => openPanel()}>
-          <View
-            style={{
-              ...styles.dateContainer,
-              borderColor: errors.job ? "#c21a0e" : "grey",
-            }}
-          >
-            <Icon
-              as={<MaterialIcons name="lock" />}
-              size={5}
-              ml="2"
-              color="#348578"
-            />
-            <Text style={styles.InputText}>{job} </Text>
-          </View>
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={() => openUsersPanel()}>
-          <View
-            style={{
-              ...styles.dateContainer,
-              borderColor: errors.user ? "#c21a0e" : "grey",
-            }}
-          >
-            <Icon
-              as={<MaterialIcons name="lock" />}
-              size={5}
-              ml="2"
-              color="#348578"
-            />
-            <Text style={styles.InputText}>{user} </Text>
-          </View>
-        </TouchableWithoutFeedback>
         <Radio.Group
           value={DonatorType}
           style={{ flexDirection: "row" }}
@@ -248,6 +217,41 @@ export default function AddDonator({ route, navigation }) {
             محسن
           </Radio>
         </Radio.Group>
+        {DonatorType == "Mohsin" && (
+          <TouchableWithoutFeedback onPress={() => openPanel()}>
+            <View
+              style={{
+                ...styles.dateContainer,
+                borderColor: errors.job ? "#c21a0e" : "grey",
+              }}
+            >
+              <Icon
+                as={<MaterialIcons name="lock" />}
+                size={5}
+                ml="2"
+                color="#348578"
+              />
+              <Text style={styles.InputText}>{job} </Text>
+            </View>
+          </TouchableWithoutFeedback>
+        )}
+
+        <TouchableWithoutFeedback onPress={() => openUsersPanel()}>
+          <View
+            style={{
+              ...styles.dateContainer,
+              borderColor: errors.user ? "#c21a0e" : "grey",
+            }}
+          >
+            <Icon
+              as={<MaterialIcons name="lock" />}
+              size={5}
+              ml="2"
+              color="#348578"
+            />
+            <Text style={styles.InputText}>{user} </Text>
+          </View>
+        </TouchableWithoutFeedback>
       </Stack>
       {ErrorMessageVisible && (
         <View style={styles.ErrorMessage}>

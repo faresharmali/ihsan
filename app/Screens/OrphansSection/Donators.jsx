@@ -8,10 +8,10 @@ import {
 } from "react-native";
 import React, { useEffect } from "react";
 import OrpahnsSectionBottomBar from "../../Navigation/OrpahansSectionBottomBar";
-import { Icon,Input } from "native-base";
+import { Icon, Input } from "native-base";
 import { FontAwesome5, Entypo, MaterialIcons } from "@expo/vector-icons";
 import Family from "../../../assets/icons/user.png";
-import { useSelector,useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import toastConfig from "../../Components/ToastConfiguration";
 import Toast from "react-native-toast-message";
 import DataContainer from "../../Components/DataContainer";
@@ -25,8 +25,9 @@ export default function OrpahnsDonators({ navigation, drawer }) {
     navigation.navigate("Family", data);
   };
   let Donators = useSelector((state) => state.Donators).filter(
-    (d) => d[2].trim() == "قسم الكفالة"
+    (donator) => donator.type == "kafel"
   );
+  console.log(Donators);
   const dispatch = useDispatch();
 
   const updateState = (data) => {
@@ -44,6 +45,7 @@ export default function OrpahnsDonators({ navigation, drawer }) {
             0: user.name,
             1: user.phone,
             2: user.job,
+            type: user.type,
           }))
         )
       );
@@ -103,7 +105,6 @@ export default function OrpahnsDonators({ navigation, drawer }) {
         </ScrollView>
       </View>
       <Toast config={toastConfig} />
-
     </View>
   );
 }

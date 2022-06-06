@@ -29,7 +29,7 @@ export default function ActivitiesProgram({ navigation, drawer }) {
     Toast.show({
       type: "success",
       text1: "نجحت العملية",
-      text2: " تمت اضافة الأبن بنجاح  👋",
+      text2: " تمت اضافة البرنامج  بنجاح  👋",
     });
   };
   const fetchProgram = async () => {
@@ -81,7 +81,7 @@ export default function ActivitiesProgram({ navigation, drawer }) {
 
       <DeleteSwipable
         PressedItem={PressedProgram}
-        title="اختيار الوسيط"
+        title=""
         isPanelActive={DeletePannelActive}
         setIsPanelActive={setDeletePannelActive}
       />
@@ -150,7 +150,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 25,
-    elevation: 5,
     position: "absolute",
     bottom: 65,
     right: 10,

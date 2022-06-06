@@ -1,11 +1,13 @@
 import { StyleSheet, Text, View, TouchableOpacity,Image } from "react-native";
 import React from "react";
 import img from "../../../assets/icons/information.png"
+import {MaterialCommunityIcons} from "@expo/vector-icons";
+import { Icon } from "native-base";
 
 export default function ProgramItem({ program,setPressedProgram ,setDeletePannelActive}) {
   const date = new Date(program.date);
   return (
-    <TouchableOpacity onLongPress={()=>{setPressedProgram(program);setDeletePannelActive(true)}} style={styles.DataContainer}>
+    <View onLongPress={()=>{setPressedProgram(program);setDeletePannelActive(true)}} style={styles.DataContainer}>
       <Image source={img} style={{width:30,height:30}} />
 
       <View style={styles.infos}>
@@ -21,7 +23,11 @@ export default function ProgramItem({ program,setPressedProgram ,setDeletePannel
           </Text>
         </View>
       </View>
-    </TouchableOpacity>
+      <TouchableOpacity style={styles.MenuBtn} onPress={()=>{setPressedProgram(program);setDeletePannelActive(true)}}>
+      <Icon as={MaterialCommunityIcons } name="dots-horizontal" size={7} color="#fff" />
+
+      </TouchableOpacity>
+    </View>
   );
 }
 const styles = StyleSheet.create({
@@ -69,4 +75,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  MenuBtn:{
+    width:35,
+    height:35,
+    backgroundColor:"#348578",
+    justifyContent:"center",
+    alignItems:"center",
+    borderRadius:5
+  }
 });

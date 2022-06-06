@@ -9,14 +9,13 @@ import {
 } from "@expo/vector-icons";
 import React from "react";
 import styles from "./styles"
-
-export default function EducationSectionBottomBar(props) {
+export default function InformationSectionBottomBar({filterData}) {
   return (
     <View style={styles.Container}>
-      <View style={styles.BottomBar}>
-        <View style={styles.itemContainer}>
+      <View style={{...styles.BottomBar}}>
+        <View style={{...styles.itemContainer,flexDirection:"row-reverse"}}>
           <TouchableOpacity
-            onPress={() => props.navigation.navigate("Members")}
+            onPress={() => filterData("all")}
           >
             <View style={styles.bottomBarITem}>
               <Icon
@@ -26,11 +25,25 @@ export default function EducationSectionBottomBar(props) {
                 size={4}
               />
 
-              <Text style={styles.bottomBarITemText}>الأعضاء</Text>
+              <Text style={styles.bottomBarITemText}> جميع المعلومات</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => props.navigation.navigate("EducationDonators")}
+            onPress={() => filterData("information")}
+          >
+            <View style={styles.bottomBarITem}>
+              <Icon
+                as={MaterialCommunityIcons}
+                name="account-group"
+                color={"#fff"}
+                size={4}
+              />
+
+              <Text style={styles.bottomBarITemText}>معلومات عامة</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => filterData("demand")}
           >
             <View style={styles.bottomBarITem}>
               <Icon
@@ -40,12 +53,12 @@ export default function EducationSectionBottomBar(props) {
                 size={4}
               />
 
-              <Text style={styles.bottomBarITemText}>المحسنين</Text>
+              <Text style={styles.bottomBarITemText}>الطلبات</Text>
             </View>
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => props.navigation.navigate("EducationOrphans")}
+            onPress={() => filterData("benefit")}
           >
             <View style={styles.bottomBarITem}>
               <Icon
@@ -55,16 +68,10 @@ export default function EducationSectionBottomBar(props) {
                 size={4}
               />
 
-              <Text style={styles.bottomBarITemText}>المستفيدين</Text>
+              <Text style={styles.bottomBarITemText}>الاستفادات</Text>
             </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => props.navigation.navigate("Bureau")}>
-            <View style={styles.bottomBarITem}>
-              <Icon as={FontAwesome} name="building" color={"#ffff"} size={4} />
-
-              <Text style={styles.bottomBarITemText}>الكفالة الفكرية</Text>
-            </View>
-          </TouchableOpacity>
+         </TouchableOpacity>
+         
         </View>
       </View>
     </View>

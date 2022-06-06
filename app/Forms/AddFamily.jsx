@@ -4,6 +4,8 @@ import {
   View,
   TouchableWithoutFeedback,
   Keyboard,
+  KeyboardAvoidingView,
+  ScrollView,
 } from "react-native";
 import React, { useState } from "react";
 import { Input, Stack, Icon } from "native-base";
@@ -19,8 +21,10 @@ export default function AddFamily({ route, navigation }) {
   const [isPanelActive, setIsPanelActive] = useState(false);
   const [showButton, setshowButton] = useState(true);
   const [wasseet, setwasseet] = useState("الوسيط الاجتماعي");
-  let users = useSelector((state) => state.users).filter((d)=>d.job.trim()=="وسيط اجتماعي");
-  
+  let users = useSelector((state) => state.users).filter(
+    (d) => d.job.trim() == "وسيط اجتماعي"
+  );
+
   let allUSers = users.map((u) => ({ title: u[0] }));
   const [errors, SetErrors] = useState({
     fatherFirstName: false,
@@ -41,7 +45,7 @@ export default function AddFamily({ route, navigation }) {
     salary: "",
     phone: "",
     donation: "",
-    wasseet:""
+    wasseet: "",
   });
   const openPanel = () => {
     Keyboard.dismiss();
@@ -106,10 +110,9 @@ export default function AddFamily({ route, navigation }) {
     return valid;
   };
 
-
   const ChooseJob = (wasseet) => {
     SetErrors({ ...errors, wasseet: false });
-    setuserInfos({ ...userInfos, wasseet:wasseet });
+    setuserInfos({ ...userInfos, wasseet: wasseet });
     setwasseet(wasseet);
     setIsPanelActive(false);
     setshowButton(true);
@@ -132,194 +135,211 @@ export default function AddFamily({ route, navigation }) {
           />
         </TouchableWithoutFeedback>
       </View>
+      <KeyboardAvoidingView style={{ flex: 1 }}>
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+          <Stack space={4} w="100%" alignItems="center">
+            <Input
+              InputRightElement={
+                <Icon
+                  style={{ marginRight: 10 }}
+                  as={<FontAwesome name="user" />}
+                  size={5}
+                  ml="2"
+                  color="#348578"
+                />
+              }
+              w={{
+                base: "95%",
+                md: "25%",
+              }}
+              h={50}
+              name="name"
+              textAlign="right"
+              placeholder="اسم الأب "
+              {...styling}
+              borderWidth={1}
+              borderColor={errors.fatherFirstName ? "#c21a0e" : "grey"}
+              onChangeText={(text) => handleUserInput(text, "fatherFirstName")}
+            />
+            <Input
+              InputRightElement={
+                <Icon
+                  style={{ marginRight: 10 }}
+                  as={<FontAwesome name="user" />}
+                  size={5}
+                  ml="2"
+                  color="#348578"
+                />
+              }
+              w={{
+                base: "95%",
+                md: "25%",
+              }}
+              h={50}
+              name="name"
+              textAlign="right"
+              placeholder="لقب الأب "
+              {...styling}
+              borderWidth={1}
+              borderColor={errors.fatherLastName ? "#c21a0e" : "grey"}
+              onChangeText={(text) => handleUserInput(text, "fatherLastName")}
+            />
+            <Input
+              InputRightElement={
+                <Icon
+                  style={{ marginRight: 10 }}
+                  as={<FontAwesome name="user" />}
+                  size={5}
+                  ml="2"
+                  color="#348578"
+                />
+              }
+              w={{
+                base: "95%",
+                md: "25%",
+              }}
+              h={50}
+              name="name"
+              textAlign="right"
+              placeholder="اسم و لقب الأم"
+              {...styling}
+              borderWidth={1}
+              borderColor={errors.motherFullName ? "#c21a0e" : "grey"}
+              onChangeText={(text) => handleUserInput(text, "motherFullName")}
+            />
+            <Input
+              InputRightElement={
+                <Icon
+                  style={{ marginRight: 10 }}
+                  as={<MaterialIcons name="phone" />}
+                  size={5}
+                  ml="2"
+                  color="#348578"
+                />
+              }
+              w={{
+                base: "95%",
+                md: "25%",
+              }}
+              h={50}
+              textAlign="right"
+              placeholder="رقم الهاتف"
+              onChangeText={(text) => handleUserInput(text, "phone")}
+              {...styling}
+              borderWidth={1}
+              borderColor={errors.phone ? "#c21a0e" : "grey"}
+            />
 
-      <Stack space={4} w="100%" alignItems="center">
-        <Input
-          InputRightElement={
-            <Icon
-              style={{ marginRight: 10 }}
-              as={<FontAwesome name="user" />}
-              size={5}
-              ml="2"
-              color="#348578"
+            <Input
+              InputRightElement={
+                <Icon
+                  style={{ marginRight: 10 }}
+                  as={<MaterialIcons name="account-circle" />}
+                  size={5}
+                  ml="2"
+                  color="#348578"
+                />
+              }
+              style={styles.input}
+              w={{
+                base: "95%",
+                md: "50%",
+              }}
+              h={50}
+              textAlign="right"
+              placeholder="العنوان"
+              onChangeText={(text) => handleUserInput(text, "adresse")}
+              {...styling}
+              borderWidth={1}
+              borderColor={errors.adresse ? "#c21a0e" : "grey"}
             />
-          }
-          w={{
-            base: "95%",
-            md: "25%",
-          }}
-          h={50}
-          name="name"
-          textAlign="right"
-          placeholder="اسم الأب "
-          {...styling}
-          borderWidth={1}
-          borderColor={errors.fatherFirstName ? "#c21a0e" : "grey"}
-          onChangeText={(text) => handleUserInput(text, "fatherFirstName")}
-        />
-        <Input
-          InputRightElement={
-            <Icon
-              style={{ marginRight: 10 }}
-              as={<FontAwesome name="user" />}
-              size={5}
-              ml="2"
-              color="#348578"
+            <Input
+              InputRightElement={
+                <Icon
+                  style={{ marginRight: 10 }}
+                  as={<MaterialIcons name="lock" />}
+                  size={5}
+                  ml="2"
+                  color="#348578"
+                />
+              }
+              w={{
+                base: "95%",
+                md: "25%",
+              }}
+              h={50}
+              textAlign="right"
+              placeholder="المدخول"
+              onChangeText={(text) => handleUserInput(text, "salary")}
+              {...styling}
+              type={"motherFullName"}
+              borderWidth={1}
+              borderColor={errors.salary ? "#c21a0e" : "grey"}
             />
-          }
-          w={{
-            base: "95%",
-            md: "25%",
-          }}
-          h={50}
-          name="name"
-          textAlign="right"
-          placeholder="لقب الأب "
-          {...styling}
-          borderWidth={1}
-          borderColor={errors.fatherLastName ? "#c21a0e" : "grey"}
-          onChangeText={(text) => handleUserInput(text, "fatherLastName")}
-        />
-        <Input
-          InputRightElement={
-            <Icon
-              style={{ marginRight: 10 }}
-              as={<FontAwesome name="user" />}
-              size={5}
-              ml="2"
-              color="#348578"
+            <Input
+              InputRightElement={
+                <Icon
+                  style={{ marginRight: 10 }}
+                  as={<MaterialIcons name="lock" />}
+                  size={5}
+                  ml="2"
+                  color="#348578"
+                />
+              }
+              w={{
+                base: "95%",
+                md: "25%",
+              }}
+              h={50}
+              textAlign="right"
+              placeholder="مبلغ الكفالة"
+              onChangeText={(text) => handleUserInput(text, "donation")}
+              {...styling}
+              borderWidth={1}
+              type={"motherFullName"}
+              borderColor={errors.donation ? "#c21a0e" : "grey"}
             />
-          }
-          w={{
-            base: "95%",
-            md: "25%",
-          }}
-          h={50}
-          name="name"
-          textAlign="right"
-          placeholder="اسم و لقب الأم"
-          {...styling}
-          borderWidth={1}
-          borderColor={errors.motherFullName ? "#c21a0e" : "grey"}
-          onChangeText={(text) => handleUserInput(text, "motherFullName")}
-        />
-        <Input
-          InputRightElement={
-            <Icon
-              style={{ marginRight: 10 }}
-              as={<MaterialIcons name="phone" />}
-              size={5}
-              ml="2"
-              color="#348578"
-            />
-          }
-          w={{
-            base: "95%",
-            md: "25%",
-          }}
-          h={50}
-          textAlign="right"
-          placeholder="رقم الهاتف"
-          onChangeText={(text) => handleUserInput(text, "phone")}
-          {...styling}
-          borderWidth={1}
-          borderColor={errors.phone ? "#c21a0e" : "grey"}
-        />
+            <TouchableWithoutFeedback onPress={() => openPanel()}>
+              <View
+                style={{
+                  ...styles.dateContainer,
+                  borderColor: errors.wasseet ? "#c21a0e" : "grey",
+                }}
+              >
+                <Icon
+                  as={<MaterialIcons name="lock" />}
+                  size={5}
+                  ml="2"
+                  color="#348578"
+                />
+                <Text style={styles.InputText}>{wasseet} </Text>
+              </View>
+            </TouchableWithoutFeedback>
+          {ErrorMessageVisible && (
+            <View style={styles.ErrorMessage}>
+              <FontAwesome
+                name="exclamation-triangle"
+                size={20}
+                color="#BE123C"
+              />
+              <Text style={styles.errorText}>{ErrorMessage}</Text>
+            </View>
+          )}
+          {showButton && (
+            <Button
+              style={styles.Button}
+              mode="contained"
+              onPress={CreateNewUser}
+            >
+              <Text style={{ fontSize: 16, marginLeft: 10 }}>اضافة </Text>
+            </Button>
+          )}
+                    </Stack>
 
-        <Input
-          InputRightElement={
-            <Icon
-              style={{ marginRight: 10 }}
-              as={<MaterialIcons name="account-circle" />}
-              size={5}
-              ml="2"
-              color="#348578"
-            />
-          }
-          style={styles.input}
-          w={{
-            base: "95%",
-            md: "50%",
-          }}
-          h={50}
-          textAlign="right"
-          placeholder="العنوان"
-          onChangeText={(text) => handleUserInput(text, "adresse")}
-          {...styling}
-          borderWidth={1}
-          borderColor={errors.adresse ? "#c21a0e" : "grey"}
-        />
-        <Input
-          InputRightElement={
-            <Icon
-              style={{ marginRight: 10 }}
-              as={<MaterialIcons name="lock" />}
-              size={5}
-              ml="2"
-              color="#348578"
-            />
-          }
-          w={{
-            base: "95%",
-            md: "25%",
-          }}
-          h={50}
-          textAlign="right"
-          placeholder="المدخول"
-          onChangeText={(text) => handleUserInput(text, "salary")}
-          {...styling}
-          type={"motherFullName"}
-          borderWidth={1}
-          borderColor={errors.salary ? "#c21a0e" : "grey"}
-        />
-        <Input
-          InputRightElement={
-            <Icon
-              style={{ marginRight: 10 }}
-              as={<MaterialIcons name="lock" />}
-              size={5}
-              ml="2"
-              color="#348578"
-            />
-          }
-          w={{
-            base: "95%",
-            md: "25%",
-          }}
-          h={50}
-          textAlign="right"
-          placeholder="مبلغ الكفالة"
-          onChangeText={(text) => handleUserInput(text, "donation")}
-          {...styling}
-          borderWidth={1}
-          type={"motherFullName"}
-          borderColor={errors.donation ? "#c21a0e" : "grey"}
-        />
-          <TouchableWithoutFeedback onPress={() => openPanel()}>
-          <View
-            style={{
-              ...styles.dateContainer,
-              borderColor: errors.wasseet ? "#c21a0e" : "grey",
-            }}
-          >
-            <Icon
-              as={<MaterialIcons name="lock" />}
-              size={5}
-              ml="2"
-              color="#348578"
-            />
-            <Text style={styles.InputText}>{wasseet} </Text>
-          </View>
-        </TouchableWithoutFeedback>
-      </Stack>
-      {ErrorMessageVisible && (
-        <View style={styles.ErrorMessage}>
-          <FontAwesome name="exclamation-triangle" size={20} color="#BE123C" />
-          <Text style={styles.errorText}>{ErrorMessage}</Text>
-        </View>
-      )}
+        </ScrollView>
+      </KeyboardAvoidingView>
 
-<Swipable
+      <Swipable
         title="اختيار الوسيط الاجتماعي"
         ChooseJob={ChooseJob}
         data={allUSers}
@@ -327,11 +347,6 @@ export default function AddFamily({ route, navigation }) {
         setIsPanelActive={setIsPanelActive}
         setshowButton={setshowButton}
       />
-      {showButton && 
-      <Button style={styles.Button} mode="contained" onPress={CreateNewUser}>
-        <Text style={{ fontSize: 16, marginLeft: 10 }}>اضافة </Text>
-      </Button>
-      }
     </View>
   );
 }

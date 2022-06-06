@@ -58,7 +58,6 @@ export default function AddProgramItem({ route, navigation }) {
     Keyboard.dismiss();
     if (validate()) {
       const res = await CreateProgramItem({id:"1",program:{...ProgramInfos,date:chosenDate} },user);
-      console.log(res.data)
       if (res.data.ok) {
         route.params.fetchProgram();
         navigation.goBack();

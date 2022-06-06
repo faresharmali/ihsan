@@ -1,33 +1,44 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity,TouchableWithoutFeedback } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+} from "react-native";
 import React from "react";
 import { Icon } from "native-base";
 import { MaterialIcons, Entypo } from "@expo/vector-icons";
 export default function DataContainer(props) {
   return (
     <TouchableOpacity onPress={props.openFamily} style={styles.DataContainer}>
-      <Image source={props.pic} style={{width:props.AvatarSize,height:props.AvatarSize}} />
+      <Image
+        source={props.pic}
+        style={{ width: props.AvatarSize, height: props.AvatarSize }}
+      />
       <View style={styles.infos}>
         <Text style={styles.UserPersonal}>{props.data[0]} </Text>
         <View style={styles.secondaryInfos}>
           {props.data[1] && (
             <>
-            <Icon as={MaterialIcons} name="phone" size={4} color="#000" />
+              <Icon as={MaterialIcons} name="phone" size={4} color="#000" />
               <Text> {props.data[1]}</Text>
             </>
           )}
-          {props.data[2] && (
-            <><Icon
+          {props.data[2] &&  (
+            <>
+              <Icon
                 style={{ marginRight: 10, marginLeft: 5 }}
                 as={Entypo}
                 name="clock"
                 size={4}
                 color="#000"
               />
-              <Text>{props.data[2]}</Text>
-                </>  )}
+              <Text>{props.data[2].trim()!="" && props.data[2]}</Text>
+            </>
+          )}
         </View>
       </View>
-
     </TouchableOpacity>
   );
 }

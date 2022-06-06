@@ -25,9 +25,10 @@ export default function Orphans({ navigation, drawer }) {
   let kids=[]
   MyFamilies.forEach((f)=>{
     f.kids.forEach((k)=>{
-      kids.push(k)
+      kids.push({...k,lastName:f.fatherLastName})
     })
   })
+  console.log(kids)
     return (
     <View style={styles.container}>
       <StatusBar style="dark" />

@@ -4,43 +4,51 @@ import { Icon } from "native-base";
 import { MaterialIcons, Entypo } from "@expo/vector-icons";
 import Kid from "../../../../assets/icons/kid.png";
 export default function Kids(props) {
-  console.log(props.kids)
   return (
     <View>
-    {props.kids.map((k) => (
-      <TouchableOpacity onLongPress={()=>alert("wech ?")} key={k.name} style={styles.DataContainer}>
-        <Image source={Kid} style={styles.avatar} />
-        <View style={styles.infos}>
-          <Text style={styles.UserPersonal}>{k.name} {props.lastName} </Text>
-          <View style={styles.secondaryInfos}>
-            <Icon
-              as={MaterialIcons}
-              name="admin-panel-settings"
-              size={4}
-              color="#000"
-            />
-            <Text> الجنس : {k.gender}</Text>
-            <Icon
-              style={{ marginRight: 10, marginLeft: 5 }}
-              as={Entypo}
-              name="clock"
-              size={4}
-              color="#000"
-            />
-            <Text>العمر : {k.age} </Text>
-            <Icon
-              style={{ marginRight: 10, marginLeft: 5 }}
-              as={Entypo}
-              name="clock"
-              size={4}
-              color="#000"
-            />
-            <Text>المستوى : {k.scolarity.replace("السنة","").replace("ال","")} </Text>
+      {props.kids.map((k) => (
+        <TouchableOpacity
+          onPress={() => props.viewKid({ ...k, lastName: props.lastName })}
+          onLongPress={() => alert("wech ?")}
+          key={k.name}
+          style={styles.DataContainer}
+        >
+          <Image source={Kid} style={styles.avatar} />
+          <View style={styles.infos}>
+            <Text style={styles.UserPersonal}>
+              {k.name} {k.lastName} {props.lastName}
+            </Text>
+            <View style={styles.secondaryInfos}>
+              <Icon
+                as={MaterialIcons}
+                name="admin-panel-settings"
+                size={4}
+                color="#000"
+              />
+              <Text> الجنس : {k.gender}</Text>
+              <Icon
+                style={{ marginRight: 10, marginLeft: 5 }}
+                as={Entypo}
+                name="clock"
+                size={4}
+                color="#000"
+              />
+              <Text>العمر : {k.age} </Text>
+              <Icon
+                style={{ marginRight: 10, marginLeft: 5 }}
+                as={Entypo}
+                name="clock"
+                size={4}
+                color="#000"
+              />
+              <Text>
+                المستوى : {k.scolarity.replace("السنة", "").replace("ال", "")}{" "}
+              </Text>
+            </View>
           </View>
-        </View>
-      </TouchableOpacity>
-    ))}
-  </View>
+        </TouchableOpacity>
+      ))}
+    </View>
   );
 }
 

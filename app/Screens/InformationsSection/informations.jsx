@@ -4,62 +4,70 @@ import {
   Text,
   View,
   ScrollView,
-  TouchableWithoutFeedback,
   TouchableOpacity,
+  TouchableWithoutFeedback,
 } from "react-native";
 import React, { useState, useEffect } from "react";
-import BottomBar from "../../Navigation/BottomBar";
-import { Icon } from "native-base";
-import { MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
-import DataContainer from "../../Components/DataContainer";
+import { FontAwesome5, Entypo, MaterialIcons } from "@expo/vector-icons";
+import Family from "../../../assets/icons/information.png";
+import { Input, Icon } from "native-base";
 import { useSelector } from "react-redux";
-import { LogBox } from "react-native";
-import Toast from "react-native-toast-message";
 import toastConfig from "../../Components/ToastConfiguration";
+import Toast from "react-native-toast-message";
+import DataContainer from "../../Components/DataContainer";
+import { getInformations } from "../../api/informations";
 import { useDispatch } from "react-redux";
-import { getUsers } from "../../api/user";
-
-import Man from "../../../assets/avatars/man.png";
-LogBox.ignoreAllLogs();
-export default function Users({ navigation, drawer }) {
-  const [active, setActive] = useState(6);
+import InformationSectionBottomBar from "../../Navigation/InformationsBottomBar";
+export default function Informations({ navigation, drawer }) {
+  const [InformationsList, setInformationList] = useState([]);
   const [filteringSection, setfilteringSection] = useState("all");
-  const [UsersList, setUsersList] = useState([]);
-
-  const openModal = (u) => {
-    navigation.navigate("AdminProfile", {
-      ...u,
-    });
-  };
-  let userList = useSelector((state) => state.users);
+  const dispatch = useDispatch();
+  let Informations = useSelector((state) => state.Informations);
 
   useEffect(() => {
-    setUsersList(userList);
-  }, [userList]);
+    if(filteringSection=="all"){
+
+      setInformationList(Informations);
+    }else{
+      setInformationList(
+        Informations.filter((info) => info[1] == filteringSection)
+      );
+    }
+  }, [Informations]);
+
   const showToast = () => {
     Toast.show({
       type: "success",
       text1: "نجحت العملية",
-      text2: " تمت اضافة المستخدم بنجاح  👋",
+      text2: " تمت اضافة المعلومة بنجاح  👋",
     });
   };
-  const dispatch = useDispatch();
+
+  const openModal = (data) => {
+    navigation.navigate("Information", data);
+  };
+  let LoggedUser = useSelector((state) => state.Auth);
   const updateState = (data) => {
     return {
-      type: "updateUserList",
+      type: "UpdateInformations",
       data: data,
     };
   };
+
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", async () => {
-      const res = await getUsers();
+      const res = await getInformations(LoggedUser.token);
       dispatch(
         updateState(
-          res.data.result.map((user) => ({
-            0: user.name,
-            1: user.phone,
-            2: user.job,
-            ...user,
+          res.data.result.map((information) => ({
+            0: information.title,
+            1: information.section,
+            kids: information.kids,
+            famillies: information.famillies,
+            content: information.content,
+            type: information.type,
+            author: information.author,
+            benificier: information.benificier,
           }))
         )
       );
@@ -68,11 +76,22 @@ export default function Users({ navigation, drawer }) {
     return unsubscribe;
   }, [navigation]);
 
+  const filterData = (type) => {
+    if (type == "all") {
+      setInformationList(Informations);
+    } else {
+      setInformationList(Informations.filter((info) => info.type == type));
+    }
+  };
+  const [active, setActive] = useState(6);
+
   const filterInformations = (section) => {
     if (section == "all") {
-      setUsersList(userList);
+      setInformationList(Informations);
     } else {
-      setUsersList(userList.filter((info) => info[2] == section));
+      setInformationList(
+        Informations.filter((info) => info[1] == section)
+      );
     }
   };
   return (
@@ -88,8 +107,8 @@ export default function Users({ navigation, drawer }) {
         </TouchableOpacity>
 
         <View style={styles.containerTitle}>
-          <Text style={styles.ScreenEntityTitle}>الأعضاء </Text>
-          <MaterialCommunityIcons name="account-group" size={30} color="#fff" />
+          <Text style={styles.ScreenEntityTitle}>قسم المعلومات </Text>
+          <FontAwesome5 name="hand-holding-heart" size={25} color="#fff" />
         </View>
       </View>
       <View style={styles.containerFilter}>
@@ -231,25 +250,30 @@ export default function Users({ navigation, drawer }) {
           </View>
         </TouchableWithoutFeedback>
       </View>
-      <ScrollView style={styles.Content}>
-        {UsersList.map((u) => (
-          <DataContainer
-            key={u[0]}
-            AvatarSize={40}
-            data={u}
-            pic={Man}
-            openFamily={() => openModal(u)}
-          />
-        ))}
-      </ScrollView>
+      <View style={styles.Section}>
+        <ScrollView style={styles.Content}>
+          {InformationsList.map((f) => (
+            <DataContainer
+              key={f.id}
+              AvatarSize={22}
+              data={f}
+              pic={Family}
+              openFamily={() => openModal(f)}
+            />
+          ))}
+        </ScrollView>
+      </View>
       <Toast config={toastConfig} />
       <TouchableOpacity
-        onPress={() => navigation.navigate("AddUser", { showToast })}
+        onPress={() => navigation.navigate("AddInformation", { showToast })}
         style={styles.fab}
       >
         <Icon as={Entypo} name="plus" size={8} color="#fff" />
       </TouchableOpacity>
-      <BottomBar navigation={navigation} />
+      <InformationSectionBottomBar
+        filterData={filterData}
+        navigation={navigation}
+      />
     </View>
   );
 }
@@ -265,23 +289,12 @@ const styles = StyleSheet.create({
   containerTitle: {
     flexDirection: "row",
   },
-  containerFilter: {
-    borderTopRightRadius: 15,
-    borderTopLeftRadius: 15,
-    backgroundColor: "#f5f5f5",
-    width: "100%",
-    flexDirection: "row-reverse",
-    justifyContent: "space-between",
-    paddingTop: 20,
-    padding: 10,
-    paddingLeft: 20,
-    paddingRight: 20,
-  },
+
   filterItem: {
     padding: 6,
     backgroundColor: "#fff",
     borderRadius: 5,
-    minWidth: 50,
+    minWidth: 55,
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
@@ -307,14 +320,23 @@ const styles = StyleSheet.create({
   },
   ScreenEntityTitle: {
     color: "#fff",
-    fontSize: 25,
+    fontSize: 20,
     marginRight: 10,
     fontFamily: "Tajawal-Medium",
   },
 
+  Section: {
+    width: "100%",
+    height: "90%",
+    backgroundColor: "#f5f5f5",
+    borderTopRightRadius: 15,
+    borderTopLeftRadius: 15,
+    display: "flex",
+    alignItems: "center",
+  },
   Content: {
     width: "100%",
-    maxHeight: "76.2%",
+    maxHeight: "84%",
     backgroundColor: "#f5f5f5",
     display: "flex",
     paddingTop: 10,
@@ -342,5 +364,44 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 65,
     right: 10,
+  },
+  containerFilter: {
+    borderTopRightRadius: 15,
+    borderTopLeftRadius: 15,
+    backgroundColor: "#f5f5f5",
+    width: "100%",
+    flexDirection: "row-reverse",
+    justifyContent: "space-between",
+    paddingTop: 20,
+    padding: 5,
+    paddingLeft: 20,
+    paddingRight: 20,
+  },
+  secondFilterContainer: {
+    backgroundColor: "#f5f5f5",
+    width: "100%",
+    flexDirection: "row-reverse",
+    justifyContent: "space-between",
+    padding: 5,
+    paddingLeft: 20,
+    paddingRight: 20,
+  },
+  filterItem: {
+    padding: 6,
+    backgroundColor: "#fff",
+    borderRadius: 5,
+    minWidth: 50,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 1.41,
+    elevation: 3,
+  },
+  filterText: {
+    fontFamily: "Tajawal-Medium",
   },
 });

@@ -6,7 +6,7 @@ import { Icon } from "native-base";
 import { Ionicons, FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 
 export default function FamilyInfo({ navigation, title, data }) {
-  let date=new Date(data.signupDate)
+  let date = new Date(data.signupDate);
   return (
     <View style={styles.InfosContainer}>
       <View style={styles.Info}>
@@ -42,7 +42,7 @@ export default function FamilyInfo({ navigation, title, data }) {
         <Icon as={FontAwesome5} size={6} color="#348578" name="shopping-bag" />
       </View>
       <View style={styles.Info}>
-        <Text style={styles.InfoText}>الوسيط الاجتماعي : {data.wasseet}  </Text>
+        <Text style={styles.InfoText}>الوسيط الاجتماعي : {data.wasseet} </Text>
         <Icon as={FontAwesome} size={6} color="#348578" name="users" />
       </View>
       <View style={styles.Info}>
@@ -51,18 +51,14 @@ export default function FamilyInfo({ navigation, title, data }) {
       </View>
       <View style={styles.Info}>
         <Text style={styles.InfoText}>
-          تاريخ التسجيل : {date.getFullYear() + "-"+(date.getMonth()+1)+"-"+date.getDate()}
+          تاريخ التسجيل :{" "}
+          {date.getFullYear() +
+            "-" +
+            (date.getMonth() + 1) +
+            "-" +
+            date.getDate()}
         </Text>
         <Icon as={FontAwesome} size={6} color="#348578" name="calendar" />
-      </View>
-      <View style={styles.Info}>
-        <Text style={styles.InfoText}>معلومات اخرى : لا يوجد</Text>
-        <Icon
-          as={Ionicons}
-          size={6}
-          color="#348578"
-          name="information-circle"
-        />
       </View>
     </View>
   );

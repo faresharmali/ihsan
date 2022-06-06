@@ -1,7 +1,8 @@
-const api = "http://192.168.100.21:3000/reports";
+const api = "http://192.168.100.21:3000/informations";
 const axios = require("axios");
 
-export const CreateReport = async (data) => {
+
+export const CreateInformation = async (data) => {
     try {
       const res = await axios.post(api + "/add", data, {
         headers: {
@@ -14,9 +15,7 @@ export const CreateReport = async (data) => {
       console.error("error", e);
     }
   };
-
-
-  export const getReports = async () => {
+  export const getInformations = async () => {
     try {
       const res = await axios.get(api, {
         headers: {

@@ -19,6 +19,7 @@ import Kofal from "../AdministrationSection/kofal/Kofal.jsx";
 import Orphans from "../AdministrationSection/Orphans/Orpahans.jsx";
 import AdminProfile from "../Profiles/adminProfile.jsx";
 import AddDonator from "../../Forms/AddDonator.jsx";
+import KidProfile from "../AdministrationSection/Famillies/kidProfile.jsx";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
@@ -96,6 +97,11 @@ export default function Administration({ navigation }) {
         options={TransitionFromBottom}
         name="AddDonator"
         component={AddDonator}
+      />
+      <Stack.Screen
+        options={scaleFromCenter}
+        name="KidProfile"
+        component={KidProfile}
       />
     </Stack.Navigator>
   );

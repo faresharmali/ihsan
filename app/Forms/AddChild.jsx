@@ -15,7 +15,7 @@ import { AddKid } from "../api/family";
 import uuid from "react-native-uuid";
 import ScolaritySwipeable from "../Components/Containers/ScolaritySwipable";
 export default function AddChild({ route, navigation }) {
-  console.log(route.params)
+  console.log("paramssss",route.params.id)
   const dispatch = useDispatch();
   const [ErrorMessageVisible, setErrorMessageVisible] = useState(false);
   const [LevelChoiceVisible, setLevelChoiceVisible] = useState(false);

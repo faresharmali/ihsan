@@ -56,15 +56,16 @@ export default function AddUser({ route, navigation }) {
     fontSize: 14,
   };
   let jobs = [
+    { title: "قسم الادارة" },
     { title: "قسم المالية" },
-    { title: "قسم الققة" },
+    { title: "قسم القفة" },
+    { title: "موزع القفة" },
     { title: "قسم الأيتام" },
     { title: "قسم التعليم" },
     { title: "قسم الصحة" },
     { title: "وسيط اجتماعي" },
-    { title: "قسم الادارة" },
-    { title: "قسم الأنشطة الخيرية" },
     { title: "قسم الأرامل" },
+    { title: "قسم الأنشطة الخيرية" },
   ];
   const ChooseJob = (dp) => {
     SetErrors({ ...errors, job: false });

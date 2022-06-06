@@ -48,6 +48,7 @@ export default function Login({ navigation, PageHandler, SetloggedInUser }) {
       try {
         disableBtn(true);
         const response = await LogUser(userInput);
+        console.log(response)
         disableBtn(false);
         if (response.ok) {
           await AsyncStorage.setItem(

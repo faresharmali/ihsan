@@ -14,30 +14,28 @@ import {
   Ionicons,
   AntDesign,
 } from "@expo/vector-icons";
-import Family from "../../../../assets/avatars/family.png";
-import FamilyInfo from "./FamilyInfo";
-import Kids from "./Kids";
+import Family from "../../../../assets/icons/child.png";
+import KidInfo from "./Kidinfo";
 import icon from "../../../../assets/icons/information.png";
 import store from "../../../store";
 import DataContainer from "../../../Components/DataContainer";
 import { useSelector } from "react-redux";
 import Toast from "react-native-toast-message";
 import toastConfig from "../../../Components/ToastConfiguration";
-export default function FamilyScreen({ route, navigation }) {
+export default function KidProfile({ route, navigation }) {
+  const { kid } = route.params;
   const [section, setSection] = useState("infos");
   const [refresh, setRefresh] = useState(false);
-  let family = useSelector(
-    (state) => state.Families.filter((f) => f._id == route.params._id)[0]
+
+  let Benifits = useSelector((state) => state.Informations).filter(
+    (info) =>
+      info.kids.some((kid) => kid.id === route.params.kid.id) &&
+      info.type == "benefit"
   );
   let Demands = useSelector((state) => state.Informations).filter(
     (info) =>
-      info.famillies.some((family) => family.id === route.params.id) &&
+      info.kids.some((kid) => kid.id === route.params.kid.id) &&
       info.type == "demand"
-  );
-  let Benifits = useSelector((state) => state.Informations).filter(
-    (info) =>
-      info.famillies.some((family) => family.id === route.params.id) &&
-      info.type == "benefit"
   );
 
   store.subscribe(() => {
@@ -50,9 +48,7 @@ export default function FamilyScreen({ route, navigation }) {
       text2: " تمت اضافة الأبن بنجاح  👋",
     });
   };
-  const viewKid = (kid) => {
-    navigation.navigate("KidProfile", { kid, showToast });
-  };
+
   return (
     <View style={styles.container}>
       <StatusBar style="light" />
@@ -68,20 +64,14 @@ export default function FamilyScreen({ route, navigation }) {
           />
         </View>
         <Image style={styles.EntityImage} source={Family} />
-        <Text
-          style={styles.EntityTitle}
-        >{`عائلة ${family.motherFullName} ارملة ${family.fatherFirstName}  ${family.fatherLastName}`}</Text>
+        <Text style={styles.EntityTitle}>{`${kid.name}  ${kid.lastName}`}</Text>
         <View style={styles.Navigation}>
           <TouchableOpacity onPress={() => setSection("infos")}>
             <View style={styles.NavigationItem}>
               <Text style={styles.NavigationItemText}>معلومات</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => setSection("children")}>
-            <View style={styles.NavigationItem}>
-              <Text style={styles.NavigationItemText}>الأبناء</Text>
-            </View>
-          </TouchableOpacity>
+
           <TouchableOpacity onPress={() => setSection("demands")}>
             <View style={styles.NavigationItem}>
               <Text style={styles.NavigationItemText}>طلبات</Text>
@@ -95,26 +85,7 @@ export default function FamilyScreen({ route, navigation }) {
         </View>
       </View>
 
-      {section == "children" && (
-        <>
-          <ScrollView style={styles.Content}>
-            <Kids
-              kids={family.kids}
-              lastName={family.fatherLastName}
-              viewKid={viewKid}
-            />
-          </ScrollView>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("AddChild", { ...route.params, showToast })
-            }
-            style={styles.Fab}
-          >
-            <Icon color="#fff" as={<AntDesign name="plus" />} size="sm" />
-          </TouchableOpacity>
-        </>
-      )}
-      {section == "infos" && <FamilyInfo data={family} />}
+      {section == "infos" && <KidInfo data={kid} />}
       {section == "demands" && (
         <ScrollView style={styles.Content}>
           {Demands.map((u) => (
@@ -169,6 +140,7 @@ const styles = StyleSheet.create({
   Navigation: {
     width: "90%",
     flexDirection: "row-reverse",
+    justifyContent: "center",
     backgroundColor: "#fff",
     borderRadius: 10,
     shadowColor: "#000",
@@ -182,10 +154,10 @@ const styles = StyleSheet.create({
   NavigationItem: {
     height: "100%",
     justifyContent: "center",
-    width: 80,
     margin: 5,
     marginTop: 0,
     marginBottom: 0,
+    width: 100,
     alignItems: "center",
   },
 

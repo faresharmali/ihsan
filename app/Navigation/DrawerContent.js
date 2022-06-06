@@ -19,9 +19,13 @@ import {
 import { Icon } from "native-base";
 import Logo from "../../assets/Logo3.png";
 import { useSelector } from "react-redux";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function DrawerContent(props) {
   let LoggedUser = useSelector((state) => state.Auth);
+  const logout = () => {
+    console.log(props);
+  };
   return (
     <View style={styles.container}>
       <View style={styles.userInfoSection}>
@@ -169,11 +173,11 @@ export default function DrawerContent(props) {
           )}
           labelStyle={styles.label}
           onPress={() => {
-            props.navigation.navigate("venteetachat");
+            props.navigation.navigate("InformationSection");
           }}
         />
       </Drawer.Section>
-      <TouchableOpacity style={styles.logoutContainer}>
+      <TouchableOpacity onPress={logout} style={styles.logoutContainer}>
         <Icon
           style={styles.logoutIcon}
           as={<MaterialCommunityIcons name="logout" />}
@@ -269,7 +273,7 @@ const styles = StyleSheet.create({
     flexDirection: "row-reverse",
     alignItems: "center",
     padding: 10,
-    paddingTop:5
+    paddingTop: 5,
   },
   logoutIcon: {
     color: "#348578",

@@ -23,8 +23,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function DrawerContent(props) {
   let LoggedUser = useSelector((state) => state.Auth);
-  const logout = () => {
-    console.log(props);
+  const logout = async () => {
+    await AsyncStorage.removeItem("LoggedUser");
+
+    props.pageHandler(0);
   };
   return (
     <View style={styles.container}>
@@ -176,14 +178,20 @@ export default function DrawerContent(props) {
             props.navigation.navigate("InformationSection");
           }}
         />
-      </Drawer.Section>
-      <TouchableOpacity onPress={logout} style={styles.logoutContainer}>
-        <Icon
-          style={styles.logoutIcon}
-          as={<MaterialCommunityIcons name="logout" />}
+        <DrawerItem
+          label="تسجيل الخروج"
+          icon={() => (
+            <Icon
+              style={styles.icon}
+              as={<MaterialCommunityIcons name="logout" />}
+            />
+          )}
+          labelStyle={styles.label}
+          onPress={() => {
+            logout();
+          }}
         />
-        <Text style={styles.logoutText}>تسجيل الخروج</Text>
-      </TouchableOpacity>
+      </Drawer.Section>
     </View>
   );
 }

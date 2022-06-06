@@ -21,7 +21,7 @@ export default function Dashboard(props) {
         <Drawer.Navigator
           drawerPosition="right"
           drawerContent={(prop) => (
-            <DrawerContent {...prop} pageHandler={props.pageHandler} />
+            <DrawerContent {...prop}  pageHandler={props.PageHandler} />
           )}
           screenOptions={{ headerShown: false }}
           initialRouteName="InformationSection"

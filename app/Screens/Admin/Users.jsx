@@ -32,10 +32,18 @@ export default function Users({ navigation, drawer }) {
     });
   };
   let userList = useSelector((state) => state.users);
-
   useEffect(() => {
-    setUsersList(userList);
+    if(filteringSection=="all"){
+
+      setUsersList(userList);
+    }else{
+      setUsersList(
+        userList.filter((info) => info[2] == filteringSection)
+      );
+    }
   }, [userList]);
+
+ 
   const showToast = () => {
     Toast.show({
       type: "success",

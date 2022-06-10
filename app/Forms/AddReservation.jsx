@@ -3,38 +3,10 @@ import React, { useState } from "react";
 import { Input, Stack, Icon } from "native-base";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { Button } from "react-native-paper";
-import { useDispatch } from "react-redux";
-import store from "../store";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import { CreateReservation } from "../api/user";
+import uuid from "react-native-uuid";
 export default function AddReservation({ route, navigation }) {
-  const myAction = () => {
-    return {
-      type: "AddChild",
-      id: route.params.id,
-    };
-  };
-  let dispatch = useDispatch();
-  const styling = {
-    borderColor: "#000",
-    borderWidth: 0.5,
-  };
-  const add = async () => {
-    try {
-      const response = await CreateReservation({
-        identifier: "id",
-        description: "اجتماع قسم المالية",
-        date: "25/08/2025",
-        starttime: "10:30",
-        endtime: "11:30",
-      });
-      if(response.ok){
-        alert("ok")
-      }else{
-        alert("nah")
-      }
-    } catch (e) {}
-  };
   const [startTime, setstartTime] = useState("");
   const [endTime, setendTime] = useState("");
   const [date, setdate] = useState("");
@@ -42,6 +14,8 @@ export default function AddReservation({ route, navigation }) {
   const [showTimePicker, setshowTimePicker] = useState(false);
   const [showTimePicker2, setshowTimePicker2] = useState(false);
   const [showDatePicker, setshowDatePicker] = useState(false);
+  const [time, setTime] = useState(null);
+  const [DateObject, setDateObject] = useState(null);
 
   const HandleStartTime = (date) => {
     if (date.nativeEvent.timestamp) {
@@ -49,6 +23,7 @@ export default function AddReservation({ route, navigation }) {
       const minutes = new Date(date.nativeEvent.timestamp).getMinutes();
       let startTime = hours + ":" + minutes;
       setstartTime(startTime);
+      setTime({ ...time, start: { hours, minutes } });
     }
 
     setshowTimePicker(false);
@@ -60,19 +35,24 @@ export default function AddReservation({ route, navigation }) {
       const minutes = new Date(MyDate).getMinutes();
       let startTime = hours + ":" + minutes;
       setendTime(startTime);
+      setTime({ ...time, end: { hours, minutes } });
     }
     setshowTimePicker2(false);
   };
   const HandleDate = (date) => {
     if (date.nativeEvent.timestamp) {
       let MyDate = new Date(date.nativeEvent.timestamp);
-      setdate(
-        MyDate.getFullYear() +
-          "-" +
-          (MyDate.getMonth() + 1) +
-          "-" +
-          MyDate.getDate()
-      );
+      setDateObject(MyDate);
+      let month =
+        (MyDate.getMonth() + 1 + "").length > 1
+          ? MyDate.getMonth() + 1 + ""
+          : "0" + (MyDate.getMonth() + 1);
+      let day =
+        (MyDate.getDate() + "").length > 1
+          ? MyDate.getDate() + ""
+          : "0" + MyDate.getDate();
+
+      setdate(MyDate.getFullYear() + "-" + month + "-" + day);
     } else {
     }
     setshowDatePicker(false);
@@ -81,6 +61,28 @@ export default function AddReservation({ route, navigation }) {
     setReason(e);
   };
 
+  const add = async () => {
+    try {
+      const response = await CreateReservation({
+        id: uuid.v4(),
+        description: Reason,
+        date: DateObject,
+        time: JSON.stringify(time),
+        DateString: date,
+      });
+      if (response.ok) {
+        navigation.goBack();
+      } else {
+        alert("nah");
+      }
+    } catch (e) {}
+  };
+  const styling = {
+    borderColor: "#000",
+    borderWidth: 0.5,
+    fontFamily: "Tajawal-Medium",
+    fontSize: 14,
+  };
   return (
     <View style={styles.Container}>
       <View style={styles.TitleContainer}>

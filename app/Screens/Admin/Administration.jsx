@@ -27,7 +27,7 @@ const scaleFromCenter = { ...TransitionPresets.ScaleFromCenterAndroid };
 export default function Administration({ navigation }) {
   return (
     <Stack.Navigator
-      initialRouteName="Users"
+      initialRouteName="Bureau"
       screenOptions={{
         gestureEnabled: true,
         gestureDirection: "vertical",

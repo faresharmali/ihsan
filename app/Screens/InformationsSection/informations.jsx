@@ -25,10 +25,9 @@ export default function Informations({ navigation, drawer }) {
   let Informations = useSelector((state) => state.Informations);
 
   useEffect(() => {
-    if(filteringSection=="all"){
-
+    if (filteringSection == "all") {
       setInformationList(Informations);
-    }else{
+    } else {
       setInformationList(
         Informations.filter((info) => info[1] == filteringSection)
       );
@@ -89,9 +88,7 @@ export default function Informations({ navigation, drawer }) {
     if (section == "all") {
       setInformationList(Informations);
     } else {
-      setInformationList(
-        Informations.filter((info) => info[1] == section)
-      );
+      setInformationList(Informations.filter((info) => info[1] == section));
     }
   };
   return (

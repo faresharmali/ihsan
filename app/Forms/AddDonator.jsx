@@ -13,7 +13,14 @@ import { Button } from "react-native-paper";
 import Swipable from "../Components/Containers/swipable";
 import { useSelector } from "react-redux";
 import { CreateDonator } from "../api/user";
+import MultipleOptionSwipable from "../Components/Containers/MultipleOptionSwipable";
+import uuid from "react-native-uuid";
+
 export default function AddDonator({ route, navigation }) {
+  const [FamilyPlaceholder, setFamilyPlaceholder] =
+    useState(" العائلات المكفولة");
+  const [isFamiltPanelActive, setIsFamiltPanelActive] = useState(false);
+  const [selectedFamilies, setselectedFamilies] = useState([]);
   const [ErrorMessageVisible, setErrorMessageVisible] = useState(false);
   const [isPanelActive, setIsPanelActive] = useState(false);
   const [isUsersPannel, setisUsersPannel] = useState(false);
@@ -28,18 +35,22 @@ export default function AddDonator({ route, navigation }) {
     user: false,
   });
   const [userInfos, setuserInfos] = useState({
+    id: uuid.v4(),
     name: "",
     phone: "",
     job: "",
     user: "",
   });
+  const Famillies = useSelector((state) => state.Families);
+
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
       () => {
-        if (isPanelActive || isUsersPannel) {
+        if (isPanelActive || isUsersPannel || isFamiltPanelActive) {
           setIsPanelActive(false);
           setisUsersPannel(false);
+          setIsFamiltPanelActive(false);
           return true;
         } else {
           return false;
@@ -47,7 +58,7 @@ export default function AddDonator({ route, navigation }) {
       }
     );
     return () => backHandler.remove();
-  }, [isPanelActive, isUsersPannel]);
+  }, [isPanelActive, isUsersPannel, isFamiltPanelActive]);
 
   const handleUserInput = (text, name) => {
     setErrorMessageVisible(false);
@@ -116,8 +127,10 @@ export default function AddDonator({ route, navigation }) {
     if (validate()) {
       const res = await CreateDonator({
         ...userInfos,
+
         type: DonatorType,
         job: DonatorType == "kafel" ? "كافل" : userInfos.job,
+        famillies: DonatorType == "kafel" ? selectedFamilies : [],
       });
       if (res.ok) {
         route.params.showToast();
@@ -127,6 +140,29 @@ export default function AddDonator({ route, navigation }) {
     } else {
       setErrorMessage("كل الخانات اجبارية");
       setErrorMessageVisible(true);
+    }
+  };
+  const openFamilyPannel = () => {
+    Keyboard.dismiss();
+    SetErrors({ ...errors, selections: false });
+
+    setIsFamiltPanelActive(true);
+    setshowButton(false);
+  };
+  const getSelectedData = (data, type) => {
+    let overFlow = data.length > 2 ? `... و ${data.length - 2} اخرين` : "";
+
+    if (data.length > 0) {
+      setFamilyPlaceholder(
+        data
+          .map((d) => " عائلة " + d.fatherLastName + " ")
+          .slice(0, 2)
+          .join(",") + overFlow
+      );
+      setselectedFamilies(data.map((o) => ({ name: o.title, id: o.id })));
+    } else {
+      setselectedFamilies([]);
+      setFamilyPlaceholder("العائلات المكفولة");
     }
   };
   return (
@@ -252,6 +288,24 @@ export default function AddDonator({ route, navigation }) {
             <Text style={styles.InputText}>{user} </Text>
           </View>
         </TouchableWithoutFeedback>
+        {DonatorType == "kafel" && (
+          <TouchableWithoutFeedback onPress={() => openFamilyPannel()}>
+            <View
+              style={{
+                ...styles.dateContainer,
+                borderColor: errors.selections ? "#c21a0e" : "grey",
+              }}
+            >
+              <Icon
+                as={<MaterialIcons name="lock" />}
+                size={5}
+                ml="2"
+                color="#348578"
+              />
+              <Text style={styles.InputText}> {FamilyPlaceholder}</Text>
+            </View>
+          </TouchableWithoutFeedback>
+        )}
       </Stack>
       {ErrorMessageVisible && (
         <View style={styles.ErrorMessage}>
@@ -264,6 +318,7 @@ export default function AddDonator({ route, navigation }) {
           <Text style={{ fontSize: 16, marginLeft: 10 }}>اضافة</Text>
         </Button>
       )}
+
       <Swipable
         title="اختيار القسم"
         ChooseJob={ChooseJob}
@@ -278,6 +333,15 @@ export default function AddDonator({ route, navigation }) {
         data={allUSers}
         isPanelActive={isUsersPannel}
         setIsPanelActive={setisUsersPannel}
+        setshowButton={setshowButton}
+      />
+      <MultipleOptionSwipable
+        type={"family"}
+        title="العائلات المستفيدة"
+        getSelectedData={getSelectedData}
+        data={Famillies.map((o) => ({ ...o, title: o.fatherLastName }))}
+        isPanelActive={isFamiltPanelActive}
+        setIsPanelActive={setIsFamiltPanelActive}
         setshowButton={setshowButton}
       />
     </View>

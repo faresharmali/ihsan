@@ -5,6 +5,8 @@ import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { Button } from "react-native-paper";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import { CreateReservation } from "../api/user";
+import { useSelector } from "react-redux";
+
 import uuid from "react-native-uuid";
 export default function AddReservation({ route, navigation }) {
   const [startTime, setstartTime] = useState("");
@@ -16,6 +18,7 @@ export default function AddReservation({ route, navigation }) {
   const [showDatePicker, setshowDatePicker] = useState(false);
   const [time, setTime] = useState(null);
   const [DateObject, setDateObject] = useState(null);
+  let Meetings = useSelector((state) => state.Meetings);
 
   const HandleStartTime = (date) => {
     if (date.nativeEvent.timestamp) {
@@ -62,6 +65,7 @@ export default function AddReservation({ route, navigation }) {
   };
 
   const add = async () => {
+  
     try {
       const response = await CreateReservation({
         id: uuid.v4(),
@@ -73,7 +77,7 @@ export default function AddReservation({ route, navigation }) {
       if (response.ok) {
         navigation.goBack();
       } else {
-        alert("nah");
+        alert("error");
       }
     } catch (e) {}
   };
@@ -83,6 +87,7 @@ export default function AddReservation({ route, navigation }) {
     fontFamily: "Tajawal-Medium",
     fontSize: 14,
   };
+
   return (
     <View style={styles.Container}>
       <View style={styles.TitleContainer}>

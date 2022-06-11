@@ -33,17 +33,13 @@ export default function Users({ navigation, drawer }) {
   };
   let userList = useSelector((state) => state.users);
   useEffect(() => {
-    if(filteringSection=="all"){
-
+    if (filteringSection == "all") {
       setUsersList(userList);
-    }else{
-      setUsersList(
-        userList.filter((info) => info[2] == filteringSection)
-      );
+    } else {
+      setUsersList(userList.filter((info) => info[2] == filteringSection));
     }
   }, [userList]);
 
- 
   const showToast = () => {
     Toast.show({
       type: "success",
@@ -79,6 +75,12 @@ export default function Users({ navigation, drawer }) {
   const filterInformations = (section) => {
     if (section == "all") {
       setUsersList(userList);
+    } else if (section == "قسم الأيتام") {
+      setUsersList(
+        userList.filter(
+          (info) => info[2] == section || info[2] == "وسيط اجتماعي"
+        )
+      );
     } else {
       setUsersList(userList.filter((info) => info[2] == section));
     }

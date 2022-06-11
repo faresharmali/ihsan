@@ -16,7 +16,7 @@ export default function OrpahnsSectionBottomBar(props) {
     <View style={styles.Container}>
       <View style={styles.BottomBar}>
         <View style={styles.itemContainer}>
-          <TouchableOpacity onPress={() => navigation.navigate("Members")}>
+          <TouchableOpacity onPress={() => navigation.navigate("OrpahnsMembers")}>
             <View style={styles.bottomBarITem}>
               <Icon
                 as={MaterialCommunityIcons}
@@ -28,7 +28,7 @@ export default function OrpahnsSectionBottomBar(props) {
               <Text style={styles.bottomBarITemText}>الأعضاء</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate("Families")}>
+          <TouchableOpacity onPress={() => navigation.navigate("OrpahnsFamilies")}>
             <View style={styles.bottomBarITem}>
               <Icon
                 as={MaterialIcons}
@@ -52,10 +52,10 @@ export default function OrpahnsSectionBottomBar(props) {
                 size={4}
               />
 
-              <Text style={styles.bottomBarITemText}>الكفال</Text>
+              <Text style={styles.bottomBarITemText}>المحسنين</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate("Bureau")}>
+          <TouchableOpacity onPress={() => navigation.navigate("OrpahnsBureau")}>
             <View style={styles.bottomBarITem}>
               <Icon as={FontAwesome} name="building" color={"#ffff"} size={4} />
 
@@ -71,7 +71,7 @@ export default function OrpahnsSectionBottomBar(props) {
               <Text style={styles.bottomBarITemText}>الكفالة</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate("Orphans")}>
+          <TouchableOpacity onPress={() => navigation.navigate("OrphansList")}>
             <View style={styles.bottomBarITem}>
               <Icon as={FontAwesome5} name="child" color={"#fff"} size={4} />
 

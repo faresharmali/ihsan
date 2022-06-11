@@ -25,7 +25,7 @@ export default function OrpahnsDonators({ navigation, drawer }) {
     navigation.navigate("Family", data);
   };
   let Donators = useSelector((state) => state.Donators).filter(
-    (donator) => donator.type == "kafel"
+    (donator) => donator[2] == "قسم الأيتام"
   );
   console.log(Donators);
   const dispatch = useDispatch();
@@ -67,7 +67,7 @@ export default function OrpahnsDonators({ navigation, drawer }) {
         </TouchableOpacity>
 
         <View style={styles.containerTitle}>
-          <Text style={styles.ScreenEntityTitle}>الكفال : قسم الأيتام </Text>
+          <Text style={styles.ScreenEntityTitle}>المحسنين : قسم الأيتام </Text>
           <FontAwesome5 name="hand-holding-heart" size={25} color="#fff" />
         </View>
       </View>

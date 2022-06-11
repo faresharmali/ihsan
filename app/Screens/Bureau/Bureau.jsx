@@ -11,7 +11,6 @@ import React, { useEffect, useState } from "react";
 import { Icon } from "native-base";
 import { MaterialCommunityIcons, Entypo, AntDesign } from "@expo/vector-icons";
 import BottomBar from "../../Navigation/BottomBar";
-import { LocaleConfig, Agenda } from "react-native-calendars";
 import Toast from "react-native-toast-message";
 import toastConfig from "../../Components/ToastConfiguration";
 import { useSelector } from "react-redux";
@@ -20,60 +19,16 @@ import { useDispatch } from "react-redux";
 
 export default function Bureau({ navigation, drawer }) {
   const [active, setActive] = useState(6);
-  const [filteringSection, setfilteringSection] = useState("all");
+  const [MeetingList, setMeetingList] = useState([]);
+  const [AllMeetingList, setAllMeetingList] = useState([]);
 
-  LocaleConfig.locales["ar"] = {
-    monthNames: [
-      "يناير",
-      "فبراير",
-      "مارس",
-      "إبريل",
-      "مايو",
-      "يونيو",
-      "يوليو",
-      "أغسطس",
-      "سبتمبر",
-      "أكتوبر",
-      "نوفمبر",
-      "ديسمبر",
-    ],
-    monthNamesShort: [
-      "يناير",
-      "فبراير",
-      "مارس",
-      "إبريل",
-      "مايو",
-      "يونيو",
-      "يوليو",
-      "أغسطس",
-      "سبتمبر",
-      "أكتوبر",
-      "نوفمبر",
-      "ديسمبر",
-    ],
-    dayNames: [
-      "اﻷحد",
-      "اﻷثنين",
-      "الثلاثاء",
-      "اﻷربعاء",
-      "الخميس",
-      "الجمعة",
-      "السبت",
-    ],
-    dayNamesShort: [
-      "اﻷحد",
-      "اﻷثنين",
-      "الثلاثاء",
-      "اﻷربعاء",
-      "الخميس",
-      "الجمعة",
-      "السبت",
-    ],
-    today: "اليوم",
-  };
-  LocaleConfig.defaultLocale = "ar";
   let Meetings = useSelector((state) => state.Meetings);
-  console.log(Meetings);
+  useEffect(() => {
+    setMeetingList(Meetings);
+    setAllMeetingList(Meetings);
+    console.log("meets", Meetings);
+  }, [Meetings]);
+
   const dispatch = useDispatch();
   const updateState = (data) => {
     return {
@@ -92,6 +47,7 @@ export default function Bureau({ navigation, drawer }) {
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", async () => {
       const res = await getReservations();
+      setActive(6);
       dispatch(
         updateState(
           res.data.meetings
@@ -139,11 +95,48 @@ export default function Bureau({ navigation, drawer }) {
       </View>
     );
   };
-  const filterInformations = (section) => {
-    if (section == "all") {
-      setUsersList(userList);
-    } else {
-      setUsersList(userList.filter((info) => info[2] == section));
+  const filterInformations = (filter) => {
+    if (filter == "all") {
+      setMeetingList(AllMeetingList);
+    } else if (filter == "day") {
+      console.log(
+        AllMeetingList.filter(
+          (meet) => new Date(meet.date) >= new Date().setHours(0, 0, 0, 0)
+        )
+      );
+      setMeetingList(
+        AllMeetingList.filter(
+          (meet) =>
+            new Date(meet.date).setHours(0, 0, 0, 0) ==
+            new Date().setHours(0, 0, 0, 0)
+        )
+      );
+    } else if (filter == "week") {
+      let date = new Date();
+      let MaxDate = new Date();
+      MaxDate.setDate(MaxDate.getDate() + 5);
+      setMeetingList(
+        AllMeetingList.filter(
+          (meet) =>
+            new Date(meet.date).setHours(0, 0, 0, 0) >=
+              date.setHours(0, 0, 0, 0) &&
+            new Date(meet.date).setHours(0, 0, 0, 0) <=
+              MaxDate.setHours(0, 0, 0, 0)
+        )
+      );
+    }else{
+      let date = new Date();
+      let MaxDate = new Date();
+      MaxDate.setDate(MaxDate.getDate() + 30);
+      setMeetingList(
+        AllMeetingList.filter(
+          (meet) =>
+            new Date(meet.date).setHours(0, 0, 0, 0) >=
+              date.setHours(0, 0, 0, 0) &&
+            new Date(meet.date).setHours(0, 0, 0, 0) <=
+              MaxDate.setHours(0, 0, 0, 0)
+        )
+      );
     }
   };
   return (
@@ -170,7 +163,7 @@ export default function Bureau({ navigation, drawer }) {
       <View style={styles.containerFilter}>
         <TouchableWithoutFeedback
           onPress={() => {
-            filterInformations("قسم الادارة");
+            filterInformations("day");
             setActive(1);
           }}
         >
@@ -192,8 +185,7 @@ export default function Bureau({ navigation, drawer }) {
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback
           onPress={() => {
-            filterInformations("قسم الصحة");
-            setfilteringSection("قسم الصحة");
+            filterInformations("week");
             setActive(2);
           }}
         >
@@ -215,8 +207,7 @@ export default function Bureau({ navigation, drawer }) {
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback
           onPress={() => {
-            filterInformations("قسم الأيتام");
-            setfilteringSection("قسم الأيتام");
+            filterInformations("month");
             setActive(3);
           }}
         >
@@ -239,7 +230,6 @@ export default function Bureau({ navigation, drawer }) {
         <TouchableWithoutFeedback
           onPress={() => {
             filterInformations("all");
-            setfilteringSection("all");
             setActive(6);
           }}
         >
@@ -261,13 +251,11 @@ export default function Bureau({ navigation, drawer }) {
         </TouchableWithoutFeedback>
       </View>
       <View style={styles.contentContainer}>
-
-      
-      <ScrollView style={styles.Content}>
-        {Meetings.map((m) => (
-          <Meet item={m} />
-        ))}
-      </ScrollView>
+        <ScrollView style={styles.Content}>
+          {MeetingList.map((m) => (
+            <Meet item={m} />
+          ))}
+        </ScrollView>
       </View>
       <TouchableOpacity
         onPress={() => navigation.navigate("AddReservation", { showToast })}
@@ -315,14 +303,14 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     backgroundColor: "#f5f5f5",
-    paddingBottom:30,
-    position:"relative"
+    paddingBottom: 30,
+    position: "relative",
   },
   Content: {
     width: "100%",
     maxHeight: "78%",
     backgroundColor: "#f5f5f5",
-    paddingBottom:200,
+    paddingBottom: 200,
   },
   menuContainer: {
     width: 35,

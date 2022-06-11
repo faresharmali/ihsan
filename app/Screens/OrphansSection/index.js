@@ -6,7 +6,7 @@ import {
 import OrpahnsDonators from "./Donators.jsx";
 import Families from "./Families.jsx";
 import Members from "./Members.jsx";
-import Bureau from "./Bureau";
+import Bureau from "../Bureau/Bureau.jsx";
 import AddReservation from "../../Forms/AddReservation.jsx";
 import Family from "../AdministrationSection/Famillies/Family"
 import AdminProfile from "../Profiles/adminProfile";
@@ -33,15 +33,15 @@ export default function OrpahansSection({ navigation }) {
       />
       <Stack.Screen
         options={slideFromRight}
-        name="Families"
+        name="OrpahnsFamilies"
         component={Families}
       />
       <Stack.Screen
         options={slideFromRight}
-        name="Members"
+        name="OrpahnsMembers"
         component={Members}
       />
-      <Stack.Screen options={slideFromRight} name="Bureau" component={Bureau} />
+      <Stack.Screen options={slideFromRight} name="OrpahnsBureau" component={Bureau} />
       <Stack.Screen
         options={TransitionFromBottom}
         name="AddReservation"

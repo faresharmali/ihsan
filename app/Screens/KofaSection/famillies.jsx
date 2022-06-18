@@ -6,54 +6,43 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import React, { useState,useEffect } from "react";
-import { FontAwesome5, Entypo, MaterialIcons } from "@expo/vector-icons";
-import Family from "../../../assets/icons/user.png";
-import { Input, Icon } from "native-base";
+import React, { useEffect } from "react";
+import { Icon } from "native-base";
+import {
+  MaterialCommunityIcons,
+  Entypo,
+  MaterialIcons,
+} from "@expo/vector-icons";
+import FamilyInfosContainer from "../../Components/Containers/FamilyInfosContainer";
+import Family from "../../../assets/avatars/family.png";
+import { Input, Stack } from "native-base";
 import { useSelector } from "react-redux";
 import toastConfig from "../../Components/ToastConfiguration";
 import Toast from "react-native-toast-message";
-import DataContainer from "../../Components/DataContainer";
-import { getReports } from "../../api/report";
 import { useDispatch } from "react-redux";
-import WidowSectionBottomBar from "../../Navigation/WidowSectionBottomBar";
-
-export default function Reports({ navigation, drawer }) {
-  const dispatch = useDispatch();
-
-  const showToast = () => {
-    Toast.show({
-      type: "success",
-      text1: "نجحت العملية",
-      text2: " تمت اضافة المحسن بنجاح  👋",
-    });
+import { getFamilies } from "../../api/family";
+import KofaSectionBottomBar from "../../Navigation/KofaSectionBottomBar";
+export default function Families({ navigation, drawer }) {
+  const styling = {
+    backgroundColor: "#fff",
+    marginTop: 5,
   };
-
   const openModal = (data) => {
-    navigation.navigate("Family", data);
   };
-  let Reports = useSelector((state) => state.Reports);
+  let MyFamilies = useSelector((state) => state.Families).filter(
+    (f) => f.donation > 0
+  );
+  const dispatch = useDispatch();
   const updateState = (data) => {
     return {
-      type: "updateReportsList",
+      type: "updateFamiliesList",
       data: data,
     };
   };
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", async () => {
-      const res = await getReports();
-      dispatch(
-        updateState(
-          res.data.result.map((user) => ({
-            0: user.title,
-            1: user.type,
-            2: user.benificier,
-            3: user.content,
-            4: user.date,
-            5: user.author,
-          }))
-        )
-      );
+      const res = await getFamilies();
+      dispatch(updateState(res.data.result));
     });
 
     return unsubscribe;
@@ -72,18 +61,18 @@ export default function Reports({ navigation, drawer }) {
         </TouchableOpacity>
 
         <View style={styles.containerTitle}>
-          <Text style={styles.ScreenEntityTitle}>التقارير : قسم الأرامل </Text>
-          <FontAwesome5 name="hand-holding-heart" size={25} color="#fff" />
+          <Text style={styles.ScreenEntityTitle}>العائلات : قسم القفة</Text>
+          <MaterialCommunityIcons name="account-group" size={30} color="#fff" />
         </View>
       </View>
       <View style={styles.Section}>
        
 
         <ScrollView style={styles.Content}>
-          {Reports.map((f) => (
-            <DataContainer
-            key={f[3]}
-              AvatarSize={22}
+          {MyFamilies.map((f) => (
+            <FamilyInfosContainer
+              key={f._id}
+              AvatarSize={40}
               data={f}
               pic={Family}
               openFamily={() => openModal(f)}
@@ -92,13 +81,8 @@ export default function Reports({ navigation, drawer }) {
         </ScrollView>
       </View>
       <Toast config={toastConfig} />
-      <TouchableOpacity
-        onPress={() => navigation.navigate("WidowAddReport", { showToast })}
-        style={styles.fab}
-      >
-        <Icon as={Entypo} name="plus" size={8} color="#fff" />
-      </TouchableOpacity>
-     
+      <KofaSectionBottomBar navigation={navigation} />
+
     </View>
   );
 }
@@ -114,33 +98,7 @@ const styles = StyleSheet.create({
   containerTitle: {
     flexDirection: "row",
   },
-  containerFilter: {
-    width: "100%",
-    flexDirection: "row-reverse",
-    justifyContent: "space-between",
-    padding: 10,
-    paddingLeft: 20,
-    paddingRight: 20,
-    marginTop: 10,
-  },
-  filterItem: {
-    padding: 6,
-    backgroundColor: "#fff",
-    borderRadius: 5,
-    minWidth: 55,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.5,
-    shadowRadius: 1.41,
-    elevation: 3,
-  },
-  filterText: {
-    fontFamily: "Tajawal-Medium",
-  },
+
   ScreenEntity: {
     flexDirection: "row",
     width: "100%",
@@ -185,17 +143,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingLeft: 20,
     paddingRight: 20,
-  },
-  fab: {
-    width: 50,
-    height: 50,
-    backgroundColor: "#348578",
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 25,
-    elevation: 5,
-    position: "absolute",
-    bottom: 65,
-    right: 10,
   },
 });

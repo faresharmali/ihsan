@@ -85,7 +85,7 @@ export default function Members({ navigation, drawer }) {
         </ScrollView>
       </View>
       <Toast config={toastConfig} />
-      <WidowSectionBottomBar navigation={navigation} />
+     
     </View>
   );
 }

@@ -8,7 +8,7 @@ import {
   ScrollView,
 } from "react-native";
 import React, { useState } from "react";
-import { Input, Stack, Icon } from "native-base";
+import { Input, Stack, Icon ,Checkbox} from "native-base";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { Button } from "react-native-paper";
 import { CreateFamily } from "../api/family";
@@ -20,10 +20,12 @@ export default function AddFamily({ route, navigation }) {
   const [ErrorMessage, setErrorMessage] = useState("");
   const [isPanelActive, setIsPanelActive] = useState(false);
   const [showButton, setshowButton] = useState(true);
+  const [kofa, setKofa] = useState(false);
   const [wasseet, setwasseet] = useState("الوسيط الاجتماعي");
   let users = useSelector((state) => state.users).filter(
     (d) => d.job.trim() == "وسيط اجتماعي"
   );
+  console.log("kofa",kofa)
 
   let allUSers = users.map((u) => ({ title: u[0] }));
   const [errors, SetErrors] = useState({
@@ -68,7 +70,7 @@ export default function AddFamily({ route, navigation }) {
   const CreateNewUser = async () => {
     Keyboard.dismiss();
     if (validate()) {
-      const res = await CreateFamily(userInfos);
+      const res = await CreateFamily({...userInfos,kofa});
       if (res.ok) {
         route.params.showToast();
         navigation.goBack();
@@ -315,6 +317,9 @@ export default function AddFamily({ route, navigation }) {
                 <Text style={styles.InputText}>{wasseet} </Text>
               </View>
             </TouchableWithoutFeedback>
+            <Checkbox onChange={(e) => setKofa(e)} value="one" my={2}>
+            <Text style={styles.checkBoxText}>تستفيد من القفة الشهرية</Text>
+          </Checkbox>
           {ErrorMessageVisible && (
             <View style={styles.ErrorMessage}>
               <FontAwesome
@@ -430,5 +435,10 @@ const styles = StyleSheet.create({
     fontFamily: "Tajawal-Medium",
     marginRight: 10,
     fontSize: 13,
+  },
+  checkBoxText: {
+    fontFamily: "Tajawal-Medium",
+    fontSize: 17,
+    marginLeft: 10,
   },
 });

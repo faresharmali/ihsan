@@ -16,20 +16,19 @@ import toastConfig from "../../../Components/ToastConfiguration";
 import Toast from "react-native-toast-message";
 import Kids from "../Famillies/Kids";
 export default function Orphans({ navigation, drawer }) {
-
   const styling = {
     backgroundColor: "#fff",
     marginTop: 5,
   };
   let MyFamilies = useSelector((state) => state.Families);
-  let kids=[]
-  MyFamilies.forEach((f)=>{
-    f.kids.forEach((k)=>{
-      kids.push({...k,lastName:f.fatherLastName})
-    })
-  })
-  console.log(kids)
-    return (
+  let kids = [];
+  MyFamilies.forEach((f) => {
+    f.kids.forEach((k) => {
+      kids.push({ ...k, lastName: f.fatherLastName });
+    });
+  });
+  console.log(kids);
+  return (
     <View style={styles.container}>
       <StatusBar style="dark" />
 
@@ -69,8 +68,7 @@ export default function Orphans({ navigation, drawer }) {
         />
 
         <ScrollView style={styles.Content}>
-        <Kids kids={kids} />
-
+          <Kids kids={kids} />
         </ScrollView>
       </View>
       <Toast config={toastConfig} />

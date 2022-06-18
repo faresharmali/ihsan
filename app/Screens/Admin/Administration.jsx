@@ -8,8 +8,6 @@ import AddUser from "../../Forms/AddUser.jsx";
 import Families from "./Famillies.jsx";
 import AddFamily from "../../Forms/AddFamily.jsx";
 import FamilyScreen from "../AdministrationSection/Famillies/Family.jsx";
-import Informations from "../AdministrationSection/informations/informations.jsx";
-import Activity from "../AdministrationSection/Activities/Activities.jsx";
 import AddChild from "../../Forms/AddChild.jsx";
 import AddInformation from "../../Forms/addInformation.jsx";
 import UserProfile from "./Users/UserProfile.jsx";
@@ -20,14 +18,18 @@ import Orphans from "../AdministrationSection/Orphans/Orpahans.jsx";
 import AdminProfile from "../Profiles/adminProfile.jsx";
 import AddDonator from "../../Forms/AddDonator.jsx";
 import KidProfile from "../AdministrationSection/Famillies/kidProfile.jsx";
+import BottomBar from "../../Navigation/BottomBar.js";
+import KafelProfile from "../Profiles/kafelProfile.jsx";
+import { KeyboardAvoidingView } from "react-native";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
 const scaleFromCenter = { ...TransitionPresets.ScaleFromCenterAndroid };
 export default function Administration({ navigation }) {
   return (
+    <>
     <Stack.Navigator
-      initialRouteName="Bureau"
+      initialRouteName="Kofal"
       screenOptions={{
         gestureEnabled: true,
         gestureDirection: "vertical",
@@ -55,12 +57,7 @@ export default function Administration({ navigation }) {
         name="Family"
         component={FamilyScreen}
       />
-      <Stack.Screen options={slideFromRight} name="Informations">
-        {(props) => <Informations {...props} drawer={navigation} />}
-      </Stack.Screen>
-      <Stack.Screen options={slideFromRight} name="Activities">
-        {(props) => <Activity {...props} drawer={navigation} />}
-      </Stack.Screen>
+    
       <Stack.Screen
         options={TransitionFromBottom}
         name="AddChild"
@@ -80,6 +77,11 @@ export default function Administration({ navigation }) {
         options={TransitionFromBottom}
         name="AdminProfile"
         component={AdminProfile}
+      />
+      <Stack.Screen
+        options={TransitionFromBottom}
+        name="KafelProfile"
+        component={KafelProfile}
       />
       <Stack.Screen options={slideFromRight} name="Bureau" component={Bureau} />
       <Stack.Screen
@@ -104,5 +106,7 @@ export default function Administration({ navigation }) {
         component={KidProfile}
       />
     </Stack.Navigator>
+    </>
+    
   );
 }

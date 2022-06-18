@@ -115,6 +115,7 @@ export default function Families({ navigation, drawer }) {
         <Icon as={Entypo} name="plus" size={8} color="#fff" />
       </TouchableOpacity>
       <BottomBar navigation={navigation} />
+
     </View>
   );
 }

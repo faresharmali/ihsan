@@ -45,7 +45,7 @@ export default function DrawerContent(props) {
           icon={() => (
             <Icon style={styles.icon} as={<MaterialIcons name="home" />} />
           )}
-          label="الرئيسية"
+          label="لوحة التحكم"
           labelStyle={styles.label}
           onPress={() => {
             props.navigation.navigate("Home");

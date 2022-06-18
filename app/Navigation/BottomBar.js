@@ -15,13 +15,15 @@ import {
 } from "@expo/vector-icons";
 import React from "react";
 import styles from "./styles"
+import { useNavigation } from "@react-navigation/native";
 
-export default function BottomBar(props) {
+export default function BottomBar({navigation}) {
+
   return (
     <View style={styles.Container}>
     <View style={styles.BottomBar}>
       <View style={styles.itemContainer}>
-        <TouchableOpacity onPress={() => props.navigation.navigate("Users")}>
+        <TouchableOpacity onPress={() => navigation.navigate("Users")}>
           <View style={styles.bottomBarITem}>
             <Icon
               as={MaterialCommunityIcons}
@@ -34,7 +36,7 @@ export default function BottomBar(props) {
           </View>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => props.navigation.navigate("Famillies")}
+          onPress={() => navigation.navigate("Famillies")}
         >
           <View style={styles.bottomBarITem}>
             <Icon as={MaterialIcons} name="family-restroom" color={"#fff"} size={4} />
@@ -44,7 +46,7 @@ export default function BottomBar(props) {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => props.navigation.navigate("Kofal")}
+          onPress={() => navigation.navigate("Kofal")}
         >
           <View style={styles.bottomBarITem}>
             <Icon
@@ -58,7 +60,7 @@ export default function BottomBar(props) {
           </View>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => props.navigation.navigate("Bureau")}
+          onPress={() => navigation.navigate("Bureau")}
         >
           <View style={styles.bottomBarITem}>
             <Icon
@@ -72,7 +74,7 @@ export default function BottomBar(props) {
           </View>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => props.navigation.navigate("Orphans")}
+          onPress={() => navigation.navigate("Orphans")}
         >
           <View style={styles.bottomBarITem}>
             <Icon

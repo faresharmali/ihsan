@@ -9,17 +9,15 @@ import {
 } from "@expo/vector-icons";
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
-import styles from "./styles"
+import styles from "./styles";
 
 export default function KofaSectionBottomBar(props) {
-  const navigation=useNavigation()
+  const navigation = useNavigation();
   return (
     <View style={styles.Container}>
       <View style={styles.BottomBar}>
         <View style={styles.itemContainer}>
-          <TouchableOpacity
-            onPress={() =>navigation.navigate("Members")}
-          >
+          <TouchableOpacity onPress={() => navigation.navigate("KofaMembers")}>
             <View style={styles.bottomBarITem}>
               <Icon
                 as={MaterialCommunityIcons}
@@ -31,9 +29,7 @@ export default function KofaSectionBottomBar(props) {
               <Text style={styles.bottomBarITemText}>الأعضاء</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("Families")}
-          >
+          <TouchableOpacity onPress={() => navigation.navigate("KofaFamilies")}>
             <View style={styles.bottomBarITem}>
               <Icon
                 as={MaterialIcons}
@@ -46,9 +42,7 @@ export default function KofaSectionBottomBar(props) {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity
-            onPress={() => navigation.navigate("OrpahnsDonators")}
-          >
+          <TouchableOpacity onPress={() => navigation.navigate("KofaDonators")}>
             <View style={styles.bottomBarITem}>
               <Icon
                 as={FontAwesome5}
@@ -57,39 +51,43 @@ export default function KofaSectionBottomBar(props) {
                 size={4}
               />
 
-              <Text style={styles.bottomBarITemText}>الكفال</Text>
+              <Text style={styles.bottomBarITemText}>المحسنين</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate("Bureau")}>
+          <TouchableOpacity onPress={() => navigation.navigate("KofaBureau")}>
             <View style={styles.bottomBarITem}>
               <Icon as={FontAwesome} name="building" color={"#ffff"} size={4} />
 
               <Text style={styles.bottomBarITemText}>المقر</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("DonationsStatus")}
-          >
+          <TouchableOpacity onPress={() => navigation.navigate("Ingredients")}>
             <View style={styles.bottomBarITem}>
-              <Icon as={FontAwesome5} name="child" color={"#fff"} size={4} />
+              <Icon as={FontAwesome} name="list" color={"#fff"} size={4} />
 
               <Text style={styles.bottomBarITemText}>المكونات</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() =>navigation.navigate("Orphans")}
-          >
+          <TouchableOpacity onPress={() => navigation.navigate("Orphans")}>
             <View style={styles.bottomBarITem}>
-              <Icon as={FontAwesome5} name="child" color={"#fff"} size={4} />
+              <Icon
+                as={MaterialCommunityIcons}
+                name="finance"
+                color={"#fff"}
+                size={4}
+              />
 
               <Text style={styles.bottomBarITemText}>المالية</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() =>navigation.navigate("Orphans")}
-          >
+          <TouchableOpacity onPress={() => navigation.navigate("KofaStatus")}>
             <View style={styles.bottomBarITem}>
-              <Icon as={FontAwesome5} name="child" color={"#fff"} size={4} />
+              <Icon
+                as={FontAwesome5}
+                name="shopping-bag"
+                color={"#fff"}
+                size={4}
+              />
 
               <Text style={styles.bottomBarITemText}>الحالة</Text>
             </View>
@@ -99,4 +97,3 @@ export default function KofaSectionBottomBar(props) {
     </View>
   );
 }
-

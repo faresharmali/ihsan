@@ -18,7 +18,6 @@ export default function AddReservation({ route, navigation }) {
   const [showDatePicker, setshowDatePicker] = useState(false);
   const [time, setTime] = useState(null);
   const [DateObject, setDateObject] = useState(null);
-  let Meetings = useSelector((state) => state.Meetings);
 
   const HandleStartTime = (date) => {
     if (date.nativeEvent.timestamp) {

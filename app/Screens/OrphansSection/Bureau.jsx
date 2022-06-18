@@ -71,17 +71,17 @@ export default function Bureau({ navigation, drawer }) {
       text2: " تمت اضافة المعلومة بنجاح  👋",
     });
   };
-  const updateState=(data)=>{
-    return  {
-      type:"setMeetings",
-      data:data
-    }
-  }
-  const dispatch=useDispatch()
+  const updateState = (data) => {
+    return {
+      type: "setMeetings",
+      data: data,
+    };
+  };
+  const dispatch = useDispatch();
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", async () => {
       const res = await getReservations();
-     dispatch(updateState(res.data.result))
+      dispatch(updateState(res.data.result));
     });
 
     return unsubscribe;

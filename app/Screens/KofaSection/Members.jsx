@@ -21,7 +21,7 @@ import { getUsers } from "../../api/user";
 LogBox.ignoreAllLogs();
 export default function Members({ navigation, drawer }) {
   const openModal = (u) => {
-    navigation.navigate("MemberProfile", {
+    navigation.navigate("KofaMemberProfile", {
       ...u,
     });
   };

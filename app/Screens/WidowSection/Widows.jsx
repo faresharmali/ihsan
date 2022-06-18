@@ -76,7 +76,7 @@ export default function Widows({ navigation, drawer }) {
       </View>
       <Toast config={toastConfig} />
 
-      <WidowSectionBottomBar navigation={navigation} />
+     
     </View>
   );
 }

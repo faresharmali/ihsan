@@ -16,7 +16,7 @@ export default function WidowSectionBottomBar(props) {
     <View style={styles.Container}>
       <View style={styles.BottomBar}>
         <View style={styles.itemContainer}>
-          <TouchableOpacity onPress={() => navigation.navigate("Members")}>
+          <TouchableOpacity onPress={() => navigation.navigate("WidowMembers")}>
             <View style={styles.bottomBarITem}>
               <Icon
                 as={MaterialCommunityIcons}
@@ -55,14 +55,14 @@ export default function WidowSectionBottomBar(props) {
               <Text style={styles.bottomBarITemText}>المحسنين</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate("Bureau")}>
+          <TouchableOpacity onPress={() => navigation.navigate("WidowsBureau")}>
             <View style={styles.bottomBarITem}>
               <Icon as={FontAwesome} name="building" color={"#ffff"} size={4} />
 
               <Text style={styles.bottomBarITemText}>المقر</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate("Reports")}>
+          <TouchableOpacity onPress={() => navigation.navigate("WidowReports")}>
             <View style={styles.bottomBarITem}>
               <Icon as={FontAwesome5} name="child" color={"#fff"} size={4} />
 

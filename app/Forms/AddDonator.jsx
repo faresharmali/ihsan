@@ -5,6 +5,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   BackHandler,
+  KeyboardAvoidingView
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { Input, Stack, Icon, Radio } from "native-base";

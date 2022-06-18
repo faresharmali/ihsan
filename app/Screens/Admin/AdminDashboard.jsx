@@ -4,7 +4,6 @@ import {
   Text,
   View,
   TouchableOpacity,
-  Dimensions,
   ScrollView,
 } from "react-native";
 import React, { useState } from "react";
@@ -14,29 +13,29 @@ import {
   Entypo,
   FontAwesome,
   MaterialIcons,
+  FontAwesome5,
+  Ionicons 
 } from "@expo/vector-icons";
-import { useFonts } from "expo-font";
+import { useDispatch } from "react-redux";
 import NumberStat from "../../Components/statistics components/NumberStat";
-import {
-  LineChart,
-  BarChart,
-  PieChart,
-  ProgressChart,
-  ContributionGraph,
-  StackedBarChart,
-} from "react-native-chart-kit";
+import { useEffect } from "react";
+import { getUsers,getDonators } from "../../api/user";
+import { getFamilies } from "../../api/family";
 export default function AdminDashboard({ navigation }) {
-
+  const [usersCount,setUsersNumber]=useState(0)
+  const [KofalNumber,seKofalNumber]=useState(0)
+  const [FamilyNumber,seFamilyNumber]=useState(0)
+  const [DonationFamilyNumber,setDonationFamilyNumber]=useState(0)
   var date = new Date();
   var months = [
-    "يناير",
+    "جانفي",
     "فبراير",
     "مارس",
     "إبريل",
-    "مايو",
-    "يونيو",
-    "يوليو",
-    "أغسطس",
+    "ماي",
+    "جوان",
+    "جويلية",
+    "أوت",
     "سبتمبر",
     "أكتوبر",
     "نوفمبر",
@@ -59,73 +58,49 @@ export default function AdminDashboard({ navigation }) {
     months[date.getMonth()] +
     " , " +
     date.getFullYear();
+    const dispatch = useDispatch();
 
-  const Data = [
-    Math.random() * 10,
-    Math.random() * 10,
-    Math.random() * 10,
-    Math.random() * 10,
-    Math.random() * 10,
-    Math.random() * 10,
-    Math.random() * 10,
-    Math.random() * 10,
-    Math.random() * 10,
-    Math.random() * 10,
-    Math.random() * 10,
-    Math.random() * 10,
-  ];
-  const Data2 = [
-    Math.random() * 100,
-    Math.random() * 100,
-    Math.random() * 100,
-    Math.random() * 100,
-    Math.random() * 100,
-    Math.random() * 100,
-    Math.random() * 100,
-    Math.random() * 100,
-    Math.random() * 100,
-    Math.random() * 100,
-    Math.random() * 100,
-    Math.random() * 100,
-  ];
-  const config = {
-    backgroundGradientFrom: "#fff",
-    backgroundGradientTo: "#fff",
-    decimalPlaces: 1, // optional, defaults to 2dp
-    color: () => `#348578`,
-    labelColor: () => `#348578`,
-    propsForDots: {
-      r: "3",
-      strokeWidth: "1",
-      stroke: "#348578",
-    },
-  };
-  const labels = [
-    "01",
-    "02",
-    "03",
-    "04",
-    "05",
-    "06",
-    "07",
-    "08",
-    "09",
-    "10",
-    "11",
-    "12",
-  ];
-  const ChartStyle = {
-    marginVertical: 8,
-    borderRadius: 16,
-  };
-  const data3 = {
-    labels: labels,
-    datasets: [
-      {
-        data: Data2,
-      },
-    ],
-  };
+    const updateState = (action,data) => {
+      return {
+        type:action,
+        data: data,
+      };
+    };
+    useEffect(async() => {
+      const unsubscribe = navigation.addListener("focus", async () => {
+        let res = await getUsers();
+        dispatch(
+          updateState(
+            "updateUserList",
+            res.data.result.map((user) => ({
+              0: user.name,
+              1: user.phone,
+              2: user.job,
+              ...user,
+            }))
+          )
+        );
+        setUsersNumber(res.data.result.length)
+        res = await getFamilies();
+        dispatch(updateState("updateFamiliesList",res.data.result));
+        setDonationFamilyNumber(res.data.result.filter((f)=>f.donation>0).length)
+        seFamilyNumber(res.data.result.length)
+         res = await getDonators();
+        dispatch(
+          updateState(
+            res.data.result.map((user) => ({
+              0: user.name,
+              1: user.phone,
+              2: user.job,
+              type: user.type,
+            }))
+          )
+        );
+        seKofalNumber(res.data.result.length)
+      });
+      return unsubscribe;
+    }, [navigation]);
+  
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />
@@ -139,61 +114,130 @@ export default function AdminDashboard({ navigation }) {
         <View style={styles.containerTitle}>
           <Text style={styles.ScreenEntityTitle}>{DateString} </Text>
         </View>
-        <MaterialCommunityIcons name="home" size={30} color="#348578" />
-      </View>
-      <View style={styles.StatContainer}>
-        <NumberStat
-          backgroundColor={"red"}
-          number={79}
-          Title={"العائلات"}
-          IconType={FontAwesome}
-          IconName={"group"}
-        />
-        <NumberStat
-          backgroundColor={"red"}
-          number={160}
-          Title={"الأطفال"}
-          IconType={FontAwesome}
-          IconName={"child"}
-        />
-        <NumberStat
-          backgroundColor={"red"}
-          number={75}
-          Title={"الأعضاء"}
-          IconType={MaterialIcons}
-          IconName={"group"}
-        />
-        <NumberStat
-          backgroundColor={"red"}
-          number={35}
-          Title={"الكفال"}
-          IconType={FontAwesome}
-          IconName={"user-secret"}
-        />
+        <MaterialCommunityIcons name="home" size={30} color="#fff" />
       </View>
 
-      <View style={styles.chartContainer}>
-        <LineChart
-          data={{
-            labels: labels,
-            datasets: [{ data: Data }, { data: Data2 }],
-          }}
-          width={Dimensions.get("window").width * 0.9} // from react-native
-          height={200}
-          yAxisInterval={1}
-          chartConfig={config}
-          style={ChartStyle}
-        />
-      </View>
-      <View style={styles.chartContainer}>
-        <BarChart
-          style={ChartStyle}
-          data={data3}
-          width={Dimensions.get("window").width *.9}
-          height={220}
-          chartConfig={config}
-        />
-      </View>
+      <ScrollView contentContainerStyle={styles.Content}>
+        <View style={styles.Section}>
+          <Text style={styles.sectionTitle}> الجمعية :</Text>
+          <View style={styles.StatContainer}>
+            <NumberStat
+              number={usersCount}
+              Title={" الأعضاء "}
+              IconName={"group"}
+              IconType={FontAwesome}
+            />
+            <NumberStat
+              number={400}
+              Title={" المحسنين"}
+              IconName={"charity"}
+              IconType={MaterialCommunityIcons}
+            />
+          </View>
+          <View style={styles.StatContainer}>
+            <NumberStat
+              number={KofalNumber}
+              Title={" الكفال "}
+              IconName={"charity"}
+              IconType={MaterialCommunityIcons}
+            />
+            <NumberStat
+              number={400}
+              Title={" مبلغ الكفالة الاجمالي"}
+              IconName={"donate"}
+              IconType={FontAwesome5}
+            />
+          </View>
+        </View>
+        <View style={styles.Section}>
+          <Text style={styles.sectionTitle}> قسم الكفالة :</Text>
+
+          <View style={styles.StatContainer}>
+            <NumberStat
+              number={400}
+              Title={" الأيتام المسجلين"}
+              IconName={"child"}
+              IconType={FontAwesome}
+            />
+            <NumberStat
+              number={400}
+              Title={" الأيتام المكفولين"}
+              IconName={"child"}
+              IconType={FontAwesome}
+            />
+          </View>
+          <View style={styles.StatContainer}>
+            <NumberStat
+              number={FamilyNumber}
+              Title={" الأسر المسجلة"}
+              IconName={"family-restroom"}
+              IconType={MaterialIcons}
+            />
+            <NumberStat
+              number={DonationFamilyNumber}
+              Title={" الأسر المكفولة"}
+              IconName={"family-restroom"}
+              IconType={MaterialIcons}
+            />
+          </View>
+        </View>
+
+        <View style={styles.Section}>
+          <Text style={styles.sectionTitle}> قسم القفة :</Text>
+
+          <View style={styles.StatContainer}>
+            <NumberStat
+              number={400}
+              Title={" القفف الشهرية"}
+              IconName={"shopping-bag"}
+              IconType={FontAwesome5}
+            />
+            <NumberStat
+              number={400}
+              Title={"حالة القفة"}
+              IconName={"shopping-bag"}
+              IconType={FontAwesome5}
+            />
+          </View>
+        </View>
+
+        <View style={styles.Section}>
+          <Text style={styles.sectionTitle}> قسم التعليم :</Text>
+
+          <View style={styles.StatContainer}>
+            <NumberStat
+              number={400}
+              Title={"المستفيدين من دروس الدعم"}
+              IconName={"school"}
+              IconType={Ionicons }
+            />
+            <NumberStat
+              number={400}
+              Title={"المستفيدين من الكفالة الفكرية"}
+              IconName={"school"}
+              IconType={Ionicons }
+            />
+          </View>
+        </View>
+        <View style={styles.Section}>
+          <Text style={styles.sectionTitle}> قسم الأرامل :</Text>
+
+          <View style={styles.StatContainer}>
+            <NumberStat
+              number={400}
+              Title={"المستفيدين من مشروع"}
+              IconName={""}
+              IconType={""}
+            />
+            <NumberStat
+              number={400}
+              Title={"المستفيدين من الكفالة الفكرية"}
+              IconName={""}
+              IconType={""}
+            />
+          </View>
+        </View>
+      </ScrollView>
     </View>
   );
 }
@@ -201,39 +245,12 @@ export default function AdminDashboard({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
     justifyContent: "flex-start",
     zIndex: 10,
+    backgroundColor: "#348578",
   },
   containerTitle: {
     flexDirection: "row",
-  },
-  containerFilter: {
-    width: "100%",
-    flexDirection: "row-reverse",
-    justifyContent: "space-between",
-    padding: 10,
-    paddingLeft: 20,
-    paddingRight: 20,
-    marginTop: 10,
-  },
-  filterItem: {
-    padding: 6,
-    backgroundColor: "#fff",
-    borderRadius: 5,
-    minWidth: 65,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.5,
-    shadowRadius: 1.41,
-    elevation: 3,
-  },
-  filterText: {
-    fontFamily: "Tajawal-Medium",
   },
   ScreenEntity: {
     flexDirection: "row",
@@ -241,11 +258,11 @@ const styles = StyleSheet.create({
     marginTop: "15%",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingLeft: 20,
-    paddingRight: 20,
+    padding: 20,
+    paddingTop: 0,
   },
   ScreenEntityTitle: {
-    color: "#000",
+    color: "#fff",
     fontSize: 18,
     marginRight: 10,
     fontFamily: "Tajawal-Medium",
@@ -253,12 +270,11 @@ const styles = StyleSheet.create({
 
   Content: {
     width: "100%",
-    maxHeight: "72.5%",
     backgroundColor: "#f5f5f5",
-    display: "flex",
-    paddingTop: 10,
-    paddingLeft: 20,
-    paddingRight: 20,
+    alignItems: "center",
+    borderTopRightRadius: 15,
+    borderTopLeftRadius: 15,
+    minHeight:"90%"
   },
   menuContainer: {
     width: 35,
@@ -272,22 +288,17 @@ const styles = StyleSheet.create({
   },
   StatContainer: {
     flexDirection: "row-reverse",
-    width: "90%",
+    width: "100%",
     justifyContent: "space-between",
     marginTop: 20,
   },
-  chartContainer: {
-    width: "90%",
-    borderRadius: 10,
-    marginTop: 20,
-    backgroundColor: "#fff",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.5,
-    shadowRadius: 1.41,
-    elevation: 3,
+  Section: {
+    width: "100%",
+    padding: 10,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontFamily: "Tajawal-Medium",
+    textAlign: "center",
   },
 });

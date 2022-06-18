@@ -105,7 +105,7 @@ export default function WidowsDonators({ navigation, drawer }) {
       </View>
       <Toast config={toastConfig} />
 
-      <WidowSectionBottomBar navigation={navigation} />
+     
     </View>
   );
 }

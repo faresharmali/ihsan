@@ -15,7 +15,7 @@ import toastConfig from "../../Components/ToastConfiguration";
 import { useSelector } from "react-redux";
 import { getReservations } from "../../api/user";
 import { useDispatch } from "react-redux";
-import BottomBar from "../../Navigation/BottomBar";
+import KofaSectionBottomBar from "../../Navigation/KofaSectionBottomBar";
 export default function Bureau({ navigation, drawer }) {
   const [active, setActive] = useState(6);
   const [MeetingList, setMeetingList] = useState([]);
@@ -264,7 +264,7 @@ export default function Bureau({ navigation, drawer }) {
       </TouchableOpacity>
 
       <Toast config={toastConfig} />
-      <BottomBar navigation={navigation} />
+      <KofaSectionBottomBar navigation={navigation}/>
 
     </View>
   );

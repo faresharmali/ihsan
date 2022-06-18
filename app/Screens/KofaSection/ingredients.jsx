@@ -6,55 +6,57 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesome5, Entypo, MaterialIcons } from "@expo/vector-icons";
-import Family from "../../../assets/icons/user.png";
+import Family from "../../../assets/icons/information.png";
 import { Input, Icon } from "native-base";
 import { useSelector } from "react-redux";
 import toastConfig from "../../Components/ToastConfiguration";
 import Toast from "react-native-toast-message";
-import DataContainer from "../../Components/DataContainer";
-import { getReports } from "../../api/report";
+import IngredientContainer from "../../Components/Containers/IngredientContainer";
 import { useDispatch } from "react-redux";
-import WidowSectionBottomBar from "../../Navigation/WidowSectionBottomBar";
-
-export default function Reports({ navigation, drawer }) {
+import KofaSectionBottomBar from "../../Navigation/KofaSectionBottomBar";
+import { GetIngredients } from "../../api/user";
+export default function Ingredients({ navigation, drawer }) {
   const dispatch = useDispatch();
 
   const showToast = () => {
     Toast.show({
       type: "success",
       text1: "نجحت العملية",
-      text2: " تمت اضافة المحسن بنجاح  👋",
+      text2: " تمت اضافة المكون بنجاح  👋",
     });
   };
 
-  const openModal = (data) => {
-    navigation.navigate("Family", data);
-  };
-  let Reports = useSelector((state) => state.Reports);
+  const openModal = (data) => {};
+  let Ingredients = useSelector((state) => state.Ingredients);
+  console.log("ingredients",Ingredients)
+  let LoggedUser = useSelector((state) => state.Auth);
   const updateState = (data) => {
     return {
-      type: "updateReportsList",
+      type: "updateIngredientList",
       data: data,
     };
   };
+
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", async () => {
-      const res = await getReports();
-      dispatch(
-        updateState(
-          res.data.result.map((user) => ({
-            0: user.title,
-            1: user.type,
-            2: user.benificier,
-            3: user.content,
-            4: user.date,
-            5: user.author,
-          }))
-        )
-      );
+      const res = await GetIngredients(LoggedUser.token);
+        if(res.ok){
+            dispatch(
+                updateState(
+                  res.result.map((ingredient) => ({
+                    0: ingredient.name,
+                    1: ingredient.unite,
+                    2: ingredient.quantity,
+                 
+                  }))
+                )
+              );
+        }
+
     });
+
 
     return unsubscribe;
   }, [navigation]);
@@ -72,17 +74,15 @@ export default function Reports({ navigation, drawer }) {
         </TouchableOpacity>
 
         <View style={styles.containerTitle}>
-          <Text style={styles.ScreenEntityTitle}>التقارير : قسم الأرامل </Text>
+          <Text style={styles.ScreenEntityTitle}>مكونات القفة </Text>
           <FontAwesome5 name="hand-holding-heart" size={25} color="#fff" />
         </View>
       </View>
       <View style={styles.Section}>
-       
-
         <ScrollView style={styles.Content}>
-          {Reports.map((f) => (
-            <DataContainer
-            key={f[3]}
+          {Ingredients.map((f) => (
+            <IngredientContainer
+              key={f.id}
               AvatarSize={22}
               data={f}
               pic={Family}
@@ -93,12 +93,12 @@ export default function Reports({ navigation, drawer }) {
       </View>
       <Toast config={toastConfig} />
       <TouchableOpacity
-        onPress={() => navigation.navigate("WidowAddReport", { showToast })}
+        onPress={() => navigation.navigate("AddIngredient", { showToast })}
         style={styles.fab}
       >
         <Icon as={Entypo} name="plus" size={8} color="#fff" />
       </TouchableOpacity>
-     
+      <KofaSectionBottomBar navigation={navigation} />
     </View>
   );
 }

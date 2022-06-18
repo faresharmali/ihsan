@@ -1,6 +1,5 @@
 import "react-native-gesture-handler";
 import React from "react";
-
 import { StyleSheet, SafeAreaView, Text } from "react-native";
 import Login from "./app/Auth/Login";
 import { NativeBaseProvider } from "native-base";
@@ -11,6 +10,7 @@ import { Provider } from "react-redux";
 import store from "./app/store";
 import Loading from "./app/Screens/LoadingScreen";
 export default function App() {
+
 
   const [CurrentPage, PageHandler] = useState(0);
   const [LoggedUser, SetloggedInUser] = useState(0);

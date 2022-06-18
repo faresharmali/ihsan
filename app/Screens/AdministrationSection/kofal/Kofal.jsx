@@ -5,8 +5,9 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
+  TouchableWithoutFeedback,
 } from "react-native";
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import BottomBar from "../../../Navigation/BottomBar";
 import { FontAwesome5, Entypo, MaterialIcons } from "@expo/vector-icons";
 import Family from "../../../../assets/icons/user.png";
@@ -21,6 +22,8 @@ import { useDispatch } from "react-redux";
 export default function Kofal({ navigation, drawer }) {
   const dispatch = useDispatch();
 
+  const [AllDonatorList, setAllDonatorList] = useState([]);
+  const [DonatorList, setDonatorList] = useState([]);
   const [active, setActive] = useState(1);
   const showToast = () => {
     Toast.show({
@@ -29,15 +32,14 @@ export default function Kofal({ navigation, drawer }) {
       text2: " تمت اضافة المحسن بنجاح  👋",
     });
   };
-  const styling = {
-    backgroundColor: "#fff",
-    marginTop: 5,
-  };
   const openModal = (data) => {
-    navigation.navigate("Family", data);
+    navigation.navigate("KafelProfile", data);
   };
   let Donators = useSelector((state) => state.Donators);
-  console.log(Donators)
+  useEffect(() => {
+    setDonatorList(Donators);
+    setAllDonatorList(Donators);
+  }, [Donators]);
   const updateState = (data) => {
     return {
       type: "updateDonatorsList",
@@ -62,6 +64,13 @@ export default function Kofal({ navigation, drawer }) {
     return unsubscribe;
   }, [navigation]);
 
+  const filterInformations = (type) => {
+    if (type == "all") {
+      setDonatorList(AllDonatorList);
+    } else {
+      setDonatorList(AllDonatorList.filter((info) => info.type == type));
+    }
+  };
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />
@@ -79,32 +88,79 @@ export default function Kofal({ navigation, drawer }) {
           <FontAwesome5 name="hand-holding-heart" size={25} color="#fff" />
         </View>
       </View>
-      <View style={styles.Section}>
-        <Input
-          InputRightElement={
-            <Icon
-              style={{ marginRight: 10 }}
-              as={<MaterialIcons name="search" />}
-              size={5}
-              ml="2"
-              color="#348578"
-            />
-          }
-          style={styles.input}
-          w={{
-            base: "90%",
-            md: "50%",
+      <View style={styles.containerFilter}>
+        <TouchableWithoutFeedback
+          onPress={() => {
+            filterInformations("kafel");
+            setActive(3);
           }}
-          h={42}
-          textAlign="right"
-          placeholder="البحث عن محسن"
-          {...styling}
-        />
-
+        >
+          <View
+            style={{
+              ...styles.filterItem,
+              backgroundColor: active == 3 ? "#348578" : "#fff",
+            }}
+          >
+            <Text
+              style={{
+                ...styles.filterText,
+                color: active == 3 ? "#fff" : "#000",
+              }}
+            >
+              الكفال
+            </Text>
+          </View>
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback
+          onPress={() => {
+            filterInformations("Mohsin");
+            setActive(2);
+          }}
+        >
+          <View
+            style={{
+              ...styles.filterItem,
+              backgroundColor: active == 2 ? "#348578" : "#fff",
+            }}
+          >
+            <Text
+              style={{
+                ...styles.filterText,
+                color: active == 2 ? "#fff" : "#000",
+              }}
+            >
+              المحسنين{" "}
+            </Text>
+          </View>
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback
+          onPress={() => {
+            filterInformations("all");
+            setActive(1);
+          }}
+        >
+          <View
+            style={{
+              ...styles.filterItem,
+              backgroundColor: active == 1 ? "#348578" : "#fff",
+            }}
+          >
+            <Text
+              style={{
+                ...styles.filterText,
+                color: active == 1 ? "#fff" : "#000",
+              }}
+            >
+              الكل{" "}
+            </Text>
+          </View>
+        </TouchableWithoutFeedback>
+      </View>
+      <View style={styles.Section}>
         <ScrollView style={styles.Content}>
-          {Donators.map((f) => (
+          {DonatorList.map((f) => (
             <DataContainer
-            key={f.name}
+              key={f.name}
               AvatarSize={22}
               data={f}
               pic={Family}
@@ -121,6 +177,7 @@ export default function Kofal({ navigation, drawer }) {
         <Icon as={Entypo} name="plus" size={8} color="#fff" />
       </TouchableOpacity>
       <BottomBar navigation={navigation} />
+
     </View>
   );
 }
@@ -219,5 +276,35 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 65,
     right: 10,
+  },
+  containerFilter: {
+    borderTopRightRadius: 15,
+    borderTopLeftRadius: 15,
+    backgroundColor: "#f5f5f5",
+    width: "100%",
+    flexDirection: "row-reverse",
+    justifyContent: "space-between",
+    paddingTop: 20,
+    padding: 10,
+    paddingLeft: 20,
+    paddingRight: 20,
+  },
+  filterItem: {
+    padding: 6,
+    backgroundColor: "#fff",
+    borderRadius: 5,
+    minWidth: 110,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 1.41,
+    elevation: 3,
+  },
+  filterText: {
+    fontFamily: "Tajawal-Medium",
   },
 });

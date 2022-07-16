@@ -34,6 +34,7 @@ export default function AddDonator({ route, navigation }) {
     name: false,
     phone: false,
     user: false,
+    donationAmount: false,
   });
   const [userInfos, setuserInfos] = useState({
     id: uuid.v4(),
@@ -41,6 +42,7 @@ export default function AddDonator({ route, navigation }) {
     phone: "",
     job: "",
     user: "",
+    donationAmount: "",
   });
   const Famillies = useSelector((state) => state.Families);
 
@@ -120,6 +122,12 @@ export default function AddDonator({ route, navigation }) {
     if (userInfos.user.trim() == "") {
       (FieldErrors.user = true), (valid = false);
     }
+    if (userInfos.donationAmount.trim() == "") {
+      (FieldErrors.donationAmount = true), (valid = false);
+    }
+    if (userInfos.user.trim() == "") {
+      (FieldErrors.user = true), (valid = false);
+    }
     SetErrors(FieldErrors);
     return valid;
   };
@@ -128,7 +136,6 @@ export default function AddDonator({ route, navigation }) {
     if (validate()) {
       const res = await CreateDonator({
         ...userInfos,
-
         type: DonatorType,
         job: DonatorType == "kafel" ? "كافل" : userInfos.job,
         famillies: DonatorType == "kafel" ? selectedFamilies : [],
@@ -273,23 +280,31 @@ export default function AddDonator({ route, navigation }) {
           </TouchableWithoutFeedback>
         )}
 
-        <TouchableWithoutFeedback onPress={() => openUsersPanel()}>
-          <View
-            style={{
-              ...styles.dateContainer,
-              borderColor: errors.user ? "#c21a0e" : "grey",
-            }}
-          >
+       
+        {DonatorType == "kafel" && (
+          <>
+                   <Input
+          InputRightElement={
             <Icon
-              as={<MaterialIcons name="lock" />}
+              style={{ marginRight: 10 }}
+              as={<MaterialIcons name="attach-money" />}
               size={5}
               ml="2"
               color="#348578"
             />
-            <Text style={styles.InputText}>{user} </Text>
-          </View>
-        </TouchableWithoutFeedback>
-        {DonatorType == "kafel" && (
+          }
+          w={{
+            base: "95%",
+            md: "25%",
+          }}
+          h={50}
+          textAlign="right"
+          placeholder="مبلغ الكفالة"
+          {...styling}
+          borderWidth={1}
+          borderColor={errors.donationAmount ? "#c21a0e" : "grey"}
+          onChangeText={(text) => handleUserInput(text, "donationAmount")}
+        />
           <TouchableWithoutFeedback onPress={() => openFamilyPannel()}>
             <View
               style={{
@@ -306,7 +321,25 @@ export default function AddDonator({ route, navigation }) {
               <Text style={styles.InputText}> {FamilyPlaceholder}</Text>
             </View>
           </TouchableWithoutFeedback>
+
+          </>
         )}
+         <TouchableWithoutFeedback onPress={() => openUsersPanel()}>
+          <View
+            style={{
+              ...styles.dateContainer,
+              borderColor: errors.user ? "#c21a0e" : "grey",
+            }}
+          >
+            <Icon
+              as={<MaterialIcons name="lock" />}
+              size={5}
+              ml="2"
+              color="#348578"
+            />
+            <Text style={styles.InputText}>{user} </Text>
+          </View>
+        </TouchableWithoutFeedback>
       </Stack>
       {ErrorMessageVisible && (
         <View style={styles.ErrorMessage}>

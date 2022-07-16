@@ -10,14 +10,12 @@ import React, { useState } from "react";
 
 import { Icon } from "native-base";
 import { Ionicons, FontAwesome, FontAwesome5 } from "@expo/vector-icons";
-import { useFonts } from "expo-font";
 
 export default function KafelInfo({ navigation, title, data }) {
+  console.log("data", data);
   return (
     <View style={styles.InfosContainer}>
-      <View style={styles.titleContainer}>
-        
-      </View>
+      <View style={styles.titleContainer}></View>
       <View style={styles.Info}>
         <Text style={styles.InfoText}>الاسم و اللقب: {data[0]} </Text>
         <Icon as={FontAwesome} size={6} color="#348578" name="user" />
@@ -35,7 +33,25 @@ export default function KafelInfo({ navigation, title, data }) {
         <Icon as={FontAwesome} size={6} color="#348578" name="phone" />
       </View>
       <View style={styles.Info}>
-        <Text style={styles.InfoText}>تاريخ التسجيل : 25/08/2021</Text>
+        <Text style={styles.InfoText}>
+          تاريخ التسجيل :{" "}
+          {new Date(data.joined).getFullYear() +
+            "/" +
+            (new Date(data.joined).getMonth() + 1) +
+            "/" +
+            new Date(data.joined).getDate()}
+        </Text>
+        <Icon as={FontAwesome} size={6} color="#348578" name="calendar" />
+      </View>
+      <View style={styles.Info}>
+        <Text style={styles.InfoText}>
+          تاريخ الدفع المقبل :{" "}
+          {new Date(data.nextPayment).getFullYear() +
+            "/" +
+            (new Date(data.nextPayment).getMonth() + 1) +
+            "/" +
+            new Date(data.nextPayment).getDate()}
+        </Text>
         <Icon as={FontAwesome} size={6} color="#348578" name="calendar" />
       </View>
     </View>

@@ -101,6 +101,8 @@ export default function Families({ navigation, drawer }) {
         </ScrollView>
       </View>
       <Toast config={toastConfig} />
+      <OrpahnsSectionBottomBar navigation={navigation} />
+
     </View>
   );
 }

@@ -14,18 +14,18 @@ import {
   FontAwesome,
   MaterialIcons,
   FontAwesome5,
-  Ionicons 
+  Ionicons,
 } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
 import NumberStat from "../../Components/statistics components/NumberStat";
 import { useEffect } from "react";
-import { getUsers,getDonators } from "../../api/user";
+import { getUsers, getDonators } from "../../api/user";
 import { getFamilies } from "../../api/family";
 export default function AdminDashboard({ navigation }) {
-  const [usersCount,setUsersNumber]=useState(0)
-  const [KofalNumber,seKofalNumber]=useState(0)
-  const [FamilyNumber,seFamilyNumber]=useState(0)
-  const [DonationFamilyNumber,setDonationFamilyNumber]=useState(0)
+  const [usersCount, setUsersNumber] = useState(0);
+  const [KofalNumber, seKofalNumber] = useState(0);
+  const [FamilyNumber, seFamilyNumber] = useState(0);
+  const [DonationFamilyNumber, setDonationFamilyNumber] = useState(0);
   var date = new Date();
   var months = [
     "جانفي",
@@ -58,49 +58,52 @@ export default function AdminDashboard({ navigation }) {
     months[date.getMonth()] +
     " , " +
     date.getFullYear();
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-    const updateState = (action,data) => {
-      return {
-        type:action,
-        data: data,
-      };
+  const updateState = (action, data) => {
+    return {
+      type: action,
+      data: data,
     };
-    useEffect(async() => {
-      const unsubscribe = navigation.addListener("focus", async () => {
-        let res = await getUsers();
-        dispatch(
-          updateState(
-            "updateUserList",
-            res.data.result.map((user) => ({
-              0: user.name,
-              1: user.phone,
-              2: user.job,
-              ...user,
-            }))
-          )
-        );
-        setUsersNumber(res.data.result.length)
-        res = await getFamilies();
-        dispatch(updateState("updateFamiliesList",res.data.result));
-        setDonationFamilyNumber(res.data.result.filter((f)=>f.donation>0).length)
-        seFamilyNumber(res.data.result.length)
-         res = await getDonators();
-        dispatch(
-          updateState(
-            res.data.result.map((user) => ({
-              0: user.name,
-              1: user.phone,
-              2: user.job,
-              type: user.type,
-            }))
-          )
-        );
-        seKofalNumber(res.data.result.length)
-      });
-      return unsubscribe;
-    }, [navigation]);
-  
+  };
+  useEffect(async () => {
+    const unsubscribe = navigation.addListener("focus", async () => {
+      let res = await getUsers();
+      dispatch(
+        updateState(
+          "updateUserList",
+          res.data.result.map((user) => ({
+            0: user.name,
+            1: user.phone,
+            2: user.job,
+            ...user,
+          }))
+        )
+      );
+      setUsersNumber(res.data.result.length);
+      res = await getFamilies();
+      dispatch(updateState("updateFamiliesList", res.data.result));
+      setDonationFamilyNumber(
+        res.data.result.filter((f) => f.donation > 0).length
+      );
+      seFamilyNumber(res.data.result.length);
+      res = await getDonators();
+      dispatch(
+        updateState(
+          "updateDonatorsList",
+          res.data.result.map((user) => ({
+            0: user.name,
+            1: user.phone,
+            2: user.job,
+         ...user
+          }))
+        )
+      );
+      seKofalNumber(res.data.result.length);
+    });
+    return unsubscribe;
+  }, [navigation]);
+
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />
@@ -209,13 +212,13 @@ export default function AdminDashboard({ navigation }) {
               number={400}
               Title={"المستفيدين من دروس الدعم"}
               IconName={"school"}
-              IconType={Ionicons }
+              IconType={Ionicons}
             />
             <NumberStat
               number={400}
               Title={"المستفيدين من الكفالة الفكرية"}
               IconName={"school"}
-              IconType={Ionicons }
+              IconType={Ionicons}
             />
           </View>
         </View>
@@ -274,7 +277,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderTopRightRadius: 15,
     borderTopLeftRadius: 15,
-    minHeight:"90%"
+    minHeight: "90%",
   },
   menuContainer: {
     width: 35,

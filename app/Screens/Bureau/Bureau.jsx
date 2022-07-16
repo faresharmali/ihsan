@@ -98,11 +98,6 @@ export default function Bureau({ navigation, drawer }) {
     if (filter == "all") {
       setMeetingList(AllMeetingList);
     } else if (filter == "day") {
-      console.log(
-        AllMeetingList.filter(
-          (meet) => new Date(meet.date) >= new Date().setHours(0, 0, 0, 0)
-        )
-      );
       setMeetingList(
         AllMeetingList.filter(
           (meet) =>
@@ -265,7 +260,6 @@ export default function Bureau({ navigation, drawer }) {
 
       <Toast config={toastConfig} />
       <BottomBar navigation={navigation} />
-
     </View>
   );
 }

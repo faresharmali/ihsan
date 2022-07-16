@@ -87,6 +87,8 @@ export default function Members({ navigation, drawer }) {
         </ScrollView>
       </View>
       <Toast config={toastConfig} />
+      <OrpahnsSectionBottomBar navigation={navigation} />
+
     </View>
   );
 }

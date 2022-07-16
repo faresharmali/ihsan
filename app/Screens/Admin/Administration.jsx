@@ -29,7 +29,7 @@ export default function Administration({ navigation }) {
   return (
     <>
     <Stack.Navigator
-      initialRouteName="Kofal"
+      initialRouteName="Users"
       screenOptions={{
         gestureEnabled: true,
         gestureDirection: "vertical",

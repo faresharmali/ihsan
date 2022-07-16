@@ -55,7 +55,8 @@ export default function Kofal({ navigation, drawer }) {
             0: user.name,
             1: user.phone,
             2: user.job,
-            type: user.type,
+            ...user
+
           }))
         )
       );

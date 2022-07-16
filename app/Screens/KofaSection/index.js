@@ -6,7 +6,7 @@ import {
 import Members from "./Members.jsx";
 import AdminProfile from "../Profiles/adminProfile.jsx";
 import Families from "./famillies.jsx";
-import Bureau from "./Bureau"
+import Bureau from "./Bureau";
 import AddReservation from "../../Forms/AddReservation.jsx";
 import KofaDonators from "./Donators.jsx";
 import Ingredients from "./ingredients.jsx";
@@ -27,51 +27,37 @@ export default function KofaSection({ navigation }) {
         headerShown: false,
       }}
     >
-      <Stack.Screen
-        options={slideFromRight}
-        name="KofaMembers"
-        component={Members}
-      />
-      <Stack.Screen
-        options={TransitionFromBottom}
-        name="KofaMemberProfile"
-        component={AdminProfile}
-      />
-      <Stack.Screen
-        options={slideFromRight}
-        name="KofaFamilies"
-        component={Families}
-      />
-      <Stack.Screen
-        options={slideFromRight}
-        name="KofaBureau"
-        component={Bureau}
-      />
-      <Stack.Screen
-        options={TransitionFromBottom}
-        name="AddReservation"
-        component={AddReservation}
-      />
-      <Stack.Screen
-        options={slideFromRight}
-        name="KofaDonators"
-        component={KofaDonators}
-      />
-      <Stack.Screen
-        options={slideFromRight}
-        name="Ingredients"
-        component={Ingredients}
-      />
+      <Stack.Screen options={slideFromRight} name="KofaMembers">
+        {(props) => <Members {...props} drawer={navigation} />}
+      </Stack.Screen>
+
+      <Stack.Screen options={TransitionFromBottom} name="KofaMemberProfile">
+        {(props) => <AdminProfile {...props} drawer={navigation} />}
+      </Stack.Screen>
+
+      <Stack.Screen options={slideFromRight} name="KofaFamilies">
+        {(props) => <Families {...props} drawer={navigation} />}
+      </Stack.Screen>
+      <Stack.Screen options={slideFromRight} name="KofaBureau">
+        {(props) => <Bureau {...props} drawer={navigation} />}
+      </Stack.Screen>
+      <Stack.Screen options={TransitionFromBottom} name="AddReservation">
+        {(props) => <AddReservation {...props} drawer={navigation} />}
+      </Stack.Screen>
+      <Stack.Screen options={slideFromRight} name="KofaDonators">
+        {(props) => <KofaDonators {...props} drawer={navigation} />}
+      </Stack.Screen>
+      <Stack.Screen options={slideFromRight} name="Ingredients">
+        {(props) => <Ingredients {...props} drawer={navigation} />}
+      </Stack.Screen>
       <Stack.Screen
         options={TransitionFromBottom}
         name="AddIngredient"
         component={AddIngredient}
       />
-      <Stack.Screen
-        options={slideFromRight}
-        name="KofaStatus"
-        component={KofaStatus}
-      />
+      <Stack.Screen options={slideFromRight} name="KofaStatus">
+        {(props) => <KofaStatus {...props} drawer={navigation} />}
+      </Stack.Screen>
       <Stack.Screen
         options={TransitionFromBottom}
         name="ChangeKofaStatus"

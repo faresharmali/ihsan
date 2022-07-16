@@ -7,6 +7,7 @@ import AuthReducer from "./AuthReducer";
 import DonatorsReducer from "./DonatorsReducer"
 import ReportsReducer from "./ReportsReducer.js";
 import IngredientsReducer from "./IngredientReducer.js";
+import DonationsReducer from "./DonationsReducer.js";
 export default reducer = combineReducers({
     users:UserReducer,
     Families:FamilyReducer,
@@ -16,5 +17,6 @@ export default reducer = combineReducers({
     Auth:AuthReducer,
     Reports:ReportsReducer,
     Ingredients:IngredientsReducer,
+    Donations:DonationsReducer,
 
 })

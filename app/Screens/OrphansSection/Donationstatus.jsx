@@ -13,6 +13,8 @@ import { useSelector, useDispatch } from "react-redux";
 import toastConfig from "../../Components/ToastConfiguration";
 import Toast from "react-native-toast-message";
 import { getDonators } from "../../api/user";
+import OrpahnsSectionBottomBar from "../../Navigation/OrpahansSectionBottomBar.js";
+
 export default function DonationsStatus({ navigation, drawer }) {
 
   const dispatch = useDispatch();
@@ -32,6 +34,8 @@ export default function DonationsStatus({ navigation, drawer }) {
             0: user.name,
             1: user.phone,
             2: user.job,
+            ...user
+
           }))
         )
       );
@@ -65,6 +69,8 @@ export default function DonationsStatus({ navigation, drawer }) {
     
       </View>
       <Toast config={toastConfig} />
+      <OrpahnsSectionBottomBar navigation={navigation} />
+
     </View>
   );
 }

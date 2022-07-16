@@ -16,7 +16,7 @@ const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
 export default function ActivitiesSection({ navigation }) {
   return (
     <Stack.Navigator
-      initialRouteName="ActivitiesProgram"
+      initialRouteName="ActivitiesMembers"
       screenOptions={{
         gestureEnabled: true,
         gestureDirection: "vertical",

@@ -6,49 +6,35 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import React, { useEffect } from "react";
-import { Icon, Input } from "native-base";
+import React, { useState, useEffect } from "react";
 import { FontAwesome5, Entypo, MaterialIcons } from "@expo/vector-icons";
-import Family from "../../../assets/icons/user.png";
+import { Icon } from "native-base";
 import { useSelector, useDispatch } from "react-redux";
 import toastConfig from "../../Components/ToastConfiguration";
 import Toast from "react-native-toast-message";
-import DataContainer from "../../Components/DataContainer";
-import { getDonators } from "../../api/user";
-import KofaSectionBottomBar from "../../Navigation/KofaSectionBottomBar";
-export default function KofaDonators({ navigation, drawer }) {
-  const styling = {
-    backgroundColor: "#fff",
-    marginTop: 5,
-  };
-  const openModal = (data) => {
-    navigation.navigate("Family", data);
-  };
-  let Donators = useSelector((state) => state.Donators).filter(
-    (d) => d[2].trim() == "قسم القفة"
-  );
+import { getDonations } from "../../api/user";
+import OrpahnsSectionBottomBar from "../../Navigation/OrpahansSectionBottomBar.js";
+import KafalaContainer from "../../Components/KafalaContainer";
+export default function Donations({ navigation, drawer }) {
   const dispatch = useDispatch();
-
+  const showToast = () => {
+    Toast.show({
+      type: "success",
+      text1: "نجحت العملية",
+      text2: " تمت اضافة الكفالة بنجاح  👋",
+    });
+  };
+  let Donations = useSelector((state) => state.Donations);
   const updateState = (data) => {
     return {
-      type: "updateDonatorsList",
+      type: "updateDonationsList",
       data: data,
     };
   };
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", async () => {
-      const res = await getDonators();
-      dispatch(
-        updateState(
-          res.data.result.map((user) => ({
-            0: user.name,
-            1: user.phone,
-            2: user.job,
-            ...user
-
-          }))
-        )
-      );
+      const res = await getDonations();
+      dispatch(updateState(res.data.result));
     });
 
     return unsubscribe;
@@ -67,46 +53,26 @@ export default function KofaDonators({ navigation, drawer }) {
         </TouchableOpacity>
 
         <View style={styles.containerTitle}>
-          <Text style={styles.ScreenEntityTitle}>المحسنين : قسم القفة </Text>
+          <Text style={styles.ScreenEntityTitle}>الكفالة </Text>
           <FontAwesome5 name="hand-holding-heart" size={25} color="#fff" />
         </View>
       </View>
+      <View style={styles.containerFilter}></View>
       <View style={styles.Section}>
-        <Input
-          InputRightElement={
-            <Icon
-              style={{ marginRight: 10 }}
-              as={<MaterialIcons name="search" />}
-              size={5}
-              ml="2"
-              color="#348578"
-            />
-          }
-          style={styles.input}
-          w={{
-            base: "90%",
-            md: "50%",
-          }}
-          h={42}
-          textAlign="right"
-          placeholder="البحث عن محسن"
-          {...styling}
-        />
-
         <ScrollView style={styles.Content}>
-          {Donators.map((f) => (
-            <DataContainer
-              AvatarSize={22}
-              data={f}
-              pic={Family}
-              openFamily={() => openModal(f)}
-            />
+          {Donations.map((donation) => (
+            <KafalaContainer data={donation} />
           ))}
         </ScrollView>
       </View>
       <Toast config={toastConfig} />
-
-      <KofaSectionBottomBar navigation={navigation} />
+      <TouchableOpacity
+        onPress={() => navigation.navigate("AddDonation", { showToast })}
+        style={styles.fab}
+      >
+        <Icon as={Entypo} name="plus" size={8} color="#fff" />
+      </TouchableOpacity>
+      <OrpahnsSectionBottomBar navigation={navigation} />
     </View>
   );
 }
@@ -124,31 +90,8 @@ const styles = StyleSheet.create({
   },
   containerFilter: {
     width: "100%",
-    flexDirection: "row-reverse",
-    justifyContent: "space-between",
-    padding: 10,
-    paddingLeft: 20,
-    paddingRight: 20,
-    marginTop: 10,
   },
-  filterItem: {
-    padding: 6,
-    backgroundColor: "#fff",
-    borderRadius: 5,
-    minWidth: 55,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.5,
-    shadowRadius: 1.41,
-    elevation: 3,
-  },
-  filterText: {
-    fontFamily: "Tajawal-Medium",
-  },
+
   ScreenEntity: {
     flexDirection: "row",
     width: "100%",
@@ -177,7 +120,7 @@ const styles = StyleSheet.create({
   },
   Content: {
     width: "100%",
-    maxHeight: "78%",
+    maxHeight: "91%",
     backgroundColor: "#f5f5f5",
     display: "flex",
     paddingTop: 10,
@@ -205,5 +148,31 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 65,
     right: 10,
+  },
+  containerFilter: {
+    borderTopRightRadius: 15,
+    borderTopLeftRadius: 15,
+    backgroundColor: "#f5f5f5",
+    width: "100%",
+
+    paddingTop: 10,
+  },
+  filterItem: {
+    padding: 6,
+    backgroundColor: "#fff",
+    borderRadius: 5,
+    minWidth: 110,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 1.41,
+    elevation: 3,
+  },
+  filterText: {
+    fontFamily: "Tajawal-Medium",
   },
 });

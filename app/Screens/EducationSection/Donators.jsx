@@ -44,6 +44,8 @@ export default function EducationDonators({ navigation, drawer }) {
             0: user.name,
             1: user.phone,
             2: user.job,
+            ...user
+
           }))
         )
       );

@@ -27,7 +27,6 @@ export default function OrpahnsDonators({ navigation, drawer }) {
   let Donators = useSelector((state) => state.Donators).filter(
     (donator) => donator[2] == "قسم الأيتام"
   );
-  console.log(Donators);
   const dispatch = useDispatch();
 
   const updateState = (data) => {
@@ -46,6 +45,8 @@ export default function OrpahnsDonators({ navigation, drawer }) {
             1: user.phone,
             2: user.job,
             type: user.type,
+            ...user
+
           }))
         )
       );
@@ -105,6 +106,8 @@ export default function OrpahnsDonators({ navigation, drawer }) {
         </ScrollView>
       </View>
       <Toast config={toastConfig} />
+      <OrpahnsSectionBottomBar navigation={navigation} />
+
     </View>
   );
 }

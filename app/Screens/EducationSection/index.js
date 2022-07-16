@@ -12,7 +12,7 @@ const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
 export default function EducationSection({ navigation }) {
   return (
     <Stack.Navigator
-      initialRouteName="OrpahnsDonators"
+      initialRouteName="Members"
       screenOptions={{
         gestureEnabled: true,
         gestureDirection: "vertical",

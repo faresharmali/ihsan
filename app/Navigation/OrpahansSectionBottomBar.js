@@ -10,8 +10,7 @@ import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import styles from "./styles";
 
-export default function OrpahnsSectionBottomBar(props) {
-  const navigation = useNavigation();
+export default function OrpahnsSectionBottomBar({navigation}) {
   return (
     <View style={styles.Container}>
       <View style={styles.BottomBar}>
@@ -63,7 +62,7 @@ export default function OrpahnsSectionBottomBar(props) {
             </View>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => navigation.navigate("DonationsStatus")}
+            onPress={() => navigation.navigate("Donations")}
           >
             <View style={styles.bottomBarITem}>
               <Icon as={FontAwesome5} name="child" color={"#fff"} size={4} />

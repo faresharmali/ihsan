@@ -7,10 +7,10 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React, { useEffect } from "react";
-import { Icon,Input } from "native-base";
+import { Icon, Input } from "native-base";
 import { FontAwesome5, Entypo, MaterialIcons } from "@expo/vector-icons";
 import Family from "../../../assets/icons/user.png";
-import { useSelector,useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import toastConfig from "../../Components/ToastConfiguration";
 import Toast from "react-native-toast-message";
 import DataContainer from "../../Components/DataContainer";
@@ -44,6 +44,7 @@ export default function WidowsDonators({ navigation, drawer }) {
             0: user.name,
             1: user.phone,
             2: user.job,
+            ...user,
           }))
         )
       );
@@ -94,7 +95,7 @@ export default function WidowsDonators({ navigation, drawer }) {
         <ScrollView style={styles.Content}>
           {Donators.map((f) => (
             <DataContainer
-                key={f.id}
+              key={f.id}
               AvatarSize={22}
               data={f}
               pic={Family}
@@ -104,8 +105,6 @@ export default function WidowsDonators({ navigation, drawer }) {
         </ScrollView>
       </View>
       <Toast config={toastConfig} />
-
-     
     </View>
   );
 }

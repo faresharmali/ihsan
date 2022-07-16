@@ -24,7 +24,7 @@ export default function Dashboard(props) {
             <DrawerContent {...prop}  pageHandler={props.PageHandler} />
           )}
           screenOptions={{ headerShown: false }}
-          initialRouteName="KofaSection"
+          initialRouteName="OrpahansSection"
         >
           <Drawer.Screen name="Home">
             {(props) => (

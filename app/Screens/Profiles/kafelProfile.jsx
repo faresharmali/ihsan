@@ -14,7 +14,7 @@ import {
   Ionicons,
   AntDesign,
 } from "@expo/vector-icons";
-
+import man from "../../../assets/avatars/man.png"
 import { Box, Fab } from "native-base";
 import icon from "../../../assets/icons/information.png";
 import DataContainer from "../../Components/DataContainer";
@@ -40,7 +40,7 @@ export default function KafelProfile({ route, navigation }) {
             name="square-edit-outline"
           />
         </View>
-        <Image style={styles.EntityImage} source={route.params.pic} />
+        <Image style={styles.EntityImage} source={man} />
         <Text style={styles.EntityTitle}>{route.params[0]}</Text>
         <View style={styles.Navigation}>
           <TouchableOpacity onPress={() => setSection("infos")}>
@@ -53,14 +53,9 @@ export default function KafelProfile({ route, navigation }) {
               <Text style={styles.NavigationItemText}>العائلات</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => setSection("demands")}>
+          <TouchableOpacity onPress={() => setSection("children")}>
             <View style={styles.NavigationItem}>
-              <Text style={styles.NavigationItemText}>النشاطات</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => setSection("benefits")}>
-            <View style={styles.NavigationItem}>
-              <Text style={styles.NavigationItemText}>استفادات</Text>
+              <Text style={styles.NavigationItemText}>الأيتام</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -150,7 +145,7 @@ const styles = StyleSheet.create({
   NavigationItem: {
     height: "100%",
     justifyContent: "center",
-    width: 80,
+    width: 105,
     margin: 5,
     marginTop: 0,
     marginBottom: 0,

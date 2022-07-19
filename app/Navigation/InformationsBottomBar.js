@@ -71,6 +71,20 @@ export default function InformationSectionBottomBar({filterData}) {
               <Text style={styles.bottomBarITemText}>الاستفادات</Text>
             </View>
          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => filterData("suggestion")}
+          >
+            <View style={styles.bottomBarITem}>
+              <Icon
+                as={FontAwesome5}
+                name="hand-holding-heart"
+                color={"#fff"}
+                size={4}
+              />
+
+              <Text style={styles.bottomBarITemText}>مقترحات</Text>
+            </View>
+         </TouchableOpacity>
          
         </View>
       </View>

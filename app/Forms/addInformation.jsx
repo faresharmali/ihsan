@@ -105,9 +105,6 @@ export default function AddInformation({ route, navigation }) {
     setshowButton(true);
   };
   const validate = () => {
-    console.log(ActivityInfos);
-    console.log(errors);
-
     let valid = true;
     let FieldErrors = { ...errors };
     if (ActivityInfos.title.trim() == "") {
@@ -123,7 +120,6 @@ export default function AddInformation({ route, navigation }) {
     SetErrors(FieldErrors);
     return valid;
   };
-  console.log(ActivityInfos);
 
   const AddActivity = async () => {
     Keyboard.dismiss();
@@ -259,11 +255,11 @@ export default function AddInformation({ route, navigation }) {
             name="myRadioGroup"
             accessibilityLabel="favorite number"
             onChange={(type) => {
-              handleUserInput(type,"type");
+              handleUserInput(type, "type");
             }}
           >
             <Radio
-              size="md"
+              size="sm"
               colorScheme="rgb(52, 133, 120)"
               value="demand"
               my={1}
@@ -271,7 +267,7 @@ export default function AddInformation({ route, navigation }) {
               طلب
             </Radio>
             <Radio
-              size="md"
+              size="sm"
               colorScheme="rgb(52, 133, 120)"
               style={{ marginLeft: 20 }}
               value="benefit"
@@ -280,13 +276,22 @@ export default function AddInformation({ route, navigation }) {
               استفادة
             </Radio>
             <Radio
-              size="md"
+              size="sm"
               colorScheme="rgb(52, 133, 120)"
               style={{ marginLeft: 20 }}
               value="information"
               my={1}
             >
               معلومة عامة
+            </Radio>
+            <Radio
+              size="sm"
+              colorScheme="rgb(52, 133, 120)"
+              style={{ marginLeft: 20 }}
+              value="suggestion"
+              my={1}
+            >
+              اقتراح
             </Radio>
           </Radio.Group>
         </View>
@@ -346,7 +351,7 @@ export default function AddInformation({ route, navigation }) {
           </Radio.Group>
         </View>
 
-        {ActivityType == "orphan" && (
+        {ActivityInfos.type != "suggestion" && ActivityType == "orphan" && (
           <TouchableWithoutFeedback onPress={() => openPanel()}>
             <View
               style={{
@@ -364,7 +369,7 @@ export default function AddInformation({ route, navigation }) {
             </View>
           </TouchableWithoutFeedback>
         )}
-        {ActivityType == "family" && (
+        {ActivityInfos.type != "suggestion" && ActivityType == "family" && (
           <TouchableWithoutFeedback onPress={() => openFamilyPannel()}>
             <View
               style={{
@@ -514,7 +519,7 @@ const styles = StyleSheet.create({
   },
   radioContainer: {
     padding: 0,
-    width: "95%",
+    width: "90%",
     alignItems: "center",
   },
 });

@@ -149,22 +149,10 @@ export default function DrawerContent(props) {
           )}
           labelStyle={styles.label}
           onPress={() => {
-            props.navigation.navigate("venteetachat");
+            props.navigation.navigate("FinanceSection");
           }}
         />
-        <DrawerItem
-          label="مقترحات"
-          icon={() => (
-            <Icon
-              style={styles.icon}
-              as={<MaterialIcons name="how-to-vote" />}
-            />
-          )}
-          labelStyle={styles.label}
-          onPress={() => {
-            props.navigation.navigate("venteetachat");
-          }}
-        />
+
         <DrawerItem
           label="معلومات عامة"
           icon={() => (

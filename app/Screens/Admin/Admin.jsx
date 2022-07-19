@@ -12,6 +12,7 @@ import KofaSection from "../KofaSection";
 import WidowSection from "../WidowSection";
 import ActivitiesSection from "../AvtivitiesSection";
 import InformationSection from "../InformationsSection";
+import FinanceSection from "../Finance";
 const Drawer = createDrawerNavigator();
 
 export default function Dashboard(props) {
@@ -24,7 +25,7 @@ export default function Dashboard(props) {
             <DrawerContent {...prop}  pageHandler={props.PageHandler} />
           )}
           screenOptions={{ headerShown: false }}
-          initialRouteName="OrpahansSection"
+          initialRouteName="FinanceSection"
         >
           <Drawer.Screen name="Home">
             {(props) => (
@@ -69,6 +70,11 @@ export default function Dashboard(props) {
           <Drawer.Screen name="InformationSection">
             {(props) => (
               <InformationSection {...props} pageHandler={props.pageHandler} />
+            )}
+          </Drawer.Screen>
+          <Drawer.Screen name="FinanceSection">
+            {(props) => (
+              <FinanceSection {...props} pageHandler={props.pageHandler} />
             )}
           </Drawer.Screen>
         </Drawer.Navigator>

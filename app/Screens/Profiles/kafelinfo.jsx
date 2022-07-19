@@ -43,6 +43,19 @@ export default function KafelInfo({ navigation, title, data }) {
         </Text>
         <Icon as={FontAwesome} size={6} color="#348578" name="calendar" />
       </View>
+      {data.lastPayement && (
+        <View style={styles.Info}>
+          <Text style={styles.InfoText}>
+            تاريخ اخر دفع :{" "}
+            {new Date(data.lastPayement).getFullYear() +
+              "/" +
+              (new Date(data.lastPayement).getMonth() + 1) +
+              "/" +
+              new Date(data.lastPayement).getDate()}
+          </Text>
+          <Icon as={FontAwesome} size={6} color="#348578" name="calendar" />
+        </View>
+      )}
       <View style={styles.Info}>
         <Text style={styles.InfoText}>
           تاريخ الدفع المقبل :{" "}
@@ -54,6 +67,7 @@ export default function KafelInfo({ navigation, title, data }) {
         </Text>
         <Icon as={FontAwesome} size={6} color="#348578" name="calendar" />
       </View>
+    
     </View>
   );
 }

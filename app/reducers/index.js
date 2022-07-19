@@ -8,6 +8,7 @@ import DonatorsReducer from "./DonatorsReducer"
 import ReportsReducer from "./ReportsReducer.js";
 import IngredientsReducer from "./IngredientReducer.js";
 import DonationsReducer from "./DonationsReducer.js";
+import TransactionReducer from "./TransactionReducer.js";
 export default reducer = combineReducers({
     users:UserReducer,
     Families:FamilyReducer,
@@ -18,5 +19,6 @@ export default reducer = combineReducers({
     Reports:ReportsReducer,
     Ingredients:IngredientsReducer,
     Donations:DonationsReducer,
+    Transactions:TransactionReducer,
 
 })

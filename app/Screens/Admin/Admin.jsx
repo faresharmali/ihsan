@@ -13,9 +13,12 @@ import WidowSection from "../WidowSection";
 import ActivitiesSection from "../AvtivitiesSection";
 import InformationSection from "../InformationsSection";
 import FinanceSection from "../Finance";
+
 const Drawer = createDrawerNavigator();
 
 export default function Dashboard(props) {
+
+
   return (
     <React.Fragment>
       <NavigationContainer>

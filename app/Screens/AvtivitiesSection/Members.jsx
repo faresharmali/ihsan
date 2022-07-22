@@ -21,12 +21,12 @@ import { getUsers } from "../../api/user";
 LogBox.ignoreAllLogs();
 export default function Members({ navigation, drawer }) {
   const openModal = (u) => {
-    navigation.navigate("MemberProfile", {
+    navigation.navigate("ActivityMemberProfile", {
       ...u,
     });
   };
   let users = useSelector((state) => state.users).filter(
-    (u) => (u[2].trim() == "قسم الأنشطة الخيرية")
+    (u) => u[2].trim() == "قسم الأنشطة الخيرية"
   );
 
   const dispatch = useDispatch();
@@ -67,7 +67,10 @@ export default function Members({ navigation, drawer }) {
         </TouchableOpacity>
 
         <View style={styles.containerTitle}>
-          <Text style={styles.ScreenEntityTitle}> الأعضاء : قسم الأنشطة الخيرية </Text>
+          <Text style={styles.ScreenEntityTitle}>
+            {" "}
+            الأعضاء : قسم الأنشطة الخيرية{" "}
+          </Text>
           <MaterialCommunityIcons name="account-group" size={30} color="#fff" />
         </View>
       </View>
@@ -114,7 +117,7 @@ const styles = StyleSheet.create({
   },
   ScreenEntityTitle: {
     color: "#fff",
-    fontSize:19,
+    fontSize: 19,
     marginRight: 10,
     fontFamily: "Tajawal-Medium",
   },

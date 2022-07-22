@@ -248,7 +248,9 @@ export default function Informations({ navigation, drawer }) {
         </TouchableWithoutFeedback>
       </View>
       <View style={styles.Section}>
-        <ScrollView style={styles.Content}>
+        <ScrollView    contentContainerStyle={{
+          paddingBottom: 25,
+        }} style={styles.Content}>
           {InformationsList.map((f) => (
             <DataContainer
               key={f.id}
@@ -333,7 +335,7 @@ const styles = StyleSheet.create({
   },
   Content: {
     width: "100%",
-    maxHeight: "84%",
+    maxHeight: "85%",
     backgroundColor: "#f5f5f5",
     display: "flex",
     paddingTop: 10,

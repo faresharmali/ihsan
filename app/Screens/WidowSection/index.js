@@ -10,6 +10,7 @@ import AddReport from "../../Forms/AddReport.jsx";
 import WidowsDonators from "./Donators.jsx";
 import WidowSectionBottomBar from "../../Navigation/WidowSectionBottomBar.js";
 import Bureau from "../Bureau/Bureau.jsx";
+import AdminProfile from "../Profiles/adminProfile.jsx";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
@@ -54,6 +55,11 @@ export default function WidowSection({ navigation }) {
         options={slideFromRight}
         name="WidowsBureau"
         component={Bureau}
+      />
+      <Stack.Screen
+        options={TransitionFromBottom}
+        name="WidowMembersProfile"
+        component={AdminProfile}
       />
 
     </Stack.Navigator>

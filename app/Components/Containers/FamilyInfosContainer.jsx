@@ -10,6 +10,7 @@ import React from "react";
 import { Icon } from "native-base";
 import { MaterialIcons, Entypo } from "@expo/vector-icons";
 export default function FamilyInfosContainer(props) {
+  console.log("data",props.data)
   return (
     <TouchableOpacity onPress={props.openFamily} style={styles.DataContainer}>
       <Image

@@ -16,9 +16,10 @@ import { useSelector } from "react-redux";
 import { LogBox } from "react-native";
 import Toast from "react-native-toast-message";
 import toastConfig from "../../Components/ToastConfiguration";
-import PatientContainer from "../../Components/patientContainer";
+import EducationMemberContainer from "../../Components/EducationMemberContainer";
 import { useDispatch } from "react-redux";
-import { getUsers } from "../../api/user";
+import EducationSectionBottomBar from "../../Navigation/EducationSectionBottomBar";
+import {GetEducationGroupes} from "../../api/activities"
 LogBox.ignoreAllLogs();
 export default function KafalaFekriya({ navigation, drawer }) {
   const [active, setActive] = useState(4);
@@ -29,65 +30,44 @@ export default function KafalaFekriya({ navigation, drawer }) {
     Toast.show({
       type: "success",
       text1: "نجحت العملية",
-      text2: " تمت اضافة الحجز بنجاح  👋",
+      text2: " تمت اضافة المتمدرس بنجاح  👋",
     });
   };
-  let Families = useSelector((state) => state.Families);
-
+  let EducationMembers = useSelector((state) => state.EducationMembers);
+  console.log("EducationMembers",EducationMembers)
   useEffect(() => {
-    let kids = [];
-    Families.forEach((f) => {
-      f.kids.forEach((k) => {
-        kids.push({
-          name: k.name + " " + f.fatherLastName,
-          number: f.phone,
-          address: f.adresse,
-          type: "kid",
-        });
-      });
-    });
-    let moms = Families.map((f) => ({
-      name: f.motherFullName,
-      number: f.phone,
-      address: f.adresse,
-      type: "mom",
-    }));
-    let List = [...moms, ...kids];
-    setPatientList(List);
+    setPatientList(EducationMembers);
     filtered == "all"
-      ? setDisplayedPatientList(List)
-      : setDisplayedPatientList(PatientList.filter((p) => p.type == filtered));
-  }, [Families]);
+      ? setDisplayedPatientList(EducationMembers)
+      : setDisplayedPatientList(EducationMembers.filter((p) => p.groupe == filtered));
+  }, [EducationMembers]);
 
   const dispatch = useDispatch();
   const updateState = (data) => {
     return {
-      type: "updateUserList",
+      type: "updateEducationMembers",
       data: data,
     };
   };
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", async () => {
-      const res = await getUsers();
+      const res = await GetEducationGroupes();
+      console.log("res",res.data.result)
       dispatch(
         updateState(
-          res.data.result.map((user) => ({
-            0: user.name,
-            1: user.phone,
-            2: user.job,
-            ...user,
-          }))
+        res.data.result
         )
       );
     });
 
     return unsubscribe;
   }, [navigation]);
-  const filterInformations = (type) => {
-    if (type == "all") {
+  const filterInformations = (groupe) => {
+    console.log(groupe)
+    if (groupe == "all") {
       setDisplayedPatientList(PatientList);
     } else {
-      setDisplayedPatientList(PatientList.filter((p) => p.type == type));
+      setDisplayedPatientList(PatientList.filter((p) => p.groupe.trim() == groupe.trim()));
     }
   };
   return (
@@ -111,8 +91,8 @@ export default function KafalaFekriya({ navigation, drawer }) {
         <View style={styles.containerFilter}>
           <TouchableWithoutFeedback
             onPress={() => {
-              filterInformations("kid");
-              setFiltered("kid");
+              filterInformations(" المجموعة 1");
+              setFiltered(" المجموعة 1");
               setActive(1);
             }}
           >
@@ -134,9 +114,9 @@ export default function KafalaFekriya({ navigation, drawer }) {
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback
             onPress={() => {
-              filterInformations("kid");
-              setFiltered("kid");
-              setActive(1);
+              filterInformations(" المجموعة 2");
+              setFiltered(" المجموعة 2");
+              setActive(2);
             }}
           >
             <View
@@ -157,9 +137,9 @@ export default function KafalaFekriya({ navigation, drawer }) {
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback
             onPress={() => {
-              filterInformations("mom");
-              setFiltered("mom");
-              setActive(2);
+              filterInformations(" المجموعة 3");
+              setFiltered(" المجموعة 3");
+              setActive(3);
             }}
           >
             <View
@@ -182,7 +162,7 @@ export default function KafalaFekriya({ navigation, drawer }) {
             onPress={() => {
               filterInformations("all");
               setFiltered("all");
-              setActive(3);
+              setActive(4);
             }}
           >
             <View
@@ -202,7 +182,11 @@ export default function KafalaFekriya({ navigation, drawer }) {
             </View>
           </TouchableWithoutFeedback>
         </View>
-        <ScrollView style={styles.Content}></ScrollView>
+        <ScrollView style={styles.Content}>
+            {DisplayedPatientList.map((E)=>(
+                    <EducationMemberContainer data={E} />
+            ))}
+        </ScrollView>
         <TouchableOpacity
           onPress={() =>
             navigation.navigate("AddEducationMember", { showToast })
@@ -213,7 +197,7 @@ export default function KafalaFekriya({ navigation, drawer }) {
         </TouchableOpacity>
       </View>
       <Toast config={toastConfig} />
-      <HealthSectionBottomBar navigation={navigation} />
+      <EducationSectionBottomBar navigation={navigation} />
     </View>
   );
 }

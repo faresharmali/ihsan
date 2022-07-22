@@ -4,20 +4,29 @@ import {
   View,
   TouchableWithoutFeedback,
   Keyboard,
+  BackHandler,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Input, Stack, Icon } from "native-base";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { Button } from "react-native-paper";
-import uuid from 'react-native-uuid';
+import uuid from "react-native-uuid";
 import Swipable from "../Components/Containers/swipable";
 import { CreateUser } from "../api/user";
+import MultipleOptionSwipable from "../Components/Containers/MultipleOptionSwipable";
+import { useSelector } from "react-redux";
+
 export default function AddUser({ route, navigation }) {
   const [isPanelActive, setIsPanelActive] = useState(false);
+  const [IsModulesPannel, setIsModulesPannel] = useState(false);
   const [showButton, setshowButton] = useState(true);
   const [ErrorMessageVisible, setErrorMessageVisible] = useState(false);
   const [ErrorMessage, setErrorMessage] = useState("");
+  const [FamilliesPlaceholder, setFamilliesPlaceHolder] = useState("العائلات");
+  const [selectedFamillies, setselectedFamillies] = useState([]);
 
+  console.log("selece",selectedFamillies)
+  const Famillies = useSelector((state) => state.Families);
   const [errors, SetErrors] = useState({
     username: false,
     password: false,
@@ -25,10 +34,11 @@ export default function AddUser({ route, navigation }) {
     confirmepassword: false,
     name: false,
     job: false,
+    famillies: false,
   });
 
   const [userInfos, setuserInfos] = useState({
-    id:uuid.v4(),
+    id: uuid.v4(),
     name: "",
     phone: "",
     username: "",
@@ -81,7 +91,7 @@ export default function AddUser({ route, navigation }) {
       if (userInfos.password == userInfos.confirmepassword) {
         const user = { ...userInfos };
         delete user.confirmepassword;
-        const res = await CreateUser(user);
+        const res = await CreateUser({...user,famillies:selectedFamillies});
         if (res.ok) {
           route.params.showToast();
           navigation.goBack();
@@ -120,10 +130,56 @@ export default function AddUser({ route, navigation }) {
     if (userInfos.job.trim() == "") {
       (FieldErrors.job = true), (valid = false);
     }
+    if (
+      (job == "موزع القفة" || job == "وسيط اجتماعي") &&
+      selectedFamillies.length == 0
+    ) {
+      (FieldErrors.famillies = true), (valid = false);
+    }
+
     SetErrors(FieldErrors);
     return valid;
   };
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => {
+        if (isPanelActive || IsModulesPannel) {
+          setIsPanelActive(false);
+          setIsModulesPannel(false);
+          return true;
+        } else {
+          return false;
+        }
+      }
+    );
+    return () => backHandler.remove();
+  }, [isPanelActive, IsModulesPannel]);
 
+  const getSelectedData = (data) => {
+    let overFlow = data.length > 2 ? `... و ${data.length - 2} اخرين` : "";
+    if (data.length > 0) {
+      setFamilliesPlaceHolder(
+        data
+          .map((d) => d.title + " ")
+          .slice(0, 2)
+          .join(",") + overFlow
+      );
+      setselectedFamillies(data.map((family)=>({title:family.title,id:family.id})));
+      SetErrors({ ...errors, famillies: false });
+
+    } else {
+      setselectedFamillies([]);
+      setFamilliesPlaceHolder("العائلات");
+    }
+  };
+  const OpenFamilyModel = () => {
+    Keyboard.dismiss();
+    SetErrors({ ...errors, selections: false });
+
+    setIsModulesPannel(true);
+    setshowButton(false);
+  };
   return (
     <View style={styles.Container}>
       <View style={styles.TitleContainer}>
@@ -167,98 +223,102 @@ export default function AddUser({ route, navigation }) {
           borderColor={errors.name ? "#c21a0e" : "grey"}
           onChangeText={(text) => handleUserInput(text, "name")}
         />
-        <Input
-          InputRightElement={
-            <Icon
-              style={{ marginRight: 10 }}
-              as={<MaterialIcons name="phone" />}
-              size={5}
-              ml="2"
-              color="#348578"
-            />
-          }
-          w={{
-            base: "95%",
-            md: "25%",
-          }}
-          h={50}
-          textAlign="right"
-          placeholder="رقم الهاتف"
-          onChangeText={(text) => handleUserInput(text, "phone")}
-          {...styling}
-          borderWidth={1}
-          borderColor={errors.phone ? "#c21a0e" : "grey"}
-        />
+        <View style={styles.InputsContainer}>
+          <Input
+            InputRightElement={
+              <Icon
+                style={{ marginRight: 10 }}
+                as={<MaterialIcons name="phone" />}
+                size={5}
+                ml="2"
+                color="#348578"
+              />
+            }
+            w={{
+              base: "49%",
+              md: "25%",
+            }}
+            h={50}
+            textAlign="right"
+            placeholder="رقم الهاتف"
+            onChangeText={(text) => handleUserInput(text, "phone")}
+            {...styling}
+            borderWidth={1}
+            borderColor={errors.phone ? "#c21a0e" : "grey"}
+          />
 
-        <Input
-          InputRightElement={
-            <Icon
-              style={{ marginRight: 10 }}
-              as={<MaterialIcons name="account-circle" />}
-              size={5}
-              ml="2"
-              color="#348578"
-            />
-          }
-          style={styles.input}
-          w={{
-            base: "95%",
-            md: "50%",
-          }}
-          h={50}
-          textAlign="right"
-          placeholder="اسم المستخدم"
-          onChangeText={(text) => handleUserInput(text, "username")}
-          {...styling}
-          borderWidth={1}
-          borderColor={errors.username ? "#c21a0e" : "grey"}
-        />
-        <Input
-          InputRightElement={
-            <Icon
-              style={{ marginRight: 10 }}
-              as={<MaterialIcons name="lock" />}
-              size={5}
-              ml="2"
-              color="#348578"
-            />
-          }
-          w={{
-            base: "95%",
-            md: "25%",
-          }}
-          h={50}
-          textAlign="right"
-          placeholder="كلمة المرور"
-          onChangeText={(text) => handleUserInput(text, "password")}
-          {...styling}
-          type={"password"}
-          borderWidth={1}
-          borderColor={errors.password ? "#c21a0e" : "grey"}
-        />
-        <Input
-          InputRightElement={
-            <Icon
-              style={{ marginRight: 10 }}
-              as={<MaterialIcons name="lock" />}
-              size={5}
-              ml="2"
-              color="#348578"
-            />
-          }
-          w={{
-            base: "95%",
-            md: "25%",
-          }}
-          h={50}
-          textAlign="right"
-          placeholder="تأكيد كلمة المرور"
-          onChangeText={(text) => handleUserInput(text, "confirmepassword")}
-          {...styling}
-          borderWidth={1}
-          type={"password"}
-          borderColor={errors.confirmepassword ? "#c21a0e" : "grey"}
-        />
+          <Input
+            InputRightElement={
+              <Icon
+                style={{ marginRight: 10 }}
+                as={<MaterialIcons name="account-circle" />}
+                size={5}
+                ml="2"
+                color="#348578"
+              />
+            }
+            style={styles.input}
+            w={{
+              base: "49%",
+              md: "50%",
+            }}
+            h={50}
+            textAlign="right"
+            placeholder="اسم المستخدم"
+            onChangeText={(text) => handleUserInput(text, "username")}
+            {...styling}
+            borderWidth={1}
+            borderColor={errors.username ? "#c21a0e" : "grey"}
+          />
+        </View>
+        <View style={styles.InputsContainer}>
+          <Input
+            InputRightElement={
+              <Icon
+                style={{ marginRight: 10 }}
+                as={<MaterialIcons name="lock" />}
+                size={5}
+                ml="2"
+                color="#348578"
+              />
+            }
+            w={{
+              base: "49%",
+              md: "25%",
+            }}
+            h={50}
+            textAlign="right"
+            placeholder="تأكيد كلمة المرور"
+            onChangeText={(text) => handleUserInput(text, "confirmepassword")}
+            {...styling}
+            borderWidth={1}
+            type={"password"}
+            borderColor={errors.confirmepassword ? "#c21a0e" : "grey"}
+          />
+          <Input
+            InputRightElement={
+              <Icon
+                style={{ marginRight: 10 }}
+                as={<MaterialIcons name="lock" />}
+                size={5}
+                ml="2"
+                color="#348578"
+              />
+            }
+            w={{
+              base: "49%",
+              md: "25%",
+            }}
+            h={50}
+            textAlign="right"
+            placeholder="كلمة المرور"
+            onChangeText={(text) => handleUserInput(text, "password")}
+            {...styling}
+            type={"password"}
+            borderWidth={1}
+            borderColor={errors.password ? "#c21a0e" : "grey"}
+          />
+        </View>
 
         <TouchableWithoutFeedback onPress={() => openPanel()}>
           <View
@@ -276,6 +336,24 @@ export default function AddUser({ route, navigation }) {
             <Text style={styles.InputText}>{job} </Text>
           </View>
         </TouchableWithoutFeedback>
+        {(job == "موزع القفة" || job == "وسيط اجتماعي") && (
+          <TouchableWithoutFeedback onPress={() => OpenFamilyModel()}>
+            <View
+              style={{
+                ...styles.dateContainer,
+                borderColor: errors.famillies ? "#c21a0e" : "grey",
+              }}
+            >
+              <Icon
+                as={<MaterialIcons name="lock" />}
+                size={5}
+                ml="2"
+                color="#348578"
+              />
+              <Text style={styles.InputText}> {FamilliesPlaceholder}</Text>
+            </View>
+          </TouchableWithoutFeedback>
+        )}
       </Stack>
       {ErrorMessageVisible && (
         <View style={styles.ErrorMessage}>
@@ -295,6 +373,18 @@ export default function AddUser({ route, navigation }) {
         data={jobs}
         isPanelActive={isPanelActive}
         setIsPanelActive={setIsPanelActive}
+        setshowButton={setshowButton}
+      />
+      <MultipleOptionSwipable
+        type={"family"}
+        title="العائلات"
+        getSelectedData={getSelectedData}
+        data={Famillies.map((o) => ({
+          ...o,
+          title: `عائلة  ${o.fatherLastName}`,
+        }))}
+        isPanelActive={IsModulesPannel}
+        setIsPanelActive={setIsModulesPannel}
         setshowButton={setshowButton}
       />
     </View>
@@ -322,7 +412,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
-    paddingTop: "20%",
+    paddingTop: "10%",
   },
   PageTitile: {
     fontSize: 25,
@@ -380,5 +470,10 @@ const styles = StyleSheet.create({
     fontFamily: "Tajawal-Medium",
     marginRight: 10,
     fontSize: 13,
+  },
+  InputsContainer: {
+    flexDirection: "row",
+    width: "95%",
+    justifyContent: "space-between",
   },
 });

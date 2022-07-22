@@ -11,6 +11,7 @@ import AddIncome from "../../Forms/AddIncome";
 import AddOutcome from "../../Forms/AddOutcome";
 import Hassalat from "./Hassalat";
 import AddHassala from "../../Forms/AddHassala";
+import AdminProfile from "../Profiles/adminProfile";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
@@ -54,6 +55,11 @@ export default function FinanceSection({ navigation }) {
         options={TransitionFromBottom}
         name="AddHassala"
         component={AddHassala}
+      />
+      <Stack.Screen
+        options={TransitionFromBottom}
+        name="FinanceMemberProfile"
+        component={AdminProfile}
       />
     </Stack.Navigator>
   );

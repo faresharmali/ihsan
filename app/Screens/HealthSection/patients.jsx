@@ -178,7 +178,12 @@ export default function Patients({ navigation, drawer }) {
             </View>
           </TouchableWithoutFeedback>
         </View>
-        <ScrollView style={styles.Content}>
+        <ScrollView
+          contentContainerStyle={{
+            paddingBottom: 25,
+          }}
+          style={styles.Content}
+        >
           {DisplayedPatientList.map((p) => (
             <PatientContainer data={p} />
           ))}
@@ -221,6 +226,8 @@ const styles = StyleSheet.create({
 
   Content: {
     width: "100%",
+    maxHeight: "85%",
+
     display: "flex",
     paddingTop: 10,
     paddingLeft: 20,

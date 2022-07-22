@@ -5,6 +5,7 @@ import {
 } from "@react-navigation/stack";
 import Members from "./Members.jsx";
 import AdminProfile from "../Profiles/adminProfile.jsx";
+import Distributeur from "../Profiles/Distubuteur.jsx";
 import Families from "./famillies.jsx";
 import Bureau from "./Bureau";
 import AddReservation from "../../Forms/AddReservation.jsx";
@@ -33,6 +34,9 @@ export default function KofaSection({ navigation }) {
 
       <Stack.Screen options={TransitionFromBottom} name="KofaMemberProfile">
         {(props) => <AdminProfile {...props} drawer={navigation} />}
+      </Stack.Screen>
+      <Stack.Screen options={TransitionFromBottom} name="DistributeurProfiile">
+        {(props) => <Distributeur {...props} drawer={navigation} />}
       </Stack.Screen>
 
       <Stack.Screen options={slideFromRight} name="KofaFamilies">

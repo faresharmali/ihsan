@@ -26,7 +26,6 @@ export default function AddFamily({ route, navigation }) {
   let users = useSelector((state) => state.users).filter(
     (d) => d.job.trim() == "وسيط اجتماعي"
   );
-  console.log("kofa", kofa);
 
   let allUSers = users.map((u) => ({ title: u[0] }));
   const [errors, SetErrors] = useState({
@@ -422,7 +421,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
-    paddingTop: "20%",
+    paddingTop: "10%",
   },
   PageTitile: {
     fontSize: 25,

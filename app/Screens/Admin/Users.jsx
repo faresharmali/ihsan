@@ -27,9 +27,23 @@ export default function Users({ navigation, drawer }) {
   const [UsersList, setUsersList] = useState([]);
 
   const openModal = (u) => {
-    navigation.navigate("AdminProfile", {
-      ...u,
-    });
+    console.log("id hgere", u.id);
+    switch (u.job) {
+      case "موزع القفة":
+        navigation.navigate("Distributeur", {
+          ...u,
+        });
+        break;
+      case "وسيط اجتماعي":
+        navigation.navigate("Wasset", {
+          ...u,
+        });
+        break;
+      default:
+        navigation.navigate("AdminProfile", {
+          ...u,
+        });
+    }
   };
   let userList = useSelector((state) => state.users);
   useEffect(() => {
@@ -241,7 +255,12 @@ export default function Users({ navigation, drawer }) {
           </View>
         </TouchableWithoutFeedback>
       </View>
-      <ScrollView style={styles.Content}>
+      <ScrollView
+        contentContainerStyle={{
+          paddingBottom: 25,
+        }}
+        style={styles.Content}
+      >
         {UsersList.map((u) => (
           <DataContainer
             key={u[0]}
@@ -325,6 +344,7 @@ const styles = StyleSheet.create({
   Content: {
     width: "100%",
     maxHeight: "76.2%",
+    paddingBottom: 25,
     backgroundColor: "#f5f5f5",
     display: "flex",
     paddingTop: 10,

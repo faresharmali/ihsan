@@ -10,6 +10,7 @@ import ActivityDonators from "./Donators.jsx";
 import Activity from "./Activity.jsx";
 import ActivitiesProgram from "./program.jsx";
 import AddProgramItem from "../../Forms/AddProgramItem.jsx";
+import AdminProfile from "../Profiles/adminProfile.jsx";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
@@ -48,6 +49,11 @@ export default function ActivitiesSection({ navigation }) {
         options={TransitionFromBottom}
         name="Activity"
         component={Activity}
+      />
+      <Stack.Screen
+        options={TransitionFromBottom}
+        name="ActivityMemberProfile"
+        component={AdminProfile}
       />
       <Stack.Screen
         options={slideFromRight}

@@ -18,9 +18,10 @@ import Orphans from "../AdministrationSection/Orphans/Orpahans.jsx";
 import AdminProfile from "../Profiles/adminProfile.jsx";
 import AddDonator from "../../Forms/AddDonator.jsx";
 import KidProfile from "../AdministrationSection/Famillies/kidProfile.jsx";
-import BottomBar from "../../Navigation/BottomBar.js";
 import KafelProfile from "../Profiles/kafelProfile.jsx";
-import { KeyboardAvoidingView } from "react-native";
+import Distributeur from "../Profiles/Distubuteur.jsx";
+import Wasset from "../Profiles/wasseet.jsx";
+import Information from "../InformationsSection/information.jsx";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
@@ -28,85 +29,103 @@ const scaleFromCenter = { ...TransitionPresets.ScaleFromCenterAndroid };
 export default function Administration({ navigation }) {
   return (
     <>
-    <Stack.Navigator
-      initialRouteName="Users"
-      screenOptions={{
-        gestureEnabled: true,
-        gestureDirection: "vertical",
-        headerShown: false,
-      }}
-    >
-      <Stack.Screen
-        options={TransitionFromBottom}
-        name="AddUser"
-        component={AddUser}
-      />
-      <Stack.Screen
-        options={TransitionFromBottom}
-        name="AddFamily"
-        component={AddFamily}
-      />
-      <Stack.Screen options={slideFromRight} name="Users">
-        {(props) => <Users {...props} drawer={navigation} />}
-      </Stack.Screen>
-      <Stack.Screen options={slideFromRight} name="Famillies">
-        {(props) => <Families {...props} drawer={navigation} />}
-      </Stack.Screen>
-      <Stack.Screen
-        options={TransitionFromBottom}
-        name="Family"
-        component={FamilyScreen}
-      />
-    
-      <Stack.Screen
-        options={TransitionFromBottom}
-        name="AddChild"
-        component={AddChild}
-      />
-      <Stack.Screen
-        options={TransitionFromBottom}
-        name="AddInformation"
-        component={AddInformation}
-      />
-      <Stack.Screen
-        options={TransitionFromBottom}
-        name="UserProfile"
-        component={UserProfile}
-      />
-      <Stack.Screen
-        options={TransitionFromBottom}
-        name="AdminProfile"
-        component={AdminProfile}
-      />
-      <Stack.Screen
-        options={TransitionFromBottom}
-        name="KafelProfile"
-        component={KafelProfile}
-      />
-      <Stack.Screen options={slideFromRight} name="Bureau" component={Bureau} />
-      <Stack.Screen
-        options={TransitionFromBottom}
-        name="AddReservation"
-        component={AddReservation}
-      />
-      <Stack.Screen options={slideFromRight} name="Kofal" component={Kofal} />
-      <Stack.Screen
-        options={slideFromRight}
-        name="Orphans"
-        component={Orphans}
-      />
-      <Stack.Screen
-        options={TransitionFromBottom}
-        name="AddDonator"
-        component={AddDonator}
-      />
-      <Stack.Screen
-        options={scaleFromCenter}
-        name="KidProfile"
-        component={KidProfile}
-      />
-    </Stack.Navigator>
+      <Stack.Navigator
+        initialRouteName="Users"
+        screenOptions={{
+          gestureEnabled: true,
+          gestureDirection: "vertical",
+          headerShown: false,
+        }}
+      >
+        <Stack.Screen
+          options={TransitionFromBottom}
+          name="AddUser"
+          component={AddUser}
+        />
+        <Stack.Screen
+          options={TransitionFromBottom}
+          name="AddFamily"
+          component={AddFamily}
+        />
+        <Stack.Screen options={slideFromRight} name="Users">
+          {(props) => <Users {...props} drawer={navigation} />}
+        </Stack.Screen>
+        <Stack.Screen options={slideFromRight} name="Famillies">
+          {(props) => <Families {...props} drawer={navigation} />}
+        </Stack.Screen>
+        <Stack.Screen
+          options={TransitionFromBottom}
+          name="Family"
+          component={FamilyScreen}
+        />
+
+        <Stack.Screen
+          options={TransitionFromBottom}
+          name="AddChild"
+          component={AddChild}
+        />
+        <Stack.Screen
+          options={TransitionFromBottom}
+          name="AddInformation"
+          component={AddInformation}
+        />
+        <Stack.Screen
+          options={TransitionFromBottom}
+          name="UserProfile"
+          component={UserProfile}
+        />
+        <Stack.Screen
+          options={TransitionFromBottom}
+          name="AdminProfile"
+          component={AdminProfile}
+        />
+        <Stack.Screen
+          options={TransitionFromBottom}
+          name="KafelProfile"
+          component={KafelProfile}
+        />
+        <Stack.Screen
+          options={slideFromRight}
+          name="Bureau"
+          component={Bureau}
+        />
+        <Stack.Screen
+          options={TransitionFromBottom}
+          name="AddReservation"
+          component={AddReservation}
+        />
+        <Stack.Screen options={slideFromRight} name="Kofal" component={Kofal} />
+        <Stack.Screen
+          options={slideFromRight}
+          name="Orphans"
+          component={Orphans}
+        />
+        <Stack.Screen
+          options={TransitionFromBottom}
+          name="AddDonator"
+          component={AddDonator}
+        />
+        <Stack.Screen
+          options={scaleFromCenter}
+          name="KidProfile"
+          component={KidProfile}
+        />
+        <Stack.Screen
+          options={TransitionFromBottom}
+          name="Distributeur"
+          component={Distributeur}
+        />
+        <Stack.Screen
+          options={TransitionFromBottom}
+          name="Wasset"
+          component={Wasset}
+        />
+        <Stack.Screen
+          options={TransitionFromBottom}
+          name="InformationAdmin"
+          component={Information}
+        />
+      </Stack.Navigator>
     </>
-    
   );
 }

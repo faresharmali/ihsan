@@ -22,7 +22,7 @@ import DataContainer from "../../Components/DataContainer";
 import UserInfos from "./userInfos";
 import FamilyInfosContainer from "../../Components/Containers/FamilyInfosContainer";
 import { useSelector } from "react-redux";
-export default function AdminProfile({ route, navigation }) {
+export default function Wasset({ route, navigation }) {
   const [section, setSection] = useState("infos");
 
   const Familli = useSelector((state) => state.Families)
@@ -55,7 +55,11 @@ export default function AdminProfile({ route, navigation }) {
               <Text style={styles.NavigationItemText}>معلومات</Text>
             </View>
           </TouchableOpacity>
-         
+          <TouchableOpacity onPress={() => setSection("children")}>
+            <View style={styles.NavigationItem}>
+              <Text style={styles.NavigationItemText}>العائلات</Text>
+            </View>
+          </TouchableOpacity>
           <TouchableOpacity onPress={() => setSection("posts")}>
             <View style={styles.NavigationItem}>
               <Text style={styles.NavigationItemText}>المنشورات</Text>
@@ -67,7 +71,20 @@ export default function AdminProfile({ route, navigation }) {
       {section == "infos" && (
         <UserInfos title="معلومات العضو" data={route.params} />
       )}
-  
+      {section == "children" && (
+        <ScrollView style={styles.Content}>
+          {route.params.famillies &&
+            route.params.famillies.map((f) => (
+              <FamilyInfosContainer
+                key={f._id}
+                AvatarSize={40}
+                data={Familli.filter((fa)=>fa.id==f.id)[0]}
+                pic={Family}
+              />
+              
+            ))}
+        </ScrollView>
+      )}
       {section == "posts" && (
         <ScrollView style={styles.Content}>
          {Informations.map((f) => (
@@ -134,7 +151,7 @@ const styles = StyleSheet.create({
   NavigationItem: {
     height: "100%",
     justifyContent: "center",
-    width: 165,
+    width: 105,
     margin: 5,
     marginTop: 0,
     marginBottom: 0,

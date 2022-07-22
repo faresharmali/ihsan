@@ -131,7 +131,7 @@ export default function AddEducationMember({ route, navigation }) {
       const res = await CreateEducationMember({
         ...userInfos,
       });
-      if (res.ok) {
+      if (res.data.ok) {
         route.params.showToast();
         navigation.goBack();
       } else {

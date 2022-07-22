@@ -21,12 +21,16 @@ import { getUsers } from "../../api/user";
 LogBox.ignoreAllLogs();
 export default function Members({ navigation, drawer }) {
   const openModal = (u) => {
-    navigation.navigate("KofaMemberProfile", {
-      ...u,
-    });
+    u.job == "قسم القفة"
+      ? navigation.navigate("KofaMemberProfile", {
+          ...u,
+        })
+      : navigation.navigate("DistributeurProfiile", {
+          ...u,
+        });
   };
   let users = useSelector((state) => state.users).filter(
-    (u) => (u[2].trim() == "قسم القفة" || u[2].trim() == "موزع القفة")
+    (u) => u[2].trim() == "قسم القفة" || u[2].trim() == "موزع القفة"
   );
 
   const dispatch = useDispatch();

@@ -14,25 +14,35 @@ import { useDispatch } from "react-redux";
 import { AddKid } from "../api/family";
 import uuid from "react-native-uuid";
 import ScolaritySwipeable from "../Components/Containers/ScolaritySwipable";
+import MultipleOptionSwipable from "../Components/Containers/MultipleOptionSwipable";
 export default function AddChild({ route, navigation }) {
-  console.log("paramssss",route.params.id)
+  console.log("paramssss", route.params.id);
   const dispatch = useDispatch();
   const [ErrorMessageVisible, setErrorMessageVisible] = useState(false);
   const [LevelChoiceVisible, setLevelChoiceVisible] = useState(false);
   const [ErrorMessage, setErrorMessage] = useState("");
   const [level, setLevel] = useState("المستوى الدراسي");
+  const [ModulesPlaceHolder, setModulesPlaceHolder] = useState("المواد");
   const [gender, setgender] = useState("ذكر");
   const [Education, setEducation] = useState(false);
+  const [ModulesPannel, setIsModulesPannel] = useState(false);
+  const [SelectedModules, setSelectedModules] = useState([]);
+  const [sick, setSickness] = useState(false);
+  const [showButton, setshowButton] = useState(true);
+
   const [ChildData, setChildData] = useState({
     id: uuid.v4(),
     name: "",
     age: "",
     scolarity: "",
+    sickness: "",
   });
   const [errors, SetErrors] = useState({
     name: false,
     age: false,
     scolarity: false,
+    sickness: false,
+    modules: false,
   });
   const ChooseLevel = (data) => {
     setLevel(data);
@@ -52,7 +62,12 @@ export default function AddChild({ route, navigation }) {
     if (ChildData.scolarity.trim() == "") {
       (FieldErrors.scolarity = true), (valid = false);
     }
-    console.log(FieldErrors);
+    if (sick && ChildData.sickness.trim() == "") {
+      (FieldErrors.sickness = true), (valid = false);
+    }
+    if (Education && SelectedModules.length == 0) {
+      (FieldErrors.modules = true), (valid = false);
+    }
     SetErrors(FieldErrors);
     return valid;
   };
@@ -72,7 +87,13 @@ export default function AddChild({ route, navigation }) {
     if (validate()) {
       const res = await AddKid({
         id: route.params.id,
-        kid: { ...ChildData, gender, Education },
+        kid: {
+          ...ChildData,
+          gender,
+          Education,
+          sick,
+          modules: JSON.stringify(SelectedModules),
+        },
       });
       if (res.ok) {
         dispatch(
@@ -81,6 +102,8 @@ export default function AddChild({ route, navigation }) {
             gender,
             Education,
             id: route.params.id,
+            sick,
+            modules: JSON.stringify(SelectedModules),
           })
         );
         route.params.showToast();
@@ -120,6 +143,34 @@ export default function AddChild({ route, navigation }) {
     return () => backHandler.remove();
   }, [LevelChoiceVisible]);
 
+  const getSelectedData = (data) => {
+    let overFlow = data.length > 2 ? `... و ${data.length - 2} اخرين` : "";
+    if (data.length > 0) {
+      setModulesPlaceHolder(
+        data
+          .map((d) => d.title + " ")
+          .slice(0, 2)
+          .join(",") + overFlow
+      );
+      setSelectedModules(data);
+    } else {
+      setSelectedModules([]);
+      setModulesPlaceHolder("المواد");
+    }
+  };
+  const OpenModulesPanel = () => {
+    Keyboard.dismiss();
+    SetErrors({ ...errors, selections: false });
+
+    setIsModulesPannel(true);
+    setshowButton(false);
+  };
+  let Modules = [
+    { title: "الرياضيات", id: 1 },
+    { title: "اللغة العربية", id: 2 },
+    { title: "اللغة الفرنسية", id: 3 },
+    { title: "اللغة الانجليزية", id: 4 },
+  ];
   return (
     <View style={styles.Container}>
       <View style={styles.TitleContainer}>
@@ -201,7 +252,6 @@ export default function AddChild({ route, navigation }) {
             <Text style={styles.InputText}>{level} </Text>
           </View>
         </TouchableWithoutFeedback>
-
         <Radio.Group
           value={gender}
           style={{ flexDirection: "row" }}
@@ -224,11 +274,59 @@ export default function AddChild({ route, navigation }) {
             أنثى
           </Radio>
         </Radio.Group>
+        <Checkbox onChange={(e) => setSickness(e)} value="one" my={2}>
+          <Text style={styles.checkBoxText}>يعاني من مرض مزمن</Text>
+        </Checkbox>
+
+        {sick && (
+          <Input
+            InputRightElement={
+              <Icon
+                style={{ marginRight: 10 }}
+                as={<FontAwesome name="birthday-cake" />}
+                size={5}
+                ml="2"
+                color="#348578"
+              />
+            }
+            w={{
+              base: "95%",
+              md: "25%",
+            }}
+            h={50}
+            textAlign="right"
+            placeholder="المرض "
+            {...styling}
+            borderWidth={1}
+            borderColor={errors.sickness ? "#c21a0e" : "grey"}
+            onChangeText={(text) => inputHandler(text, "sickness")}
+          />
+        )}
+
         <HStack space={6}>
           <Checkbox onChange={(e) => setEducation(e)} value="one" my={2}>
-            <Text style={styles.checkBoxText}>يستفيد من قسم التعليم</Text>
+            <Text style={styles.checkBoxText}>يستفيد من دروس الدعم </Text>
           </Checkbox>
         </HStack>
+        {Education && (
+          <TouchableWithoutFeedback onPress={() => OpenModulesPanel()}>
+            <View
+              style={{
+                ...styles.dateContainer,
+                borderColor: errors.modules ? "#c21a0e" : "grey",
+              }}
+            >
+              <Icon
+                as={<MaterialIcons name="lock" />}
+                size={5}
+                ml="2"
+                color="#348578"
+              />
+              <Text style={styles.InputText}> {ModulesPlaceHolder}</Text>
+            </View>
+          </TouchableWithoutFeedback>
+        )}
+
         {ErrorMessageVisible && (
           <View style={styles.ErrorMessage}>
             <FontAwesome
@@ -240,22 +338,32 @@ export default function AddChild({ route, navigation }) {
           </View>
         )}
       </Stack>
-
-      <TouchableOpacity
-        style={styles.Button}
-        mode="contained"
-        onPress={CreateKid}
-      >
-        <Text style={{ fontSize: 17, marginLeft: 10, color: "#fff" }}>
-          اضافة{" "}
-        </Text>
-      </TouchableOpacity>
+      {showButton && (
+        <TouchableOpacity
+          style={styles.Button}
+          mode="contained"
+          onPress={CreateKid}
+        >
+          <Text style={{ fontSize: 17, marginLeft: 10, color: "#fff" }}>
+            اضافة{" "}
+          </Text>
+        </TouchableOpacity>
+      )}
 
       <ScolaritySwipeable
         title="اختيار المستوى الدراسي"
         ChooseLevel={ChooseLevel}
         isPanelActive={LevelChoiceVisible}
         setIsPanelActive={setLevelChoiceVisible}
+      />
+      <MultipleOptionSwipable
+        type={"family"}
+        title="المواد"
+        getSelectedData={getSelectedData}
+        data={Modules}
+        isPanelActive={ModulesPannel}
+        setIsPanelActive={setIsModulesPannel}
+        setshowButton={setshowButton}
       />
     </View>
   );

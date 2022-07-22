@@ -68,18 +68,7 @@ export default function KofaSectionBottomBar(props) {
               <Text style={styles.bottomBarITemText}>المكونات</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate("Orphans")}>
-            <View style={styles.bottomBarITem}>
-              <Icon
-                as={MaterialCommunityIcons}
-                name="finance"
-                color={"#fff"}
-                size={4}
-              />
-
-              <Text style={styles.bottomBarITemText}>المالية</Text>
-            </View>
-          </TouchableOpacity>
+         
           <TouchableOpacity onPress={() => navigation.navigate("KofaStatus")}>
             <View style={styles.bottomBarITem}>
               <Icon

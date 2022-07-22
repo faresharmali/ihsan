@@ -6,9 +6,12 @@ import {
 import Members from "./Members.jsx";
 import EducationDonators from "./Donators.jsx";
 import EducationOrphans from "./EducationOrphans.jsx";
+import KafalaFekriya from "./kafalaFekriya.jsx";
+import AddEducationMember from "../../Forms/AddEducationGroupe.jsx";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
+
 export default function EducationSection({ navigation }) {
   return (
     <Stack.Navigator
@@ -33,6 +36,16 @@ export default function EducationSection({ navigation }) {
         options={slideFromRight}
         name="EducationOrphans"
         component={EducationOrphans}
+      />
+      <Stack.Screen
+        options={slideFromRight}
+        name="KafalaFekriya"
+        component={KafalaFekriya}
+      />
+      <Stack.Screen
+        options={TransitionFromBottom}
+        name="AddEducationMember"
+        component={AddEducationMember}
       />
 
     </Stack.Navigator>

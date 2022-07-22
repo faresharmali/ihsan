@@ -7,39 +7,34 @@ import {
   BackHandler,
 } from "react-native";
 import React, { useState, useEffect } from "react";
-import { Input, Stack, Icon} from "native-base";
+import { Input, Stack, Icon } from "native-base";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { Button } from "react-native-paper";
 import Swipable from "../Components/Containers/swipable";
 import { useSelector } from "react-redux";
 
-import { CreateTransaction } from "../api/Finance";
+import { CreateHassala } from "../api/Finance";
 import uuid from "react-native-uuid";
-export default function AddIncome({ route, navigation }) {
+export default function AddHassala({ route, navigation }) {
   const [ErrorMessageVisible, setErrorMessageVisible] = useState(false);
-  const [isTypePannel, setIsTypePannel] = useState(false);
   const [ReceiverPannel, setReceiverPannel] = useState(false);
   const [showButton, setshowButton] = useState(true);
-  const [type, setType] = useState(" النوع");
-  const [Donator, setDonator] = useState("المستلم");
+  const [Donator, setDonator] = useState("المسؤول");
   const [ErrorMessage, setErrorMessage] = useState("");
-  const [section, setSection] = useState("القسم");
-  const [sectionPannel, setsectionPannel] = useState(false);
 
   const [errors, SetErrors] = useState({
-    title: false,
-    section: false,
+    name: false,
+    location: false,
     amount: false,
-    type: false,
     receiver: false,
   });
   const [TransactionInfos, SetTransactionInfos] = useState({
     identifier: uuid.v4(),
     date: new Date(),
-    type: "",
+    name: "",
+    location: "",
     amount: "",
     receiver: "",
-    income: true,
   });
   let users = useSelector((state) => state.users);
 
@@ -47,8 +42,7 @@ export default function AddIncome({ route, navigation }) {
     const backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
       () => {
-        if ( isTypePannel || ReceiverPannel) {
-          setIsTypePannel(false);
+        if (  ReceiverPannel) {
           setReceiverPannel(false);
           return true;
         } else {
@@ -57,7 +51,7 @@ export default function AddIncome({ route, navigation }) {
       }
     );
     return () => backHandler.remove();
-  }, [ReceiverPannel, isTypePannel]);
+  }, [ReceiverPannel]);
 
   const handleUserInput = (text, name) => {
     setErrorMessageVisible(false);
@@ -71,25 +65,11 @@ export default function AddIncome({ route, navigation }) {
     fontSize: 14,
   };
 
-  const ChooseType = (type) => {
-    SetErrors({ ...errors, type: false });
-    SetTransactionInfos({ ...TransactionInfos, type: type });
-    setType(type);
-    setIsTypePannel(false);
-    setshowButton(true);
-  };
   const ChooseDonator = (donator) => {
     setReceiverPannel(false);
     SetErrors({ ...errors, receiver: false });
     SetTransactionInfos({ ...TransactionInfos, receiver: donator });
     setDonator(donator);
-    setshowButton(true);
-  };
-  const ChooseSection = (section) => {
-    setsectionPannel(false);
-    setSection(section);
-    SetErrors({ ...errors, section: false });
-    SetTransactionInfos({ ...TransactionInfos, section: section });
     setshowButton(true);
   };
   const validate = () => {
@@ -101,16 +81,21 @@ export default function AddIncome({ route, navigation }) {
     if (TransactionInfos.receiver.trim() == "") {
       (FieldErrors.receiver = true), (valid = false);
     }
-    if (TransactionInfos.type.trim() == "") {
-      (FieldErrors.type = true), (valid = false);
+    if (TransactionInfos.name.trim() == "") {
+      (FieldErrors.name = true), (valid = false);
     }
+    if (TransactionInfos.location.trim() == "") {
+      (FieldErrors.location = true), (valid = false);
+    }
+
     SetErrors(FieldErrors);
     return valid;
   };
-const AddTransaction = async () => {
+  const AddHassala = async () => {
+    console.log("infos",TransactionInfos)
     Keyboard.dismiss();
     if (validate()) {
-      const res = await CreateTransaction({
+      const res = await CreateHassala({
         ...TransactionInfos,
       });
       if (res.ok) {
@@ -127,39 +112,15 @@ const AddTransaction = async () => {
     Keyboard.dismiss();
     setshowButton(false);
     SetErrors({ ...errors, [name]: false });
-    switch (name) {
-      case "type":
-        setIsTypePannel(true);
-        break;
-      case "user":
-        setReceiverPannel(true);
-        break;
-      case "section":
-        setsectionPannel(true);
-        break;
-    }
+    setReceiverPannel(true);
   };
 
-  const activityTypes = ["تبرع", "زكاة", "كفالة", "تحويل", "حصالة"];
-  let sections = [
-    { title: "قسم الادارة" },
-    { title: "قسم المالية" },
-    { title: "قسم القفة" },
-    { title: "موزع القفة" },
-    { title: "قسم الأيتام" },
-    { title: "قسم التعليم" },
-    { title: "قسم الصحة" },
-    { title: "وسيط اجتماعي" },
-    { title: "قسم الأرامل" },
-    { title: "قسم الأنشطة الخيرية" },
-  ];
   return (
     <View style={styles.Container}>
       <View style={styles.TitleContainer}>
         <View style={{ flexDirection: "row-reverse" }}>
           <Icon as={FontAwesome} name="user-plus" size={7} color="#348578" />
-
-          <Text style={styles.PageTitile}>اضافة مداخيل</Text>
+          <Text style={styles.PageTitile}>اضافة حصالة</Text>
         </View>
         <TouchableWithoutFeedback onPress={() => navigation.navigate("Kofal")}>
           <Icon
@@ -190,13 +151,59 @@ const AddTransaction = async () => {
           h={50}
           name="name"
           textAlign="right"
+          placeholder="اسم الحصالة"
+          {...styling}
+          borderWidth={1}
+          borderColor={errors.name ? "#c21a0e" : "grey"}
+          onChangeText={(text) => handleUserInput(text, "name")}
+        />
+        <Input
+          InputRightElement={
+            <Icon
+              style={{ marginRight: 10 }}
+              as={<FontAwesome name="user" />}
+              size={5}
+              ml="2"
+              color="#348578"
+            />
+          }
+          w={{
+            base: "95%",
+            md: "25%",
+          }}
+          h={50}
+          name="name"
+          textAlign="right"
+          placeholder="المكان "
+          {...styling}
+          borderWidth={1}
+          borderColor={errors.location ? "#c21a0e" : "grey"}
+          onChangeText={(text) => handleUserInput(text, "location")}
+        />
+        <Input
+          InputRightElement={
+            <Icon
+              style={{ marginRight: 10 }}
+              as={<FontAwesome name="user" />}
+              size={5}
+              ml="2"
+              color="#348578"
+            />
+          }
+          w={{
+            base: "95%",
+            md: "25%",
+          }}
+          h={50}
+          name="name"
+          textAlign="right"
           placeholder="المبلغ "
           {...styling}
           borderWidth={1}
           borderColor={errors.amount ? "#c21a0e" : "grey"}
           onChangeText={(text) => handleUserInput(text, "amount")}
         />
-           <TouchableWithoutFeedback onPress={() => openPanel("user")}>
+        <TouchableWithoutFeedback onPress={() => openPanel("user")}>
           <View
             style={{
               ...styles.dateContainer,
@@ -212,41 +219,6 @@ const AddTransaction = async () => {
             <Text style={styles.InputText}> {Donator}</Text>
           </View>
         </TouchableWithoutFeedback>
-
-        <TouchableWithoutFeedback onPress={() => openPanel("type")}>
-          <View
-            style={{
-              ...styles.dateContainer,
-              borderColor: errors.type ? "#c21a0e" : "grey",
-            }}
-          >
-            <Icon
-              as={<MaterialIcons name="lock" />}
-              size={5}
-              ml="2"
-              color="#348578"
-            />
-            <Text style={styles.InputText}> {type}</Text>
-          </View>
-        </TouchableWithoutFeedback>
-        {TransactionInfos.type == "تحويل" && (
-          <TouchableWithoutFeedback onPress={() => openPanel("section")}>
-            <View
-              style={{
-                ...styles.dateContainer,
-                borderColor: errors.section ? "#c21a0e" : "grey",
-              }}
-            >
-              <Icon
-                as={<MaterialIcons name="lock" />}
-                size={5}
-                ml="2"
-                color="#348578"
-              />
-              <Text style={styles.InputText}> {section}</Text>
-            </View>
-          </TouchableWithoutFeedback>
-        )}
       </Stack>
       {ErrorMessageVisible && (
         <View style={styles.ErrorMessage}>
@@ -255,8 +227,8 @@ const AddTransaction = async () => {
         </View>
       )}
       {showButton && (
-        <Button style={styles.Button} mode="contained" onPress={AddTransaction}>
-          <Text style={{ fontSize: 16, marginLeft: 10 }}>اضافة</Text>
+        <Button style={styles.Button} mode="contained" onPress={AddHassala}>
+          <Text style={{ fontSize: 16, marginLeft: 10 }}> اضافة حصالة</Text>
         </Button>
       )}
 
@@ -266,22 +238,6 @@ const AddTransaction = async () => {
         data={users.map((t) => ({ title: t.name }))}
         isPanelActive={ReceiverPannel}
         setIsPanelActive={setReceiverPannel}
-        setshowButton={setshowButton}
-      />
-      <Swipable
-        title="اختيار نوع المدخول"
-        ChooseJob={ChooseType}
-        data={activityTypes.map((t) => ({ title: t }))}
-        isPanelActive={isTypePannel}
-        setIsPanelActive={setIsTypePannel}
-        setshowButton={setshowButton}
-      />
-            <Swipable
-        title="اختيار القسم"
-        ChooseJob={ChooseSection}
-        data={sections}
-        isPanelActive={sectionPannel}
-        setIsPanelActive={setsectionPannel}
         setshowButton={setshowButton}
       />
     </View>

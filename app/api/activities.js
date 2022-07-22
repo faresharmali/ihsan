@@ -26,14 +26,12 @@ export const getActivities = async (token) => {
     console.error("error", e);
   }
 };
-export const getProgram = async (data,token) => {
-
+export const getProgram = async (data, token) => {
   try {
-    const res = await axios.get(api+"/getprogram", {
+    const res = await axios.get(api + "/getprogram", {
       headers: {
         token: token,
-        ...data
-
+        ...data,
       },
     });
     return res;
@@ -41,13 +39,39 @@ export const getProgram = async (data,token) => {
     console.error("error", e);
   }
 };
-export const CreateProgramItem = async (data,token) => {
+export const CreateProgramItem = async (data, token) => {
   try {
-    const res = await axios.post(api+"/addprogram", {
+    const res = await axios.post(api + "/addprogram", {
       headers: {
         token: token,
       },
-      ...data
+      ...data,
+    });
+    return res;
+  } catch (e) {
+    console.error("error", e);
+  }
+};
+export const CreateEducationMember = async (data, token) => {
+  try {
+    const res = await axios.post(api + "/addeducationmember", {
+      headers: {
+        token: token,
+      },
+      ...data,
+    });
+    return res;
+  } catch (e) {
+    console.error("error", e);
+  }
+};
+export const GetEducationGroupes = async (data, token) => {
+  try {
+    const res = await axios.get(api + "/geteducation", {
+      headers: {
+        token: token,
+        ...data,
+      },
     });
     return res;
   } catch (e) {

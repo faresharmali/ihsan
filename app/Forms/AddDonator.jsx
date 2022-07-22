@@ -34,8 +34,7 @@ export default function AddDonator({ route, navigation }) {
     name: false,
     phone: false,
     user: false,
-    donationAmount: false,
-  });
+ });
   const [userInfos, setuserInfos] = useState({
     id: uuid.v4(),
     name: "",
@@ -45,6 +44,7 @@ export default function AddDonator({ route, navigation }) {
     donationAmount: "",
   });
   const Famillies = useSelector((state) => state.Families);
+  const token = useSelector((state) => state.Auth).token;
 
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
@@ -122,13 +122,11 @@ export default function AddDonator({ route, navigation }) {
     if (userInfos.user.trim() == "") {
       (FieldErrors.user = true), (valid = false);
     }
-    if (userInfos.donationAmount.trim() == "") {
-      (FieldErrors.donationAmount = true), (valid = false);
-    }
     if (userInfos.user.trim() == "") {
       (FieldErrors.user = true), (valid = false);
     }
     SetErrors(FieldErrors);
+    console.log("errors",FieldErrors)
     return valid;
   };
   const AddDonator = async () => {

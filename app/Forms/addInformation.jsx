@@ -50,7 +50,7 @@ export default function AddInformation({ route, navigation }) {
     const backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
       () => {
-        if (backHandler || isTypePannel || isPanelActive) {
+        if (  isTypePannel || isPanelActive) {
           setIsTypePannel(false);
           setIsFamiltPanelActive(false);
           setIsPanelActive(false);

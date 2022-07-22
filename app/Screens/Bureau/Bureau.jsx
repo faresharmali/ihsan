@@ -253,7 +253,7 @@ export default function Bureau({ navigation, drawer }) {
       </View>
       <TouchableOpacity
         onPress={() => navigation.navigate("AddReservation", { showToast })}
-        style={{ ...styles.fab, ...styles.filter }}
+        style={tyles.fab}
       >
         <Icon as={Entypo} name="plus" size={8} color="#fff" />
       </TouchableOpacity>

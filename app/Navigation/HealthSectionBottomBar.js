@@ -16,7 +16,7 @@ export default function HealthSectionBottomBar(props) {
       <View style={styles.BottomBar}>
         <View style={styles.itemContainer}>
           <TouchableOpacity
-            onPress={() => props.navigation.navigate("Members")}
+            onPress={() => props.navigation.navigate("HealthMembers")}
           >
             <View style={styles.bottomBarITem}>
               <Icon
@@ -30,7 +30,7 @@ export default function HealthSectionBottomBar(props) {
             </View>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => props.navigation.navigate("EducationDonators")}
+            onPress={() => props.navigation.navigate("HealthDonators")}
           >
             <View style={styles.bottomBarITem}>
               <Icon
@@ -45,7 +45,7 @@ export default function HealthSectionBottomBar(props) {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => props.navigation.navigate("EducationOrphans")}
+            onPress={() => props.navigation.navigate("Patients")}
           >
             <View style={styles.bottomBarITem}>
               <Icon

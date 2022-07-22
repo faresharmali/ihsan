@@ -30,7 +30,7 @@ export default function FinanceSectionBottomBar(props) {
             </View>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => props.navigation.navigate("Outcome")}
+            onPress={() => props.navigation.navigate("Hassalat")}
           >
             <View style={styles.bottomBarITem}>
               <Icon

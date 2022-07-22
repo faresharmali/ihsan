@@ -7,7 +7,7 @@ import {
   BackHandler,
 } from "react-native";
 import React, { useState, useEffect } from "react";
-import { Input, Stack, Icon} from "native-base";
+import { Input, Stack, Icon } from "native-base";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { Button } from "react-native-paper";
 import Swipable from "../Components/Containers/swipable";
@@ -24,7 +24,6 @@ export default function AddOutcome({ route, navigation }) {
   const [Donator, setDonator] = useState("الدافع");
   const [section, setSection] = useState("القسم");
   const [ErrorMessage, setErrorMessage] = useState("");
-
   const [errors, SetErrors] = useState({
     section: false,
     amount: false,
@@ -47,7 +46,7 @@ export default function AddOutcome({ route, navigation }) {
     const backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
       () => {
-        if (backHandler || isTypePannel || ReceiverPannel || sectionPannel) {
+        if (  isTypePannel || ReceiverPannel || sectionPannel) {
           setIsTypePannel(false);
           setReceiverPannel(false);
           setsectionPannel(false);
@@ -153,8 +152,6 @@ export default function AddOutcome({ route, navigation }) {
       setErrorMessageVisible(true);
     }
   };
-
-
   const activityTypes = ["تبرع", "زكاة", "كفالة", "تحويل", "حصالة"];
   let sections = [
     { title: "قسم الادارة" },

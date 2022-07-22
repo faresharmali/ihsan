@@ -8,7 +8,7 @@ import {
   ScrollView,
 } from "react-native";
 import React, { useState } from "react";
-import { Input, Stack, Icon ,Checkbox} from "native-base";
+import { Input, Stack, Icon, Checkbox } from "native-base";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { Button } from "react-native-paper";
 import { CreateFamily } from "../api/family";
@@ -21,11 +21,12 @@ export default function AddFamily({ route, navigation }) {
   const [isPanelActive, setIsPanelActive] = useState(false);
   const [showButton, setshowButton] = useState(true);
   const [kofa, setKofa] = useState(false);
+  const [sick, setMomSick] = useState(false);
   const [wasseet, setwasseet] = useState("الوسيط الاجتماعي");
   let users = useSelector((state) => state.users).filter(
     (d) => d.job.trim() == "وسيط اجتماعي"
   );
-  console.log("kofa",kofa)
+  console.log("kofa", kofa);
 
   let allUSers = users.map((u) => ({ title: u[0] }));
   const [errors, SetErrors] = useState({
@@ -37,6 +38,7 @@ export default function AddFamily({ route, navigation }) {
     phone: false,
     donation: false,
     wasseet: false,
+    sickness: false,
   });
   const [userInfos, setuserInfos] = useState({
     id: uuid.v4(),
@@ -48,6 +50,7 @@ export default function AddFamily({ route, navigation }) {
     phone: "",
     donation: "",
     wasseet: "",
+    sickness: "",
   });
   const openPanel = () => {
     Keyboard.dismiss();
@@ -70,7 +73,7 @@ export default function AddFamily({ route, navigation }) {
   const CreateNewUser = async () => {
     Keyboard.dismiss();
     if (validate()) {
-      const res = await CreateFamily({...userInfos,kofa});
+      const res = await CreateFamily({ ...userInfos, kofa, sick });
       if (res.ok) {
         route.params.showToast();
         navigation.goBack();
@@ -108,6 +111,9 @@ export default function AddFamily({ route, navigation }) {
     if (userInfos.donation.trim() == "") {
       (FieldErrors.wasseet = true), (valid = false);
     }
+    if (sick && userInfos.sickness.trim() == "") {
+      (FieldErrors.wasseet = true), (valid = false);
+    }
     SetErrors(FieldErrors);
     return valid;
   };
@@ -140,52 +146,57 @@ export default function AddFamily({ route, navigation }) {
       <KeyboardAvoidingView style={{ flex: 1 }}>
         <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
           <Stack space={4} w="100%" alignItems="center">
-            <Input
-              InputRightElement={
-                <Icon
-                  style={{ marginRight: 10 }}
-                  as={<FontAwesome name="user" />}
-                  size={5}
-                  ml="2"
-                  color="#348578"
-                />
-              }
-              w={{
-                base: "95%",
-                md: "25%",
-              }}
-              h={50}
-              name="name"
-              textAlign="right"
-              placeholder="اسم الأب "
-              {...styling}
-              borderWidth={1}
-              borderColor={errors.fatherFirstName ? "#c21a0e" : "grey"}
-              onChangeText={(text) => handleUserInput(text, "fatherFirstName")}
-            />
-            <Input
-              InputRightElement={
-                <Icon
-                  style={{ marginRight: 10 }}
-                  as={<FontAwesome name="user" />}
-                  size={5}
-                  ml="2"
-                  color="#348578"
-                />
-              }
-              w={{
-                base: "95%",
-                md: "25%",
-              }}
-              h={50}
-              name="name"
-              textAlign="right"
-              placeholder="لقب الأب "
-              {...styling}
-              borderWidth={1}
-              borderColor={errors.fatherLastName ? "#c21a0e" : "grey"}
-              onChangeText={(text) => handleUserInput(text, "fatherLastName")}
-            />
+            <View style={styles.InputsContainer}>
+              <Input
+                InputRightElement={
+                  <Icon
+                    style={{ marginRight: 10 }}
+                    as={<FontAwesome name="user" />}
+                    size={5}
+                    ml="2"
+                    color="#348578"
+                  />
+                }
+                w={{
+                  base: "49%",
+                  md: "25%",
+                }}
+                h={50}
+                name="name"
+                textAlign="right"
+                placeholder="اسم الأب "
+                {...styling}
+                borderWidth={1}
+                borderColor={errors.fatherFirstName ? "#c21a0e" : "grey"}
+                onChangeText={(text) =>
+                  handleUserInput(text, "fatherFirstName")
+                }
+              />
+              <Input
+                InputRightElement={
+                  <Icon
+                    style={{ marginRight: 10 }}
+                    as={<FontAwesome name="user" />}
+                    size={5}
+                    ml="2"
+                    color="#348578"
+                  />
+                }
+                w={{
+                  base: "49%",
+                  md: "25%",
+                }}
+                h={50}
+                name="name"
+                textAlign="right"
+                placeholder="لقب الأب "
+                {...styling}
+                borderWidth={1}
+                borderColor={errors.fatherLastName ? "#c21a0e" : "grey"}
+                onChangeText={(text) => handleUserInput(text, "fatherLastName")}
+              />
+            </View>
+
             <Input
               InputRightElement={
                 <Icon
@@ -209,98 +220,133 @@ export default function AddFamily({ route, navigation }) {
               borderColor={errors.motherFullName ? "#c21a0e" : "grey"}
               onChangeText={(text) => handleUserInput(text, "motherFullName")}
             />
-            <Input
-              InputRightElement={
-                <Icon
-                  style={{ marginRight: 10 }}
-                  as={<MaterialIcons name="phone" />}
-                  size={5}
-                  ml="2"
-                  color="#348578"
-                />
-              }
-              w={{
-                base: "95%",
-                md: "25%",
-              }}
-              h={50}
-              textAlign="right"
-              placeholder="رقم الهاتف"
-              onChangeText={(text) => handleUserInput(text, "phone")}
-              {...styling}
-              borderWidth={1}
-              borderColor={errors.phone ? "#c21a0e" : "grey"}
-            />
+            <Checkbox onChange={(e) => setMomSick(e)} value="one" my={2}>
+              <Text style={styles.checkBoxText}> الأم تعاني من مرض مزمن </Text>
+            </Checkbox>
+            {sick && (
+              <Input
+                InputRightElement={
+                  <Icon
+                    style={{ marginRight: 10 }}
+                    as={<FontAwesome name="user" />}
+                    size={5}
+                    ml="2"
+                    color="#348578"
+                  />
+                }
+                w={{
+                  base: "95%",
+                  md: "25%",
+                }}
+                h={50}
+                name="name"
+                textAlign="right"
+                placeholder="المرض"
+                {...styling}
+                borderWidth={1}
+                borderColor={errors.sickness ? "#c21a0e" : "grey"}
+                onChangeText={(text) =>
+                  handleUserInput(text, "sickness")
+                }
+              />
+            )}
 
-            <Input
-              InputRightElement={
-                <Icon
-                  style={{ marginRight: 10 }}
-                  as={<MaterialIcons name="account-circle" />}
-                  size={5}
-                  ml="2"
-                  color="#348578"
-                />
-              }
-              style={styles.input}
-              w={{
-                base: "95%",
-                md: "50%",
-              }}
-              h={50}
-              textAlign="right"
-              placeholder="العنوان"
-              onChangeText={(text) => handleUserInput(text, "adresse")}
-              {...styling}
-              borderWidth={1}
-              borderColor={errors.adresse ? "#c21a0e" : "grey"}
-            />
-            <Input
-              InputRightElement={
-                <Icon
-                  style={{ marginRight: 10 }}
-                  as={<MaterialIcons name="lock" />}
-                  size={5}
-                  ml="2"
-                  color="#348578"
-                />
-              }
-              w={{
-                base: "95%",
-                md: "25%",
-              }}
-              h={50}
-              textAlign="right"
-              placeholder="المدخول"
-              onChangeText={(text) => handleUserInput(text, "salary")}
-              {...styling}
-              type={"motherFullName"}
-              borderWidth={1}
-              borderColor={errors.salary ? "#c21a0e" : "grey"}
-            />
-            <Input
-              InputRightElement={
-                <Icon
-                  style={{ marginRight: 10 }}
-                  as={<MaterialIcons name="lock" />}
-                  size={5}
-                  ml="2"
-                  color="#348578"
-                />
-              }
-              w={{
-                base: "95%",
-                md: "25%",
-              }}
-              h={50}
-              textAlign="right"
-              placeholder="مبلغ الكفالة"
-              onChangeText={(text) => handleUserInput(text, "donation")}
-              {...styling}
-              borderWidth={1}
-              type={"motherFullName"}
-              borderColor={errors.donation ? "#c21a0e" : "grey"}
-            />
+            <View style={styles.InputsContainer}>
+              <Input
+                InputRightElement={
+                  <Icon
+                    style={{ marginRight: 10 }}
+                    as={<MaterialIcons name="phone" />}
+                    size={5}
+                    ml="2"
+                    color="#348578"
+                  />
+                }
+                w={{
+                  base: "49%",
+                  md: "25%",
+                }}
+                h={50}
+                textAlign="right"
+                placeholder="رقم الهاتف"
+                onChangeText={(text) => handleUserInput(text, "phone")}
+                {...styling}
+                borderWidth={1}
+                borderColor={errors.phone ? "#c21a0e" : "grey"}
+              />
+
+              <Input
+                InputRightElement={
+                  <Icon
+                    style={{ marginRight: 10 }}
+                    as={<MaterialIcons name="account-circle" />}
+                    size={5}
+                    ml="2"
+                    color="#348578"
+                  />
+                }
+                style={styles.input}
+                w={{
+                  base: "49%",
+                  md: "50%",
+                }}
+                h={50}
+                textAlign="right"
+                placeholder="العنوان"
+                onChangeText={(text) => handleUserInput(text, "adresse")}
+                {...styling}
+                borderWidth={1}
+                borderColor={errors.adresse ? "#c21a0e" : "grey"}
+              />
+            </View>
+            <View style={styles.InputsContainer}>
+              <Input
+                InputRightElement={
+                  <Icon
+                    style={{ marginRight: 10 }}
+                    as={<MaterialIcons name="lock" />}
+                    size={5}
+                    ml="2"
+                    color="#348578"
+                  />
+                }
+                w={{
+                  base: "49%",
+                  md: "25%",
+                }}
+                h={50}
+                textAlign="right"
+                placeholder="المدخول"
+                onChangeText={(text) => handleUserInput(text, "salary")}
+                {...styling}
+                type={"motherFullName"}
+                borderWidth={1}
+                borderColor={errors.salary ? "#c21a0e" : "grey"}
+              />
+              <Input
+                InputRightElement={
+                  <Icon
+                    style={{ marginRight: 10 }}
+                    as={<MaterialIcons name="lock" />}
+                    size={5}
+                    ml="2"
+                    color="#348578"
+                  />
+                }
+                w={{
+                  base: "49%",
+                  md: "25%",
+                }}
+                h={50}
+                textAlign="right"
+                placeholder="مبلغ الكفالة"
+                onChangeText={(text) => handleUserInput(text, "donation")}
+                {...styling}
+                borderWidth={1}
+                type={"motherFullName"}
+                borderColor={errors.donation ? "#c21a0e" : "grey"}
+              />
+            </View>
             <TouchableWithoutFeedback onPress={() => openPanel()}>
               <View
                 style={{
@@ -318,29 +364,28 @@ export default function AddFamily({ route, navigation }) {
               </View>
             </TouchableWithoutFeedback>
             <Checkbox onChange={(e) => setKofa(e)} value="one" my={2}>
-            <Text style={styles.checkBoxText}>تستفيد من القفة الشهرية</Text>
-          </Checkbox>
-          {ErrorMessageVisible && (
-            <View style={styles.ErrorMessage}>
-              <FontAwesome
-                name="exclamation-triangle"
-                size={20}
-                color="#BE123C"
-              />
-              <Text style={styles.errorText}>{ErrorMessage}</Text>
-            </View>
-          )}
-          {showButton && (
-            <Button
-              style={styles.Button}
-              mode="contained"
-              onPress={CreateNewUser}
-            >
-              <Text style={{ fontSize: 16, marginLeft: 10 }}>اضافة </Text>
-            </Button>
-          )}
-                    </Stack>
-
+              <Text style={styles.checkBoxText}>تستفيد من القفة الشهرية</Text>
+            </Checkbox>
+            {ErrorMessageVisible && (
+              <View style={styles.ErrorMessage}>
+                <FontAwesome
+                  name="exclamation-triangle"
+                  size={20}
+                  color="#BE123C"
+                />
+                <Text style={styles.errorText}>{ErrorMessage}</Text>
+              </View>
+            )}
+            {showButton && (
+              <Button
+                style={styles.Button}
+                mode="contained"
+                onPress={CreateNewUser}
+              >
+                <Text style={{ fontSize: 16, marginLeft: 10 }}>اضافة </Text>
+              </Button>
+            )}
+          </Stack>
         </ScrollView>
       </KeyboardAvoidingView>
 
@@ -440,5 +485,10 @@ const styles = StyleSheet.create({
     fontFamily: "Tajawal-Medium",
     fontSize: 17,
     marginLeft: 10,
+  },
+  InputsContainer: {
+    flexDirection: "row",
+    width: "95%",
+    justifyContent: "space-between",
   },
 });

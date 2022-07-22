@@ -56,7 +56,7 @@ export default function Outcome({ navigation, drawer }) {
       setUsersList(userList.filter((info) => info[2] == section));
     }
   };
-  let Transactions = useSelector((state) => state.Transactions).filter((t)=>!t.income);
+  let Transactions = useSelector((state) => state.Finance).transactions.filter((t)=>!t.income);
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />

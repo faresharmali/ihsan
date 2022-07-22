@@ -27,10 +27,34 @@ export default function KidInfo({ data }) {
       </View>
       <View style={styles.Info}>
         <Text style={styles.InfoText}>
-          يستفيد من دروس الدعم : {data.scolarity ? "نعم" : "لا"}{" "}
+           تعاني من مرض مزمن : {data.sick ? "نعم" : "لا"}{" "}
         </Text>
         <Icon as={FontAwesome} size={6} color="#348578" name="users" />
       </View>
+      {data.sick && (
+        <View style={styles.Info}>
+          <Text style={styles.InfoText}>
+            المرض: {" "}
+            {data.sickness}
+          </Text>
+          <Icon as={FontAwesome} size={6} color="#348578" name="users" />
+        </View>
+      )}
+      <View style={styles.Info}>
+        <Text style={styles.InfoText}>
+          يستفيد من دروس الدعم : {data.Education ? "نعم" : "لا"}{" "}
+        </Text>
+        <Icon as={FontAwesome} size={6} color="#348578" name="users" />
+      </View>
+      {data.Education && (
+        <View style={styles.Info}>
+          <Text style={styles.InfoText}>
+            المواد:{" "}
+            {data.modules && JSON.parse(data.modules).map((d) => d.title + ", ")}
+          </Text>
+          <Icon as={FontAwesome} size={6} color="#348578" name="users" />
+        </View>
+      )}
     </View>
   );
 }

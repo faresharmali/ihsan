@@ -19,6 +19,6 @@ export default reducer = combineReducers({
     Reports:ReportsReducer,
     Ingredients:IngredientsReducer,
     Donations:DonationsReducer,
-    Transactions:TransactionReducer,
+    Finance:TransactionReducer,
 
 })

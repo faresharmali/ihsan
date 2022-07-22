@@ -10,7 +10,7 @@ export default function MultipleOptionSwipable({
   data,
   title,
   getSelectedData,
-  type
+  type,
 }) {
   const [Mydata, setData] = useState(
     data.map((d) => ({ ...d, selected: false }))
@@ -28,7 +28,10 @@ export default function MultipleOptionSwipable({
     onClose: () => {
       setIsPanelActive(false);
       setshowButton(true);
-      getSelectedData(Mydata.filter((d) => d.selected),type);
+      getSelectedData(
+        Mydata.filter((d) => d.selected),
+        type
+      );
     },
     onPressCloseButton: () => {
       setIsPanelActive(false);
@@ -56,7 +59,6 @@ export default function MultipleOptionSwipable({
     );
     setAllSelected({ selected: selectValue, title: title });
   };
-
 
   return (
     <SwipeablePanel {...panelProps} isActive={isPanelActive}>

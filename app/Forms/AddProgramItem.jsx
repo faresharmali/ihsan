@@ -21,7 +21,7 @@ export default function AddProgramItem({ route, navigation }) {
   const [ErrorMessage, setErrorMessage] = useState("");
   const [chosenDate, setChosenDate] = useState("");
   const [showDatePicker, setshowDatePicker] = useState(false);
-  const user=useSelector((state) => state.Auth).token
+  const user = useSelector((state) => state.Auth).token;
   const [errors, SetErrors] = useState({
     title: false,
     selections: false,
@@ -57,7 +57,10 @@ export default function AddProgramItem({ route, navigation }) {
   const AddActivity = async () => {
     Keyboard.dismiss();
     if (validate()) {
-      const res = await CreateProgramItem({id:"1",program:{...ProgramInfos,date:chosenDate} },user);
+      const res = await CreateProgramItem(
+        { ...ProgramInfos, date: chosenDate, section: route.params.section },
+        user
+      );
       if (res.data.ok) {
         route.params.fetchProgram();
         navigation.goBack();

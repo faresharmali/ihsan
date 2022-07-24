@@ -8,32 +8,38 @@ import {
 } from "react-native";
 import React from "react";
 import { Icon } from "native-base";
-import { MaterialIcons, Entypo } from "@expo/vector-icons";
-export default function FamilyInfosContainer(props) {
+import {
+  MaterialIcons,
+  FontAwesome,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
+export default function OrphanContainer(props) {
   return (
-    <TouchableOpacity onLongPress={()=>props.selectFamily(props.data.id)} onPress={props.openFamily} style={styles.DataContainer}>
-      <Image
-        source={props.pic}
-        style={{ width: props.AvatarSize, height: props.AvatarSize }}
-      />
+    <TouchableOpacity onPress={props.openFamily} style={styles.DataContainer}>
+      <Icon as={MaterialIcons} name="sick" size={28} color="#348578" />
+
       <View style={styles.infos}>
-        <Text style={styles.UserPersonal}>
-          {`عائلة ${props.data.motherFullName} ارملة ${props.data.fatherFirstName} ${props.data.fatherLastName}`}{" "}
-        </Text>
+        <Text style={styles.UserPersonal}>{props.data.name+" "+props.data.lastName} </Text>
         <View style={styles.secondaryInfos}>
-          {props.data.phone && (
-            <>
-              <Icon as={MaterialIcons} name="phone" size={4} color="#000" />
-              <Text> {props.data.phone}</Text>
-            </>
-          )}
-          {props.data.adresse && (
-            <>
-              <Icon as={MaterialIcons} name="map" size={4} color="#000" />
-              <Text> {props.data.adresse}</Text>
-            </>
-          )}
-      
+          <>
+            <Icon
+              as={MaterialIcons}
+              style={{ marginLeft: 5 }}
+              name="phone"
+              size={4}
+              color="#000"
+            />
+            <Text> {props.data.phone}</Text>
+          </>
+
+          <Icon
+            style={{ marginRight: 10, marginLeft: 10 }}
+            as={FontAwesome}
+            name="map-marker"
+            size={4}
+            color="#000"
+          />
+          <Text>{props.data.address}</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -48,7 +54,7 @@ const styles = StyleSheet.create({
   },
   DataContainer: {
     width: "100%",
-    minHeight: 70,
+    height: 55,
     backgroundColor: "#fff",
     marginBottom: 10,
     borderRadius: 7,
@@ -56,7 +62,7 @@ const styles = StyleSheet.create({
     elevation: 1.5,
     flexDirection: "row-reverse",
     alignItems: "center",
-    paddingLeft: 10,
+    padding: 10,
   },
 
   secondaryInfos: {

@@ -10,8 +10,7 @@ import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import styles from "./styles";
 
-export default function WidowSectionBottomBar(props) {
-  const navigation = useNavigation();
+export default function WidowSectionBottomBar({ navigation }) {
   return (
     <View style={styles.Container}>
       <View style={styles.BottomBar}>
@@ -69,7 +68,15 @@ export default function WidowSectionBottomBar(props) {
               <Text style={styles.bottomBarITemText}>التقارير</Text>
             </View>
           </TouchableOpacity>
-         
+          <TouchableOpacity
+            onPress={() => navigation.navigate("WidowProgram")}
+          >
+            <View style={styles.bottomBarITem}>
+              <Icon as={FontAwesome5} name="child" color={"#fff"} size={4} />
+
+              <Text style={styles.bottomBarITemText}>البرنامج</Text>
+            </View>
+          </TouchableOpacity>
         </View>
       </View>
     </View>

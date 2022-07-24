@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "575772620957",
+    "project_id": "ihsan-57dbc",
+    "storage_bucket": "ihsan-57dbc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:575772620957:android:241321556df31c5d3ffc74",
+        "android_client_info": {
+          "package_name": "com.fares081998.Ihsan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "575772620957-bnq8qvc9t92bncrk7j7us032jkqvk8bi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7aCtzk6hEAAX9KhdVMpat1cJti1FTWU0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "575772620957-bnq8qvc9t92bncrk7j7us032jkqvk8bi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

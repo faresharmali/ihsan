@@ -9,6 +9,8 @@ import EducationOrphans from "./EducationOrphans.jsx";
 import KafalaFekriya from "./kafalaFekriya.jsx";
 import AddEducationMember from "../../Forms/AddEducationGroupe.jsx";
 import AdminProfile from "../Profiles/adminProfile.jsx";
+import Program from "./program.jsx";
+import AddProgramItem from "../../Forms/AddProgramItem.jsx";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
@@ -52,6 +54,17 @@ export default function EducationSection({ navigation }) {
         options={TransitionFromBottom}
         name="EducationMemberProfile"
         component={AdminProfile}
+      />
+
+      <Stack.Screen
+        options={slideFromRight}
+        name="EducationProgram"
+        component={Program}
+      />
+      <Stack.Screen
+        options={TransitionFromBottom}
+        name="AddProgramItem"
+        component={AddProgramItem}
       />
 
     </Stack.Navigator>

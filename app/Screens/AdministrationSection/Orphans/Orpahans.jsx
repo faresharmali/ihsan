@@ -27,7 +27,6 @@ export default function Orphans({ navigation, drawer }) {
       kids.push({ ...k, lastName: f.fatherLastName });
     });
   });
-  console.log(kids);
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />

@@ -7,33 +7,35 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import React from "react";
+import img from "../../assets/icons/information.png";
 import { Icon } from "native-base";
 import { MaterialIcons, Entypo } from "@expo/vector-icons";
-export default function FamilyInfosContainer(props) {
+export default function ProgramContainer(props) {
   return (
-    <TouchableOpacity onLongPress={()=>props.selectFamily(props.data.id)} onPress={props.openFamily} style={styles.DataContainer}>
+    <TouchableOpacity style={styles.DataContainer}>
       <Image
-        source={props.pic}
-        style={{ width: props.AvatarSize, height: props.AvatarSize }}
+        source={img}
+        style={{ width: 30, height: 30, marginLeft: 5, marginRight: 5 }}
       />
       <View style={styles.infos}>
-        <Text style={styles.UserPersonal}>
-          {`عائلة ${props.data.motherFullName} ارملة ${props.data.fatherFirstName} ${props.data.fatherLastName}`}{" "}
-        </Text>
+        <Text style={styles.UserPersonal}>{props.program.title} </Text>
         <View style={styles.secondaryInfos}>
-          {props.data.phone && (
-            <>
-              <Icon as={MaterialIcons} name="phone" size={4} color="#000" />
-              <Text> {props.data.phone}</Text>
-            </>
-          )}
-          {props.data.adresse && (
-            <>
-              <Icon as={MaterialIcons} name="map" size={4} color="#000" />
-              <Text> {props.data.adresse}</Text>
-            </>
-          )}
-      
+          <>
+            <Icon
+              style={{ marginRight: 10, marginLeft: 5 }}
+              as={Entypo}
+              name="clock"
+              size={4}
+              color="#000"
+            />
+            <Text>
+              {new Date(props.program.date).getFullYear() +
+                "/" +
+                (new Date(props.program.date).getMonth() + 1) +
+                "/" +
+                new Date(props.program.date).getDate()}
+            </Text>
+          </>
         </View>
       </View>
     </TouchableOpacity>
@@ -48,7 +50,7 @@ const styles = StyleSheet.create({
   },
   DataContainer: {
     width: "100%",
-    minHeight: 70,
+    height: 55,
     backgroundColor: "#fff",
     marginBottom: 10,
     borderRadius: 7,
@@ -56,7 +58,7 @@ const styles = StyleSheet.create({
     elevation: 1.5,
     flexDirection: "row-reverse",
     alignItems: "center",
-    paddingLeft: 10,
+    padding: 10,
   },
 
   secondaryInfos: {

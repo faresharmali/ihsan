@@ -22,12 +22,12 @@ import { getUsers } from "../../api/user";
 import Man from "../../../assets/avatars/man.png";
 LogBox.ignoreAllLogs();
 export default function Users({ navigation, drawer }) {
+
   const [active, setActive] = useState(6);
   const [filteringSection, setfilteringSection] = useState("all");
   const [UsersList, setUsersList] = useState([]);
 
   const openModal = (u) => {
-    console.log("id hgere", u.id);
     switch (u.job) {
       case "موزع القفة":
         navigation.navigate("Distributeur", {
@@ -99,6 +99,8 @@ export default function Users({ navigation, drawer }) {
       setUsersList(userList.filter((info) => info[2] == section));
     }
   };
+
+
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />

@@ -10,12 +10,14 @@ import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import styles from "./styles";
 
-export default function OrpahnsSectionBottomBar({navigation}) {
+export default function OrpahnsSectionBottomBar({ navigation }) {
   return (
     <View style={styles.Container}>
       <View style={styles.BottomBar}>
         <View style={styles.itemContainer}>
-          <TouchableOpacity onPress={() => navigation.navigate("OrpahnsMembers")}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("OrpahnsMembers")}
+          >
             <View style={styles.bottomBarITem}>
               <Icon
                 as={MaterialCommunityIcons}
@@ -27,7 +29,9 @@ export default function OrpahnsSectionBottomBar({navigation}) {
               <Text style={styles.bottomBarITemText}>الأعضاء</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate("OrpahnsFamilies")}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("OrpahnsFamilies")}
+          >
             <View style={styles.bottomBarITem}>
               <Icon
                 as={MaterialIcons}
@@ -54,23 +58,31 @@ export default function OrpahnsSectionBottomBar({navigation}) {
               <Text style={styles.bottomBarITemText}>المحسنين</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate("OrpahnsBureau")}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("OrpahnsBureau")}
+          >
             <View style={styles.bottomBarITem}>
               <Icon as={FontAwesome} name="building" color={"#ffff"} size={4} />
 
               <Text style={styles.bottomBarITemText}>المقر</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("Donations")}
-          >
+          <TouchableOpacity onPress={() => navigation.navigate("Donations")}>
             <View style={styles.bottomBarITem}>
               <Icon as={FontAwesome5} name="child" color={"#fff"} size={4} />
 
               <Text style={styles.bottomBarITemText}>الكفالة</Text>
             </View>
           </TouchableOpacity>
-         
+          <TouchableOpacity
+            onPress={() => navigation.navigate("OrphansProgram")}
+          >
+            <View style={styles.bottomBarITem}>
+              <Icon as={FontAwesome5} name="child" color={"#fff"} size={4} />
+
+              <Text style={styles.bottomBarITemText}>البرنامج</Text>
+            </View>
+          </TouchableOpacity>
         </View>
       </View>
     </View>

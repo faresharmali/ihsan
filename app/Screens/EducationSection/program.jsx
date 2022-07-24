@@ -36,9 +36,7 @@ export default function Program({ navigation, drawer }) {
   const fetchProgram = async () => {
     const res = await getProgram({ departement: "activities" }, user);
     if (res.data.ok) {
-      setProgram(
-        res.data.result.filter((p) => p.section == "قسم الأنشطة الخيرية")
-      );
+      setProgram(res.data.result.filter((p) => p.section == "قسم التعليم"));
     } else {
     }
   };
@@ -55,7 +53,7 @@ export default function Program({ navigation, drawer }) {
         </TouchableOpacity>
 
         <View style={styles.containerTitle}>
-          <Text style={styles.ScreenEntityTitle}> البرنامج : قسم الأنشطة </Text>
+          <Text style={styles.ScreenEntityTitle}> البرنامج : قسم التعليم </Text>
           <MaterialCommunityIcons name="account-group" size={30} color="#fff" />
         </View>
       </View>
@@ -79,7 +77,7 @@ export default function Program({ navigation, drawer }) {
           navigation.navigate("AddProgramItem", {
             showToast,
             fetchProgram,
-            section: "قسم الأنشطة الخيرية",
+            section: "قسم التعليم",
           })
         }
         style={styles.fab}

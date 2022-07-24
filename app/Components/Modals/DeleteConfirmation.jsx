@@ -12,23 +12,12 @@ import { Button } from "react-native-paper";
 import { Box, Fab } from "native-base";
 import icon from "../../../assets/icons/information.png";
 
-export default function ConfirmationModal({ kafel, userInfos ,confirm }) {
-  let periode = userInfos.amount / kafel.donationAmount;
-  console.log("periode", periode);
+export default function DeleteConfirmation({ Confirme }) {
   return (
     <View style={styles.Modal}>
       <View style={styles.ModalContent}>
-        <Text style={styles.ModalText}> الكافل : {kafel.name} </Text>
-        <Text style={styles.ModalText}> المبلغ : {userInfos.amount} دج</Text>
-        <Text style={styles.ModalText}> تاريخ الدفع : 25/08/2022</Text>
-
-        <Text style={styles.ModalText}> المدة : {periode} شهر </Text>
-        <Text style={styles.ModalText}> تاريخ الدفع المقبل : 25/08/2022</Text>
-        <Button
-          onPress={confirm}
-          style={styles.Button}
-          mode="contained"
-        >
+        <Text style={styles.ModalText}> تأكيد عملية الحذف</Text>
+        <Button onPress={Confirme} style={styles.Button} mode="contained">
           <Text style={{ fontSize: 16, marginLeft: 10 }}>تأكيد</Text>
         </Button>
       </View>
@@ -40,7 +29,7 @@ const styles = StyleSheet.create({
   Modal: {
     position: "absolute",
     backgroundColor: "#000000A8",
-    height: "115%",
+    height: "100%",
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
@@ -57,8 +46,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
     zIndex: 11,
-    opacity:1,
-    elevation:2
+    opacity: 1,
+    elevation: 2,
   },
   ModalText: {
     fontFamily: "Tajawal-Medium",
@@ -71,7 +60,7 @@ const styles = StyleSheet.create({
     width: 230,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#348578",
+    backgroundColor: "#ad1a1a",
     marginTop: 25,
     borderRadius: 60,
   },

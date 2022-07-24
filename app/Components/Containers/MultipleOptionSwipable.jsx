@@ -89,7 +89,7 @@ export default function MultipleOptionSwipable({
             <Text
               style={{ ...styles.Item, color: d.selected ? "#fff" : "#000" }}
             >
-              {d.title} {d.age && ` / ${d.age} سنة`}
+              {d.title}
             </Text>
           </TouchableOpacity>
         ))}

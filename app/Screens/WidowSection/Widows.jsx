@@ -75,6 +75,7 @@ export default function Widows({ navigation, drawer }) {
         </ScrollView>
       </View>
       <Toast config={toastConfig} />
+      <WidowSectionBottomBar navigation={navigation} />
 
      
     </View>

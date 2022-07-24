@@ -6,8 +6,9 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
+  BackHandler,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Icon } from "native-base";
 import {
   MaterialCommunityIcons,
@@ -21,15 +22,91 @@ import info from "../../../assets/icons/information.png";
 import DataContainer from "../../Components/DataContainer";
 import UserInfos from "./userInfos";
 import FamilyInfosContainer from "../../Components/Containers/FamilyInfosContainer";
-import { useSelector } from "react-redux";
+import DeleteConfirmation from "../../Components/Modals/DeleteConfirmation";
+import { UpdateUser, getUsers } from "../../api/user";
+import { useSelector, useDispatch } from "react-redux";
+
 export default function Wasset({ route, navigation }) {
   const [section, setSection] = useState("infos");
+  const [deleteModal, showDeleteModal] = useState(false);
+  const [selectedFamily, setSelectedFamily] = useState(null);
 
-  const Familli = useSelector((state) => state.Families)
-
-  let Informations = useSelector((state) => state.Informations).filter((info)=>info.author==route.params.name);
+  const dispatch = useDispatch();
+  const updateState = (data) => {
+    return {
+      type: "updateUserList",
+      data: data,
+    };
+  };
+  const Familli = useSelector((state) => state.Families);
+  const StateUser = useSelector((state) => state.users).filter(
+    (u) => u.id == route.params.id
+  )[0];
+  let Informations = useSelector((state) => state.Informations).filter(
+    (info) => info.author == StateUser.name
+  );
   const openModal = (data) => {
     navigation.navigate("InformationAdmin", data);
+  };
+  const deleteFamily = async () => {
+    let User = { ...StateUser };
+    User.famillies = StateUser.famillies.filter((f) => f.id != selectedFamily);
+    const res = await UpdateUser(User);
+    if (res.ok) {
+      const res = await getUsers();
+      dispatch(
+        updateState(
+          res.data.result.map((user) => ({
+            0: user.name,
+            1: user.phone,
+            2: user.job,
+            ...user,
+          }))
+        )
+      );
+    } else {
+    }
+    showDeleteModal(false);
+  };
+  const selectFamily = (id) => {
+    showDeleteModal(true);
+    setSelectedFamily(id);
+  };
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => {
+        if (deleteModal) {
+          showDeleteModal(false);
+          return true;
+        } else {
+          return false;
+        }
+      }
+    );
+    return () => backHandler.remove();
+  }, [deleteModal]);
+
+  const AddFamily = async (famillies) => {
+    let User = { ...StateUser };
+    User.famillies = [...User.famillies, ...famillies];
+    const res = await UpdateUser(User);
+    if (res.ok) {
+      const res = await getUsers();
+      dispatch(
+        updateState(
+          res.data.result.map((user) => ({
+            0: user.name,
+            1: user.phone,
+            2: user.job,
+            ...user,
+          }))
+        )
+      );
+    } else {
+    }
+    showDeleteModal(false);
   };
   return (
     <View style={styles.container}>
@@ -40,15 +117,9 @@ export default function Wasset({ route, navigation }) {
           <TouchableOpacity onPress={() => navigation.navigate("Users")}>
             <Icon as={Ionicons} size={8} color="#fff" name="md-chevron-back" />
           </TouchableOpacity>
-          <Icon
-            as={MaterialCommunityIcons}
-            size={8}
-            color="#fff"
-            name="square-edit-outline"
-          />
         </View>
         <Image style={styles.EntityImage} source={man} />
-        <Text style={styles.EntityTitle}>{route.params[0]}</Text>
+        <Text style={styles.EntityTitle}>{StateUser[0]}</Text>
         <View style={styles.Navigation}>
           <TouchableOpacity onPress={() => setSection("infos")}>
             <View style={styles.NavigationItem}>
@@ -69,25 +140,38 @@ export default function Wasset({ route, navigation }) {
       </View>
 
       {section == "infos" && (
-        <UserInfos title="معلومات العضو" data={route.params} />
+        <UserInfos title="معلومات العضو" data={StateUser} />
       )}
       {section == "children" && (
-        <ScrollView style={styles.Content}>
-          {route.params.famillies &&
-            route.params.famillies.map((f) => (
-              <FamilyInfosContainer
-                key={f._id}
-                AvatarSize={40}
-                data={Familli.filter((fa)=>fa.id==f.id)[0]}
-                pic={Family}
-              />
-              
-            ))}
-        </ScrollView>
+        <>
+          <ScrollView style={styles.Content}>
+            {StateUser.famillies &&
+              StateUser.famillies.map((f) => (
+                <FamilyInfosContainer
+                  key={f._id}
+                  AvatarSize={40}
+                  data={Familli.filter((fa) => fa.id == f.id)[0]}
+                  pic={Family}
+                  selectFamily={selectFamily}
+                />
+              ))}
+          </ScrollView>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("UpdateWasset", {
+                Infos: StateUser,
+                AddFamily,
+              })
+            }
+            style={styles.Fab}
+          >
+            <Icon color="#fff" as={<AntDesign name="plus" />} size="sm" />
+          </TouchableOpacity>
+        </>
       )}
       {section == "posts" && (
         <ScrollView style={styles.Content}>
-         {Informations.map((f) => (
+          {Informations.map((f) => (
             <DataContainer
               key={f.id}
               AvatarSize={22}
@@ -98,7 +182,7 @@ export default function Wasset({ route, navigation }) {
           ))}
         </ScrollView>
       )}
-     
+      {deleteModal && <DeleteConfirmation Confirme={deleteFamily} />}
     </View>
   );
 }
@@ -188,5 +272,16 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: "#000",
     marginBottom: 5,
+  },
+  Fab: {
+    width: 50,
+    height: 50,
+    backgroundColor: "#348578",
+    borderRadius: 25,
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    right: 20,
+    bottom: 30,
   },
 });

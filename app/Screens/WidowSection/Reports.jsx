@@ -6,18 +6,17 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesome5, Entypo, MaterialIcons } from "@expo/vector-icons";
 import Family from "../../../assets/icons/user.png";
 import { Input, Icon } from "native-base";
 import { useSelector } from "react-redux";
 import toastConfig from "../../Components/ToastConfiguration";
 import Toast from "react-native-toast-message";
-import DataContainer from "../../Components/DataContainer";
 import { getReports } from "../../api/report";
 import { useDispatch } from "react-redux";
 import WidowSectionBottomBar from "../../Navigation/WidowSectionBottomBar";
-
+import ReportContainer from "../../Components/Containers/ReportContainer";
 export default function Reports({ navigation, drawer }) {
   const dispatch = useDispatch();
 
@@ -32,7 +31,9 @@ export default function Reports({ navigation, drawer }) {
   const openModal = (data) => {
     navigation.navigate("Family", data);
   };
-  let Reports = useSelector((state) => state.Reports);
+  let Reports = useSelector((state) => state.Reports).filter(
+    (report) => report.section == "قسم الأرامل"
+  );
   const updateState = (data) => {
     return {
       type: "updateReportsList",
@@ -47,10 +48,8 @@ export default function Reports({ navigation, drawer }) {
           res.data.result.map((user) => ({
             0: user.title,
             1: user.type,
-            2: user.benificier,
-            3: user.content,
-            4: user.date,
-            5: user.author,
+            2: user.content,
+           ...user
           }))
         )
       );
@@ -77,12 +76,10 @@ export default function Reports({ navigation, drawer }) {
         </View>
       </View>
       <View style={styles.Section}>
-       
-
         <ScrollView style={styles.Content}>
           {Reports.map((f) => (
-            <DataContainer
-            key={f[3]}
+            <ReportContainer
+              key={f[3]}
               AvatarSize={22}
               data={f}
               pic={Family}
@@ -93,12 +90,18 @@ export default function Reports({ navigation, drawer }) {
       </View>
       <Toast config={toastConfig} />
       <TouchableOpacity
-        onPress={() => navigation.navigate("WidowAddReport", { showToast })}
+        onPress={() =>
+          navigation.navigate("WidowAddReport", {
+            section: "قسم الأرامل",
+            showToast,
+          })
+        }
         style={styles.fab}
       >
         <Icon as={Entypo} name="plus" size={8} color="#fff" />
       </TouchableOpacity>
-     
+      <WidowSectionBottomBar navigation={navigation} />
+
     </View>
   );
 }

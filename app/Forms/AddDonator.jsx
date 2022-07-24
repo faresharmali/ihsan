@@ -5,7 +5,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   BackHandler,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { Input, Stack, Icon, Radio } from "native-base";
@@ -20,6 +20,10 @@ import uuid from "react-native-uuid";
 export default function AddDonator({ route, navigation }) {
   const [FamilyPlaceholder, setFamilyPlaceholder] =
     useState(" العائلات المكفولة");
+  const [OrphansPlaceHolder, setOrphansPlaceHolder] =
+    useState("الأيتام المكفولين");
+  const [OrphansPannel, showOrphansPannel] = useState(false);
+  const [selectedOrphans, setselectedOrphans] = useState([]);
   const [isFamiltPanelActive, setIsFamiltPanelActive] = useState(false);
   const [selectedFamilies, setselectedFamilies] = useState([]);
   const [ErrorMessageVisible, setErrorMessageVisible] = useState(false);
@@ -34,7 +38,7 @@ export default function AddDonator({ route, navigation }) {
     name: false,
     phone: false,
     user: false,
- });
+  });
   const [userInfos, setuserInfos] = useState({
     id: uuid.v4(),
     name: "",
@@ -44,16 +48,28 @@ export default function AddDonator({ route, navigation }) {
     donationAmount: "",
   });
   const Famillies = useSelector((state) => state.Families);
+  let kids = [];
+  Famillies.forEach((f) => {
+    f.kids.forEach((k) => {
+      kids.push({ ...k, lastName: f.fatherLastName });
+    });
+  });
   const token = useSelector((state) => state.Auth).token;
 
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
       () => {
-        if (isPanelActive || isUsersPannel || isFamiltPanelActive) {
+        if (
+          isPanelActive ||
+          isUsersPannel ||
+          isFamiltPanelActive ||
+          OrphansPannel
+        ) {
           setIsPanelActive(false);
           setisUsersPannel(false);
           setIsFamiltPanelActive(false);
+          showOrphansPannel(false);
           return true;
         } else {
           return false;
@@ -126,7 +142,6 @@ export default function AddDonator({ route, navigation }) {
       (FieldErrors.user = true), (valid = false);
     }
     SetErrors(FieldErrors);
-    console.log("errors",FieldErrors)
     return valid;
   };
   const AddDonator = async () => {
@@ -137,6 +152,7 @@ export default function AddDonator({ route, navigation }) {
         type: DonatorType,
         job: DonatorType == "kafel" ? "كافل" : userInfos.job,
         famillies: DonatorType == "kafel" ? selectedFamilies : [],
+        orphans: DonatorType == "kafel" ? selectedOrphans : [],
       });
       if (res.ok) {
         route.params.showToast();
@@ -155,6 +171,12 @@ export default function AddDonator({ route, navigation }) {
     setIsFamiltPanelActive(true);
     setshowButton(false);
   };
+  const openOrpahnsPannel = () => {
+    Keyboard.dismiss();
+    SetErrors({ ...errors, orphans: false });
+    showOrphansPannel(true);
+    setshowButton(false);
+  };
   const getSelectedData = (data, type) => {
     let overFlow = data.length > 2 ? `... و ${data.length - 2} اخرين` : "";
 
@@ -168,7 +190,23 @@ export default function AddDonator({ route, navigation }) {
       setselectedFamilies(data.map((o) => ({ name: o.title, id: o.id })));
     } else {
       setselectedFamilies([]);
-      setFamilyPlaceholder("العائلات المكفولة");
+      setOrphansPlaceHolder("العائلات المكفولة");
+    }
+  };
+  const getSelectedOrphans = (data, type) => {
+    let overFlow = data.length > 2 ? `... و ${data.length - 2} اخرين` : "";
+
+    if (data.length > 0) {
+      setOrphansPlaceHolder(
+        data
+          .map((d) => d.name + " " + d.lastName)
+          .slice(0, 2)
+          .join(",") + overFlow
+      );
+      setselectedOrphans(data.map((o) => ({ name: o.title, id: o.id })));
+    } else {
+      setselectedOrphans([]);
+      setOrphansPlaceHolder("الأيتام المكفولين");
     }
   };
   return (
@@ -278,51 +316,65 @@ export default function AddDonator({ route, navigation }) {
           </TouchableWithoutFeedback>
         )}
 
-       
         {DonatorType == "kafel" && (
           <>
-                   <Input
-          InputRightElement={
-            <Icon
-              style={{ marginRight: 10 }}
-              as={<MaterialIcons name="attach-money" />}
-              size={5}
-              ml="2"
-              color="#348578"
-            />
-          }
-          w={{
-            base: "95%",
-            md: "25%",
-          }}
-          h={50}
-          textAlign="right"
-          placeholder="مبلغ الكفالة"
-          {...styling}
-          borderWidth={1}
-          borderColor={errors.donationAmount ? "#c21a0e" : "grey"}
-          onChangeText={(text) => handleUserInput(text, "donationAmount")}
-        />
-          <TouchableWithoutFeedback onPress={() => openFamilyPannel()}>
-            <View
-              style={{
-                ...styles.dateContainer,
-                borderColor: errors.selections ? "#c21a0e" : "grey",
+            <Input
+              InputRightElement={
+                <Icon
+                  style={{ marginRight: 10 }}
+                  as={<MaterialIcons name="attach-money" />}
+                  size={5}
+                  ml="2"
+                  color="#348578"
+                />
+              }
+              w={{
+                base: "95%",
+                md: "25%",
               }}
-            >
-              <Icon
-                as={<MaterialIcons name="lock" />}
-                size={5}
-                ml="2"
-                color="#348578"
-              />
-              <Text style={styles.InputText}> {FamilyPlaceholder}</Text>
-            </View>
-          </TouchableWithoutFeedback>
-
+              h={50}
+              textAlign="right"
+              placeholder="مبلغ الكفالة"
+              {...styling}
+              borderWidth={1}
+              borderColor={errors.donationAmount ? "#c21a0e" : "grey"}
+              onChangeText={(text) => handleUserInput(text, "donationAmount")}
+            />
+            <TouchableWithoutFeedback onPress={() => openFamilyPannel()}>
+              <View
+                style={{
+                  ...styles.dateContainer,
+                  borderColor: errors.selections ? "#c21a0e" : "grey",
+                }}
+              >
+                <Icon
+                  as={<MaterialIcons name="lock" />}
+                  size={5}
+                  ml="2"
+                  color="#348578"
+                />
+                <Text style={styles.InputText}> {FamilyPlaceholder}</Text>
+              </View>
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={() => openOrpahnsPannel()}>
+              <View
+                style={{
+                  ...styles.dateContainer,
+                  borderColor: errors.selections ? "#c21a0e" : "grey",
+                }}
+              >
+                <Icon
+                  as={<MaterialIcons name="lock" />}
+                  size={5}
+                  ml="2"
+                  color="#348578"
+                />
+                <Text style={styles.InputText}> {OrphansPlaceHolder}</Text>
+              </View>
+            </TouchableWithoutFeedback>
           </>
         )}
-         <TouchableWithoutFeedback onPress={() => openUsersPanel()}>
+        <TouchableWithoutFeedback onPress={() => openUsersPanel()}>
           <View
             style={{
               ...styles.dateContainer,
@@ -369,11 +421,20 @@ export default function AddDonator({ route, navigation }) {
       />
       <MultipleOptionSwipable
         type={"family"}
-        title="العائلات المستفيدة"
+        title="العائلات المكفولة"
         getSelectedData={getSelectedData}
         data={Famillies.map((o) => ({ ...o, title: o.fatherLastName }))}
         isPanelActive={isFamiltPanelActive}
         setIsPanelActive={setIsFamiltPanelActive}
+        setshowButton={setshowButton}
+      />
+      <MultipleOptionSwipable
+        type={"family"}
+        title="الأيتام المكفولين"
+        getSelectedData={getSelectedOrphans}
+        data={kids.map((o) => ({ ...o, title: o.name + " " + o.lastName }))}
+        isPanelActive={OrphansPannel}
+        setIsPanelActive={showOrphansPannel}
         setshowButton={setshowButton}
       />
     </View>

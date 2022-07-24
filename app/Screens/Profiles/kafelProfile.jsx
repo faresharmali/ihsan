@@ -6,24 +6,113 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
+  BackHandler,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Icon } from "native-base";
 import {
   MaterialCommunityIcons,
   Ionicons,
   AntDesign,
 } from "@expo/vector-icons";
-import man from "../../../assets/avatars/man.png"
-import { Box, Fab } from "native-base";
+import Family from "../../../assets/avatars/family.png";
+import DeleteConfirmation from "../../Components/Modals/DeleteConfirmation";
+import OrphanContainer from "../../Components/OrphanContainer";
+import man from "../../../assets/avatars/man.png";
 import icon from "../../../assets/icons/information.png";
 import DataContainer from "../../Components/DataContainer";
 import KafelInfo from "./kafelinfo";
+import { useSelector, useDispatch } from "react-redux";
+import { getDonators, UpdateDonator } from "../../api/user";
+import FamilyInfosContainer from "../../Components/Containers/FamilyInfosContainer";
 export default function KafelProfile({ route, navigation }) {
   const [section, setSection] = useState("infos");
+  const [deleteModal, showDeleteModal] = useState(false);
+  const [selectedFamily, setSelectedFamily] = useState(null);
   const users = [];
   const benifits = [];
+  const StateKafel = useSelector((state) => state.Donators).filter(
+    (u) => u.id == route.params.id
+  )[0];
+  const Familli = useSelector((state) => state.Families);
 
+  let kids = [];
+  Familli.forEach((f) => {
+    f.kids.forEach((k) => {
+      kids.push({
+        ...k,
+        lastName: f.fatherLastName,
+        phone: f.phone,
+        address: f.adresse,
+      });
+    });
+  });
+  const selectFamily = (id) => {
+    showDeleteModal(true);
+    setSelectedFamily(id);
+  };
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => {
+        if (deleteModal) {
+          showDeleteModal(false);
+          return true;
+        } else {
+          return false;
+        }
+      }
+    );
+    return () => backHandler.remove();
+  }, [deleteModal]);
+
+  const dispatch = useDispatch();
+  const updateState = (data) => {
+    return {
+      type: "updateDonatorsList",
+      data: data,
+    };
+  };
+  const deleteFamily = async () => {
+    let User = { ...StateKafel };
+    User.famillies = StateKafel.famillies.filter((f) => f.id != selectedFamily);
+    const res = await UpdateDonator(User);
+    if (res.ok) {
+      const res = await getDonators();
+      dispatch(
+        updateState(
+          res.data.result.map((user) => ({
+            0: user.name,
+            1: user.phone,
+            2: user.job,
+            ...user,
+          }))
+        )
+      );
+    } else {
+    }
+    showDeleteModal(false);
+  };
+  const AddFamily = async (famillies) => {
+    let User = { ...StateKafel };
+    User.famillies = [...User.famillies, ...famillies];
+    const res = await UpdateDonator(User);
+    if (res.ok) {
+      const res = await getDonators();
+      dispatch(
+        updateState(
+          res.data.result.map((user) => ({
+            0: user.name,
+            1: user.phone,
+            2: user.job,
+            ...user,
+          }))
+        )
+      );
+    } else {
+    }
+    showDeleteModal(false);
+  };
   return (
     <View style={styles.container}>
       <StatusBar style="light" />
@@ -48,12 +137,12 @@ export default function KafelProfile({ route, navigation }) {
               <Text style={styles.NavigationItemText}>معلومات</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => setSection("children")}>
+          <TouchableOpacity onPress={() => setSection("Famillies")}>
             <View style={styles.NavigationItem}>
               <Text style={styles.NavigationItemText}>العائلات</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => setSection("children")}>
+          <TouchableOpacity onPress={() => setSection("kids")}>
             <View style={styles.NavigationItem}>
               <Text style={styles.NavigationItemText}>الأيتام</Text>
             </View>
@@ -64,20 +153,32 @@ export default function KafelProfile({ route, navigation }) {
       {section == "infos" && (
         <KafelInfo title="معلومات العضو" data={route.params} />
       )}
-      {section == "children" && (
-        <ScrollView style={styles.Content}>
-          <Box position="relative" h={100} w="100%">
-            <Fab
-              onPress={() => navigation.navigate("AddChild")}
-              position="absolute"
-              size="sm"
-              backgroundColor="#348578"
-              icon={
-                <Icon color="#fff" as={<AntDesign name="plus" />} size="sm" />
-              }
-            />
-          </Box>
-        </ScrollView>
+      {section == "Famillies" && (
+        <>
+          <ScrollView style={styles.Content}>
+            {StateKafel.famillies &&
+              StateKafel.famillies.map((f) => (
+                <FamilyInfosContainer
+                  key={f._id}
+                  AvatarSize={40}
+                  data={Familli.filter((fa) => fa.id == f.id)[0]}
+                  pic={Family}
+                  selectFamily={selectFamily}
+                />
+              ))}
+          </ScrollView>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("UpdateWasset", {
+                Infos: StateKafel,
+                AddFamily,
+              })
+            }
+            style={styles.Fab}
+          >
+            <Icon color="#fff" as={<AntDesign name="plus" />} size="sm" />
+          </TouchableOpacity>
+        </>
       )}
       {section == "demands" && (
         <ScrollView style={styles.Content}>
@@ -86,13 +187,34 @@ export default function KafelProfile({ route, navigation }) {
           ))}
         </ScrollView>
       )}
-      {section == "benefits" && (
-        <ScrollView style={styles.Content}>
-          {benifits.map((u) => (
-            <DataContainer AvatarSize={25} data={u} pic={icon} />
-          ))}
-        </ScrollView>
+      {section == "kids" && (
+        <>
+          <ScrollView style={styles.Content}>
+            {StateKafel.famillies &&
+              StateKafel.orphans.map((f) => (
+                <OrphanContainer
+                  key={f._id}
+                  AvatarSize={40}
+                  data={kids.filter((fa) => fa.id == f.id)[0]}
+                  pic={Family}
+                  selectFamily={selectFamily}
+                />
+              ))}
+          </ScrollView>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("UpdateWasset", {
+                Infos: StateKafel,
+                AddFamily,
+              })
+            }
+            style={styles.Fab}
+          >
+            <Icon color="#fff" as={<AntDesign name="plus" />} size="sm" />
+          </TouchableOpacity>
+        </>
       )}
+      {deleteModal && <DeleteConfirmation Confirme={deleteFamily} />}
     </View>
   );
 }
@@ -160,5 +282,16 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingLeft: 20,
     paddingRight: 20,
+  },
+  Fab: {
+    width: 50,
+    height: 50,
+    backgroundColor: "#348578",
+    borderRadius: 25,
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    right: 20,
+    bottom: 30,
   },
 });

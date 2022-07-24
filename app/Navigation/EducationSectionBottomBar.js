@@ -65,6 +65,15 @@ export default function EducationSectionBottomBar(props) {
               <Text style={styles.bottomBarITemText}>الكفالة الفكرية</Text>
             </View>
           </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate("EducationProgram")}
+          >
+            <View style={styles.bottomBarITem}>
+              <Icon as={FontAwesome5} name="child" color={"#fff"} size={4} />
+
+              <Text style={styles.bottomBarITemText}>البرنامج</Text>
+            </View>
+          </TouchableOpacity>
         </View>
       </View>
     </View>

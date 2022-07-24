@@ -14,6 +14,8 @@ import OrpahnsSectionBottomBar from "../../Navigation/OrpahansSectionBottomBar.j
 import DonationsStatus from "./Donationstatus.jsx";
 import Donations from "./Donations.jsx";
 import AddDonation from "../../Forms/AddDonation.jsx";
+import Program from "./Program.jsx";
+import AddProgramItem from "../../Forms/AddProgramItem.jsx";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
@@ -77,6 +79,16 @@ export default function OrpahansSection({ navigation }) {
           options={slideFromRight}
           name="Donations"
           component={Donations}
+        />
+        <Stack.Screen
+          options={TransitionFromBottom}
+          name="AddProgramItem"
+          component={AddProgramItem}
+        />
+        <Stack.Screen
+          options={slideFromRight}
+          name="OrphansProgram"
+          component={Program}
         />
       </Stack.Navigator>
     </>

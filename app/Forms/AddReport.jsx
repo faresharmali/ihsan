@@ -15,12 +15,11 @@ import { useSelector } from "react-redux";
 import { CreateReport } from "../api/report";
 import uuid from "react-native-uuid";
 export default function AddReport({ route, navigation }) {
+  console.log("params", route.params);
   const [ErrorMessageVisible, setErrorMessageVisible] = useState(false);
-  const [isPanelActive, setIsPanelActive] = useState(false);
   const [isUsersPannel, setisUsersPannel] = useState(false);
   const [showButton, setshowButton] = useState(true);
   const [type, setType] = useState("نوع التقرير");
-  const [benificier, setSelectedwidow] = useState("الأرملة");
   const [ErrorMessage, setErrorMessage] = useState("");
   const [errors, SetErrors] = useState({
     title: false,
@@ -34,17 +33,15 @@ export default function AddReport({ route, navigation }) {
     type: "",
     benificier: "",
     content: "",
-    section: "قسم الأرامل",
+    section: "",
     date: new Date(),
-    author: useSelector((state)=>state.Auth).name,
+    author: useSelector((state) => state.Auth).name,
   });
-  const auth=useSelector((state)=>state.Auth)
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
       () => {
-        if (isPanelActive || isUsersPannel) {
-          setIsPanelActive(false);
+        if (isUsersPannel) {
           setisUsersPannel(false);
           return true;
         } else {
@@ -53,7 +50,7 @@ export default function AddReport({ route, navigation }) {
       }
     );
     return () => backHandler.remove();
-  }, [isPanelActive, isUsersPannel]);
+  }, [isUsersPannel]);
 
   const handleUserInput = (text, name) => {
     setErrorMessageVisible(false);
@@ -61,18 +58,11 @@ export default function AddReport({ route, navigation }) {
     setuserInfos({ ...Reportinfos, [name]: text });
   };
 
-  const openPanel = () => {
-    Keyboard.dismiss();
-    setIsPanelActive(true);
-    setshowButton(false);
-  };
   const openUsersPanel = () => {
     Keyboard.dismiss();
     setisUsersPannel(true);
     setshowButton(false);
   };
-  let Widows = useSelector((state) => state.Families);
-  let allWidows = Widows.map((u) => ({ title: u.motherFullName }));
 
   let ReportTypes = [
     { title: "استفادة" },
@@ -91,13 +81,7 @@ export default function AddReport({ route, navigation }) {
     fontFamily: "Tajawal-Medium",
     color: "#000",
   };
-  const ChooseJob = (benificier) => {
-    SetErrors({ ...errors, benificier: false });
-    setuserInfos({ ...Reportinfos, benificier });
-    setSelectedwidow(benificier);
-    setIsPanelActive(false);
-    setshowButton(true);
-  };
+
   const ChooseUser = (type) => {
     SetErrors({ ...errors, type: false });
     setuserInfos({ ...Reportinfos, type });
@@ -117,17 +101,16 @@ export default function AddReport({ route, navigation }) {
     if (Reportinfos.content.trim() == "") {
       (FieldErrors.content = true), (valid = false);
     }
-    if (Reportinfos.benificier.trim() == "") {
-      (FieldErrors.benificier = true), (valid = false);
-    }
     SetErrors(FieldErrors);
     return valid;
   };
   const AddDonator = async () => {
-  
     Keyboard.dismiss();
     if (validate()) {
-      const res = await CreateReport({ ...Reportinfos });
+      const res = await CreateReport({
+        ...Reportinfos,
+        section: route.params.section,
+      });
       if (res.ok) {
         route.params.showToast();
         navigation.goBack();
@@ -137,7 +120,6 @@ export default function AddReport({ route, navigation }) {
       setErrorMessage("كل الخانات اجبارية");
       setErrorMessageVisible(true);
     }
-    
   };
   return (
     <View style={styles.Container}>
@@ -187,7 +169,7 @@ export default function AddReport({ route, navigation }) {
           <View
             style={{
               ...styles.dateContainer,
-              borderColor: errors.benificier ? "#c21a0e" : "grey",
+              borderColor: errors.type ? "#c21a0e" : "grey",
             }}
           >
             <Icon
@@ -199,24 +181,9 @@ export default function AddReport({ route, navigation }) {
             <Text style={styles.InputText}> {type}</Text>
           </View>
         </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={() => openPanel()}>
-          <View
-            style={{
-              ...styles.dateContainer,
-              borderColor: errors.type ? "#c21a0e" : "grey",
-            }}
-          >
-            <Icon
-              as={<MaterialIcons name="lock" />}
-              size={5}
-              ml="2"
-              color="#348578"
-            />
-            <Text style={styles.InputText}> {benificier}</Text>
-          </View>
-        </TouchableWithoutFeedback>
+
         <TextArea
-        onChangeText={(text)=>handleUserInput(text,"content")}
+          onChangeText={(text) => handleUserInput(text, "content")}
           borderWidth={1}
           h={200}
           placeholder="التقرير"
@@ -235,14 +202,7 @@ export default function AddReport({ route, navigation }) {
           <Text style={{ fontSize: 16, marginLeft: 10 }}>اضافة</Text>
         </Button>
       )}
-      <Swipable
-        title="اختيار الأرملة"
-        ChooseJob={ChooseJob}
-        data={allWidows}
-        isPanelActive={isPanelActive}
-        setIsPanelActive={setIsPanelActive}
-        setshowButton={setshowButton}
-      />
+
       <Swipable
         title="اختيار نوع التقرير"
         ChooseJob={ChooseUser}

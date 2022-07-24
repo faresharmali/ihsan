@@ -41,7 +41,7 @@ export const getProgram = async (data, token) => {
 };
 export const CreateProgramItem = async (data, token) => {
   try {
-    const res = await axios.post(api + "/addprogram", {
+    const res = await axios.post(api + "/createprogram", {
       headers: {
         token: token,
       },

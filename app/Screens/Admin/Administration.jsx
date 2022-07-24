@@ -22,6 +22,8 @@ import KafelProfile from "../Profiles/kafelProfile.jsx";
 import Distributeur from "../Profiles/Distubuteur.jsx";
 import Wasset from "../Profiles/wasseet.jsx";
 import Information from "../InformationsSection/information.jsx";
+import UpdateUser from "../../UpdateForms/UpdateUser.jsx";
+import UpdateWasset from "../../UpdateForms/UpdateWasset.jsx";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
@@ -118,12 +120,20 @@ export default function Administration({ navigation }) {
         <Stack.Screen
           options={TransitionFromBottom}
           name="Wasset"
-          component={Wasset}
+          component={Distributeur}
         />
         <Stack.Screen
           options={TransitionFromBottom}
           name="InformationAdmin"
           component={Information}
+        />
+        <Stack.Screen
+          name="UpdateUser"
+          component={UpdateUser}
+        />
+        <Stack.Screen
+          name="UpdateWasset"
+          component={UpdateWasset}
         />
       </Stack.Navigator>
     </>

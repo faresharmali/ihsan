@@ -8,9 +8,10 @@ import Widows from "./Widows.jsx";
 import Reports from "./Reports.jsx";
 import AddReport from "../../Forms/AddReport.jsx";
 import WidowsDonators from "./Donators.jsx";
-import WidowSectionBottomBar from "../../Navigation/WidowSectionBottomBar.js";
 import Bureau from "../Bureau/Bureau.jsx";
 import AdminProfile from "../Profiles/adminProfile.jsx";
+import Program from "./Program.jsx";
+import AddProgramItem from "../../Forms/AddProgramItem.jsx";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
@@ -61,9 +62,18 @@ export default function WidowSection({ navigation }) {
         name="WidowMembersProfile"
         component={AdminProfile}
       />
+      <Stack.Screen
+        options={TransitionFromBottom}
+        name="AddProgramItem"
+        component={AddProgramItem}
+      />
+      <Stack.Screen
+        options={slideFromRight}
+        name="WidowProgram"
+        component={Program}
+      />
 
     </Stack.Navigator>
-<WidowSectionBottomBar />
 </>
   );
 }

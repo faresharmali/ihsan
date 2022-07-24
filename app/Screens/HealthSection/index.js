@@ -8,6 +8,10 @@ import Members from "./Members.jsx";
 import HealthDonators from "./Donators.jsx";
 import AdminProfile from "../Profiles/adminProfile.jsx";
 import Patients from "./patients.jsx";
+import Reports from "./Reports.jsx";
+import AddReport from "../../Forms/AddReport.jsx";
+import Program from "./Program.jsx";
+import AddProgramItem from "../../Forms/AddProgramItem.jsx";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
@@ -41,6 +45,26 @@ export default function HealthSection({ navigation }) {
           options={TransitionFromBottom}
           name="MemberProfile"
           component={AdminProfile}
+        />
+        <Stack.Screen
+          options={slideFromRight}
+          name="HealthReports"
+          component={Reports}
+        />
+        <Stack.Screen
+          options={TransitionFromBottom}
+          name="HealthAddReport"
+          component={AddReport}
+        />
+        <Stack.Screen
+          options={slideFromRight}
+          name="HealthProgram"
+          component={Program}
+        />
+        <Stack.Screen
+          options={TransitionFromBottom}
+          name="AddProgramItem"
+          component={AddProgramItem}
         />
       </Stack.Navigator>
     </>

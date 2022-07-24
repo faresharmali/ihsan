@@ -20,7 +20,6 @@ import man from "../../../assets/avatars/man.png";
 import info from "../../../assets/icons/information.png";
 import DataContainer from "../../Components/DataContainer";
 import UserInfos from "./userInfos";
-import FamilyInfosContainer from "../../Components/Containers/FamilyInfosContainer";
 import { useSelector } from "react-redux";
 export default function AdminProfile({ route, navigation }) {
   const [section, setSection] = useState("infos");
@@ -37,15 +36,10 @@ export default function AdminProfile({ route, navigation }) {
 
       <View style={styles.pageEntity}>
         <View style={styles.IconsContainer}>
-          <TouchableOpacity onPress={() => navigation.navigate("Users")}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
             <Icon as={Ionicons} size={8} color="#fff" name="md-chevron-back" />
           </TouchableOpacity>
-          <Icon
-            as={MaterialCommunityIcons}
-            size={8}
-            color="#fff"
-            name="square-edit-outline"
-          />
+       
         </View>
         <Image style={styles.EntityImage} source={man} />
         <Text style={styles.EntityTitle}>{route.params[0]}</Text>

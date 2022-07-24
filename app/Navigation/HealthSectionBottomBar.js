@@ -8,7 +8,7 @@ import {
   FontAwesome,
 } from "@expo/vector-icons";
 import React from "react";
-import styles from "./styles"
+import styles from "./styles";
 
 export default function HealthSectionBottomBar(props) {
   return (
@@ -58,7 +58,9 @@ export default function HealthSectionBottomBar(props) {
               <Text style={styles.bottomBarITemText}>المرضى</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => props.navigation.navigate("Bureau")}>
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate("HealthReports")}
+          >
             <View style={styles.bottomBarITem}>
               <Icon as={FontAwesome} name="building" color={"#ffff"} size={4} />
 
@@ -72,9 +74,17 @@ export default function HealthSectionBottomBar(props) {
               <Text style={styles.bottomBarITemText}>المقر</Text>
             </View>
           </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>  props.navigation.navigate("HealthProgram")}
+          >
+            <View style={styles.bottomBarITem}>
+              <Icon as={FontAwesome5} name="child" color={"#fff"} size={4} />
+
+              <Text style={styles.bottomBarITemText}>البرنامج</Text>
+            </View>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
   );
 }
-

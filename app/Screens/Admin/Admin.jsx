@@ -158,7 +158,6 @@ async function registerForPushNotificationsAsync() {
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
     RegisterToken(token);
-
   } else {
     alert("Must use physical device for Push Notifications");
   }

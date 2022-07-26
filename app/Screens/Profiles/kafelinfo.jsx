@@ -1,18 +1,9 @@
-import { StatusBar } from "expo-status-bar";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TouchableWithoutFeedback,
-} from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
-
 import { Icon } from "native-base";
-import { Ionicons, FontAwesome, FontAwesome5 } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
 
-export default function KafelInfo({ navigation, title, data }) {
-  console.log("data", data);
+export default function KafelInfo({ data }) {
   return (
     <View style={styles.InfosContainer}>
       <View style={styles.titleContainer}></View>
@@ -67,7 +58,6 @@ export default function KafelInfo({ navigation, title, data }) {
         </Text>
         <Icon as={FontAwesome} size={6} color="#348578" name="calendar" />
       </View>
-    
     </View>
   );
 }

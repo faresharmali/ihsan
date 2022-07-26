@@ -20,10 +20,11 @@ import AddDonator from "../../Forms/AddDonator.jsx";
 import KidProfile from "../AdministrationSection/Famillies/kidProfile.jsx";
 import KafelProfile from "../Profiles/kafelProfile.jsx";
 import Distributeur from "../Profiles/Distubuteur.jsx";
-import Wasset from "../Profiles/wasseet.jsx";
 import Information from "../InformationsSection/information.jsx";
 import UpdateUser from "../../UpdateForms/UpdateUser.jsx";
 import UpdateWasset from "../../UpdateForms/UpdateWasset.jsx";
+import AddOrphan from "../../UpdateForms/AddOrphan.jsx";
+import UpdateFamily from "../../UpdateForms/UpdateFamily.jsx";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
@@ -32,7 +33,7 @@ export default function Administration({ navigation }) {
   return (
     <>
       <Stack.Navigator
-        initialRouteName="Users"
+        initialRouteName="Famillies"
         screenOptions={{
           gestureEnabled: true,
           gestureDirection: "vertical",
@@ -134,6 +135,14 @@ export default function Administration({ navigation }) {
         <Stack.Screen
           name="UpdateWasset"
           component={UpdateWasset}
+        />
+        <Stack.Screen
+          name="AddOrphan"
+          component={AddOrphan}
+        />
+        <Stack.Screen
+          name="UpdateFamily"
+          component={UpdateFamily}
         />
       </Stack.Navigator>
     </>

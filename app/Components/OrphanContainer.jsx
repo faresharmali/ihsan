@@ -15,11 +15,17 @@ import {
 } from "@expo/vector-icons";
 export default function OrphanContainer(props) {
   return (
-    <TouchableOpacity onPress={props.openFamily} style={styles.DataContainer}>
+    <TouchableOpacity
+      onLongPress={() => props.selectOrphan(props.data.id)}
+      onPress={props.openFamily}
+      style={styles.DataContainer}
+    >
       <Icon as={MaterialIcons} name="sick" size={28} color="#348578" />
 
       <View style={styles.infos}>
-        <Text style={styles.UserPersonal}>{props.data.name+" "+props.data.lastName} </Text>
+        <Text style={styles.UserPersonal}>
+          {props.data.name + " " + props.data.lastName}{" "}
+        </Text>
         <View style={styles.secondaryInfos}>
           <>
             <Icon

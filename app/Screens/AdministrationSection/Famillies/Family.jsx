@@ -60,12 +60,15 @@ export default function FamilyScreen({ route, navigation }) {
       <View style={styles.pageEntity}>
         <View style={styles.IconsContainer}>
           <Icon as={Ionicons} size={8} color="#fff" name="md-chevron-back" />
+          <TouchableOpacity onPress={()=>navigation.navigate("UpdateFamily",{infos:family})}>
+
           <Icon
             as={MaterialCommunityIcons}
             size={8}
             color="#fff"
             name="square-edit-outline"
           />
+          </TouchableOpacity>
         </View>
         <Image style={styles.EntityImage} source={Family} />
         <Text

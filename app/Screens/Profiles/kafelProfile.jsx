@@ -19,23 +19,22 @@ import Family from "../../../assets/avatars/family.png";
 import DeleteConfirmation from "../../Components/Modals/DeleteConfirmation";
 import OrphanContainer from "../../Components/OrphanContainer";
 import man from "../../../assets/avatars/man.png";
-import icon from "../../../assets/icons/information.png";
-import DataContainer from "../../Components/DataContainer";
 import KafelInfo from "./kafelinfo";
 import { useSelector, useDispatch } from "react-redux";
 import { getDonators, UpdateDonator } from "../../api/user";
 import FamilyInfosContainer from "../../Components/Containers/FamilyInfosContainer";
+
 export default function KafelProfile({ route, navigation }) {
   const [section, setSection] = useState("infos");
   const [deleteModal, showDeleteModal] = useState(false);
+  const [deleteModal2, showDeleteModal2] = useState(false);
   const [selectedFamily, setSelectedFamily] = useState(null);
-  const users = [];
-  const benifits = [];
+  const [selectedOrphan, setSelectedOrphan] = useState(null);
+
   const StateKafel = useSelector((state) => state.Donators).filter(
     (u) => u.id == route.params.id
   )[0];
   const Familli = useSelector((state) => state.Families);
-
   let kids = [];
   Familli.forEach((f) => {
     f.kids.forEach((k) => {
@@ -55,8 +54,9 @@ export default function KafelProfile({ route, navigation }) {
     const backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
       () => {
-        if (deleteModal) {
+        if (deleteModal || deleteModal2) {
           showDeleteModal(false);
+          showDeleteModal2(false);
           return true;
         } else {
           return false;
@@ -64,7 +64,7 @@ export default function KafelProfile({ route, navigation }) {
       }
     );
     return () => backHandler.remove();
-  }, [deleteModal]);
+  }, [deleteModal, deleteModal2]);
 
   const dispatch = useDispatch();
   const updateState = (data) => {
@@ -73,45 +73,56 @@ export default function KafelProfile({ route, navigation }) {
       data: data,
     };
   };
+
+  const fetchData = async () => {
+    const res = await getDonators();
+    dispatch(
+      updateState(
+        res.data.result.map((user) => ({
+          0: user.name,
+          1: user.phone,
+          2: user.job,
+          ...user,
+        }))
+      )
+    );
+  };
   const deleteFamily = async () => {
     let User = { ...StateKafel };
     User.famillies = StateKafel.famillies.filter((f) => f.id != selectedFamily);
-    const res = await UpdateDonator(User);
-    if (res.ok) {
-      const res = await getDonators();
-      dispatch(
-        updateState(
-          res.data.result.map((user) => ({
-            0: user.name,
-            1: user.phone,
-            2: user.job,
-            ...user,
-          }))
-        )
-      );
-    } else {
-    }
+    await update(User);
     showDeleteModal(false);
+  };
+  const deleteOrphan = async () => {
+    let User = { ...StateKafel };
+    User.orphans = StateKafel.orphans.filter((f) => f.id != selectedOrphan);
+    await update(User);
+    showDeleteModal2(false);
   };
   const AddFamily = async (famillies) => {
     let User = { ...StateKafel };
     User.famillies = [...User.famillies, ...famillies];
+    await update(User);
+    showDeleteModal(false);
+  };
+  const AddOrphan = async (famillies) => {
+    let User = { ...StateKafel };
+    User.orphans = [...User.orphans, ...famillies];
+    await update(User);
+    showDeleteModal(false);
+  };
+  const selectOrphan = (id) => {
+    console.log("selected", id);
+    showDeleteModal2(true);
+    setSelectedOrphan(id);
+  };
+  const update = async (User) => {
     const res = await UpdateDonator(User);
     if (res.ok) {
-      const res = await getDonators();
-      dispatch(
-        updateState(
-          res.data.result.map((user) => ({
-            0: user.name,
-            1: user.phone,
-            2: user.job,
-            ...user,
-          }))
-        )
-      );
+      fetchData();
     } else {
+      alert("error");
     }
-    showDeleteModal(false);
   };
   return (
     <View style={styles.container}>
@@ -122,12 +133,6 @@ export default function KafelProfile({ route, navigation }) {
           <TouchableOpacity onPress={() => navigation.navigate("Users")}>
             <Icon as={Ionicons} size={8} color="#fff" name="md-chevron-back" />
           </TouchableOpacity>
-          <Icon
-            as={MaterialCommunityIcons}
-            size={8}
-            color="#fff"
-            name="square-edit-outline"
-          />
         </View>
         <Image style={styles.EntityImage} source={man} />
         <Text style={styles.EntityTitle}>{route.params[0]}</Text>
@@ -157,6 +162,7 @@ export default function KafelProfile({ route, navigation }) {
         <>
           <ScrollView style={styles.Content}>
             {StateKafel.famillies &&
+              StateKafel.famillies.length > 0 &&
               StateKafel.famillies.map((f) => (
                 <FamilyInfosContainer
                   key={f._id}
@@ -180,13 +186,7 @@ export default function KafelProfile({ route, navigation }) {
           </TouchableOpacity>
         </>
       )}
-      {section == "demands" && (
-        <ScrollView style={styles.Content}>
-          {users.map((u) => (
-            <DataContainer AvatarSize={25} data={u} pic={icon} />
-          ))}
-        </ScrollView>
-      )}
+
       {section == "kids" && (
         <>
           <ScrollView style={styles.Content}>
@@ -197,15 +197,15 @@ export default function KafelProfile({ route, navigation }) {
                   AvatarSize={40}
                   data={kids.filter((fa) => fa.id == f.id)[0]}
                   pic={Family}
-                  selectFamily={selectFamily}
+                  selectOrphan={selectOrphan}
                 />
               ))}
           </ScrollView>
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate("UpdateWasset", {
+              navigation.navigate("AddOrphan", {
                 Infos: StateKafel,
-                AddFamily,
+                AddOrphan,
               })
             }
             style={styles.Fab}
@@ -215,6 +215,7 @@ export default function KafelProfile({ route, navigation }) {
         </>
       )}
       {deleteModal && <DeleteConfirmation Confirme={deleteFamily} />}
+      {deleteModal2 && <DeleteConfirmation Confirme={deleteOrphan} />}
     </View>
   );
 }

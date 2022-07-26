@@ -15,14 +15,15 @@ import { CreateFamily } from "../api/family";
 import uuid from "react-native-uuid";
 import { useSelector } from "react-redux";
 import Swipable from "../Components/Containers/swipable";
-export default function AddFamily({ route, navigation }) {
+import { UpdateFamilyInfos } from "../api/family";
+export default function UpdateFamily({ route, navigation }) {
   const [ErrorMessageVisible, setErrorMessageVisible] = useState(false);
   const [ErrorMessage, setErrorMessage] = useState("");
   const [isPanelActive, setIsPanelActive] = useState(false);
   const [showButton, setshowButton] = useState(true);
-  const [kofa, setKofa] = useState(false);
-  const [sick, setMomSick] = useState(false);
-  const [wasseet, setwasseet] = useState("الوسيط الاجتماعي");
+  const [kofa, setKofa] = useState(route.params.infos.kofa);
+  const [sick, setMomSick] = useState(route.params.infos.sick);
+  const [wasseet, setwasseet] = useState(route.params.infos.wasseet);
   let users = useSelector((state) => state.users).filter(
     (d) => d.job.trim() == "وسيط اجتماعي"
   );
@@ -40,16 +41,7 @@ export default function AddFamily({ route, navigation }) {
     sickness: false,
   });
   const [userInfos, setuserInfos] = useState({
-    id: uuid.v4(),
-    fatherFirstName: "",
-    fatherLastName: "",
-    motherFullName: "",
-    adresse: "",
-    salary: "",
-    phone: "",
-    donation: "",
-    wasseet: "",
-    sickness: "",
+    ...route.params.infos,
   });
   const openPanel = () => {
     Keyboard.dismiss();
@@ -72,10 +64,9 @@ export default function AddFamily({ route, navigation }) {
   const CreateNewUser = async () => {
     Keyboard.dismiss();
     if (validate()) {
-      const res = await CreateFamily({ ...userInfos, kofa, sick });
+      const res = await UpdateFamilyInfos({ ...userInfos, kofa, sick });
       if (res.ok) {
-        route.params.showToast();
-        navigation.goBack();
+        navigation.navigate("Famillies")
       } else {
       }
     } else {
@@ -101,10 +92,10 @@ export default function AddFamily({ route, navigation }) {
     if (userInfos.phone.trim() == "") {
       (FieldErrors.phone = true), (valid = false);
     }
-    if (userInfos.salary.trim() == "") {
+    if ((userInfos.salary + "").trim() == "") {
       (FieldErrors.salary = true), (valid = false);
     }
-    if (userInfos.donation.trim() == "") {
+    if ((userInfos.donation + "").trim() == "") {
       (FieldErrors.donation = true), (valid = false);
     }
     if (userInfos.wasseet.trim() == "") {
@@ -130,7 +121,7 @@ export default function AddFamily({ route, navigation }) {
         <View style={{ flexDirection: "row-reverse" }}>
           <Icon as={FontAwesome} name="user-plus" size={7} color="#348578" />
 
-          <Text style={styles.PageTitile}>اضافة عائلة</Text>
+          <Text style={styles.PageTitile}> تعديل معلومات</Text>
         </View>
         <TouchableWithoutFeedback onPress={() => navigation.navigate("Users")}>
           <Icon
@@ -166,6 +157,7 @@ export default function AddFamily({ route, navigation }) {
                 placeholder="اسم الأب "
                 {...styling}
                 borderWidth={1}
+                value={userInfos.fatherFirstName}
                 borderColor={errors.fatherFirstName ? "#c21a0e" : "grey"}
                 onChangeText={(text) =>
                   handleUserInput(text, "fatherFirstName")
@@ -191,6 +183,7 @@ export default function AddFamily({ route, navigation }) {
                 placeholder="لقب الأب "
                 {...styling}
                 borderWidth={1}
+                value={userInfos.fatherLastName}
                 borderColor={errors.fatherLastName ? "#c21a0e" : "grey"}
                 onChangeText={(text) => handleUserInput(text, "fatherLastName")}
               />
@@ -216,10 +209,11 @@ export default function AddFamily({ route, navigation }) {
               placeholder="اسم و لقب الأم"
               {...styling}
               borderWidth={1}
+              value={userInfos.motherFullName}
               borderColor={errors.motherFullName ? "#c21a0e" : "grey"}
               onChangeText={(text) => handleUserInput(text, "motherFullName")}
             />
-            <Checkbox onChange={(e) => setMomSick(e)} value="one" my={2}>
+            <Checkbox isChecked={sick} onChange={(e) => setMomSick(e)} my={2}>
               <Text style={styles.checkBoxText}> الأم تعاني من مرض مزمن </Text>
             </Checkbox>
             {sick && (
@@ -243,10 +237,9 @@ export default function AddFamily({ route, navigation }) {
                 placeholder="المرض"
                 {...styling}
                 borderWidth={1}
+                value={userInfos.sickness}
                 borderColor={errors.sickness ? "#c21a0e" : "grey"}
-                onChangeText={(text) =>
-                  handleUserInput(text, "sickness")
-                }
+                onChangeText={(text) => handleUserInput(text, "sickness")}
               />
             )}
 
@@ -271,6 +264,7 @@ export default function AddFamily({ route, navigation }) {
                 onChangeText={(text) => handleUserInput(text, "phone")}
                 {...styling}
                 borderWidth={1}
+                value={userInfos.phone}
                 borderColor={errors.phone ? "#c21a0e" : "grey"}
               />
 
@@ -295,6 +289,7 @@ export default function AddFamily({ route, navigation }) {
                 onChangeText={(text) => handleUserInput(text, "adresse")}
                 {...styling}
                 borderWidth={1}
+                value={userInfos.adresse}
                 borderColor={errors.adresse ? "#c21a0e" : "grey"}
               />
             </View>
@@ -320,6 +315,7 @@ export default function AddFamily({ route, navigation }) {
                 {...styling}
                 type={"motherFullName"}
                 borderWidth={1}
+                value={userInfos.salary + ""}
                 borderColor={errors.salary ? "#c21a0e" : "grey"}
               />
               <Input
@@ -342,7 +338,7 @@ export default function AddFamily({ route, navigation }) {
                 onChangeText={(text) => handleUserInput(text, "donation")}
                 {...styling}
                 borderWidth={1}
-                type={"motherFullName"}
+                value={userInfos.donation + ""}
                 borderColor={errors.donation ? "#c21a0e" : "grey"}
               />
             </View>
@@ -362,7 +358,12 @@ export default function AddFamily({ route, navigation }) {
                 <Text style={styles.InputText}>{wasseet} </Text>
               </View>
             </TouchableWithoutFeedback>
-            <Checkbox onChange={(e) => setKofa(e)} value="one" my={2}>
+            <Checkbox
+              isChecked={kofa}
+              onChange={(e) => setKofa(e)}
+              value="one"
+              my={2}
+            >
               <Text style={styles.checkBoxText}>تستفيد من القفة الشهرية</Text>
             </Checkbox>
             {ErrorMessageVisible && (
@@ -381,7 +382,7 @@ export default function AddFamily({ route, navigation }) {
                 mode="contained"
                 onPress={CreateNewUser}
               >
-                <Text style={{ fontSize: 16, marginLeft: 10 }}>اضافة </Text>
+                <Text style={{ fontSize: 16, marginLeft: 10 }}>تعديل </Text>
               </Button>
             )}
           </Stack>

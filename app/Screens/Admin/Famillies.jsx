@@ -98,7 +98,7 @@ export default function Families({ navigation, drawer }) {
         <ScrollView style={styles.Content}>
           {MyFamilies.map((f) => (
             <FamilyInfosContainer
-            key={f._id}
+              key={f._id}
               AvatarSize={40}
               data={f}
               pic={Family}
@@ -115,7 +115,6 @@ export default function Families({ navigation, drawer }) {
         <Icon as={Entypo} name="plus" size={8} color="#fff" />
       </TouchableOpacity>
       <BottomBar navigation={navigation} />
-
     </View>
   );
 }

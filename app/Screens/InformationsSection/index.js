@@ -6,6 +6,7 @@ import {
 import Informations from "./informations";
 import AddInformation from "../../Forms/addInformation";
 import Information from "./information";
+import UpdateInformation from "../../UpdateForms/UpdateInformation";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
@@ -33,6 +34,10 @@ export default function InformationSection({ navigation }) {
         options={TransitionFromBottom}
         name="Information"
         component={Information}
+      />
+       <Stack.Screen
+        name="UpdateInformation"
+        component={UpdateInformation}
       />
 
 

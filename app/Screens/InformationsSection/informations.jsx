@@ -43,7 +43,7 @@ export default function Informations({ navigation, drawer }) {
   };
 
   const openModal = (data) => {
-    navigation.navigate("Information", data);
+    navigation.navigate("Information", {data,   fetchInformations});
   };
   let LoggedUser = useSelector((state) => state.Auth);
   const updateState = (data) => {
@@ -55,21 +55,7 @@ export default function Informations({ navigation, drawer }) {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", async () => {
-      const res = await getInformations(LoggedUser.token);
-      dispatch(
-        updateState(
-          res.data.result.map((information) => ({
-            0: information.title,
-            1: information.section,
-            kids: information.kids,
-            famillies: information.famillies,
-            content: information.content,
-            type: information.type,
-            author: information.author,
-            benificier: information.benificier,
-          }))
-        )
-      );
+      fetchInformations();
     });
 
     return unsubscribe;
@@ -90,6 +76,18 @@ export default function Informations({ navigation, drawer }) {
     } else {
       setInformationList(Informations.filter((info) => info[1] == section));
     }
+  };
+  const fetchInformations = async () => {
+    const res = await getInformations(LoggedUser.token);
+    dispatch(
+      updateState(
+        res.data.result.map((information) => ({
+          0: information.title,
+          1: information.section,
+          ...information,
+        }))
+      )
+    );
   };
   return (
     <View style={styles.container}>
@@ -248,9 +246,12 @@ export default function Informations({ navigation, drawer }) {
         </TouchableWithoutFeedback>
       </View>
       <View style={styles.Section}>
-        <ScrollView    contentContainerStyle={{
-          paddingBottom: 25,
-        }} style={styles.Content}>
+        <ScrollView
+          contentContainerStyle={{
+            paddingBottom: 25,
+          }}
+          style={styles.Content}
+        >
           {InformationsList.map((f) => (
             <DataContainer
               key={f.id}
@@ -264,7 +265,12 @@ export default function Informations({ navigation, drawer }) {
       </View>
       <Toast config={toastConfig} />
       <TouchableOpacity
-        onPress={() => navigation.navigate("AddInformation", { showToast })}
+        onPress={() =>
+          navigation.navigate("AddInformation", {
+            showToast,
+            fetchInformations,
+          })
+        }
         style={styles.fab}
       >
         <Icon as={Entypo} name="plus" size={8} color="#fff" />

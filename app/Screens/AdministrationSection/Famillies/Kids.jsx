@@ -1,14 +1,18 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import { Icon } from "native-base";
-import { MaterialIcons, Entypo } from "@expo/vector-icons";
+import {
+  MaterialIcons,
+  Entypo,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 import Kid from "../../../../assets/icons/kid.png";
 export default function Kids(props) {
   return (
     <View>
       {props.kids.map((k) => (
         <TouchableOpacity
-          onPress={() => props.viewKid({ ...k, lastName: props.lastName })}
+          onPress={() => props.viewKid(k)}
           onLongPress={() => alert("wech ?")}
           key={k.name}
           style={styles.DataContainer}
@@ -20,30 +24,20 @@ export default function Kids(props) {
             </Text>
             <View style={styles.secondaryInfos}>
               <Icon
+                as={MaterialCommunityIcons}
+                name="gender-male-female"
+                size={4}
+                color="#348578"
+              />
+              <Text style={styles.kidInfo}> الجنس : {k.gender}</Text>
+              <Icon
+                style={{ marginRight: 10, marginLeft: 5 }}
                 as={MaterialIcons}
-                name="admin-panel-settings"
+                name="date-range"
                 size={4}
-                color="#000"
+                color="#348578"
               />
-              <Text> الجنس : {k.gender}</Text>
-              <Icon
-                style={{ marginRight: 10, marginLeft: 5 }}
-                as={Entypo}
-                name="clock"
-                size={4}
-                color="#000"
-              />
-              <Text>العمر : {k.age} </Text>
-              <Icon
-                style={{ marginRight: 10, marginLeft: 5 }}
-                as={Entypo}
-                name="clock"
-                size={4}
-                color="#000"
-              />
-              <Text>
-                المستوى : {k.scolarity.replace("السنة", "").replace("ال", "")}{" "}
-              </Text>
+              <Text style={styles.kidInfo}>العمر : {k.age} سنة </Text>
             </View>
           </View>
         </TouchableOpacity>
@@ -59,6 +53,12 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: "#000",
     marginBottom: 5,
+  },
+  kidInfo: {
+    fontFamily: "Tajawal-Medium",
+
+    fontSize: 14,
+    color: "#000",
   },
   DataContainer: {
     width: "100%",

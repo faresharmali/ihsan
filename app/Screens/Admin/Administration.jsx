@@ -25,6 +25,7 @@ import UpdateUser from "../../UpdateForms/UpdateUser.jsx";
 import UpdateWasset from "../../UpdateForms/UpdateWasset.jsx";
 import AddOrphan from "../../UpdateForms/AddOrphan.jsx";
 import UpdateFamily from "../../UpdateForms/UpdateFamily.jsx";
+import UpdateOrphan from  "../../UpdateForms/UpdateOrphan.jsx";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
@@ -109,7 +110,7 @@ export default function Administration({ navigation }) {
           component={AddDonator}
         />
         <Stack.Screen
-          options={scaleFromCenter}
+          options={TransitionFromBottom}
           name="KidProfile"
           component={KidProfile}
         />
@@ -143,6 +144,10 @@ export default function Administration({ navigation }) {
         <Stack.Screen
           name="UpdateFamily"
           component={UpdateFamily}
+        />
+        <Stack.Screen
+          name="UpdateOrphan"
+          component={UpdateOrphan}
         />
       </Stack.Navigator>
     </>

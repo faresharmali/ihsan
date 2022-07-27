@@ -12,6 +12,7 @@ import Bureau from "../Bureau/Bureau.jsx";
 import AdminProfile from "../Profiles/adminProfile.jsx";
 import Program from "./Program.jsx";
 import AddProgramItem from "../../Forms/AddProgramItem.jsx";
+import WidowProfile from "../Profiles/WidowProfile";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
@@ -20,7 +21,7 @@ export default function WidowSection({ navigation }) {
     <>
   
     <Stack.Navigator
-      initialRouteName="Members"
+      initialRouteName="Widows"
       screenOptions={{
         gestureEnabled: true,
         gestureDirection: "vertical",
@@ -66,6 +67,11 @@ export default function WidowSection({ navigation }) {
         options={TransitionFromBottom}
         name="AddProgramItem"
         component={AddProgramItem}
+      />
+      <Stack.Screen
+        options={TransitionFromBottom}
+        name="WidowProfile"
+        component={WidowProfile}
       />
       <Stack.Screen
         options={slideFromRight}

@@ -6,7 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import BottomBar from "../../../Navigation/BottomBar";
 import { Icon } from "native-base";
 import { FontAwesome5, Entypo, MaterialIcons } from "@expo/vector-icons";
@@ -15,18 +15,60 @@ import { useSelector } from "react-redux";
 import toastConfig from "../../../Components/ToastConfiguration";
 import Toast from "react-native-toast-message";
 import Kids from "../Famillies/Kids";
+import { useDispatch } from "react-redux";
+import { getFamilies } from "../../../api/family";
+
 export default function Orphans({ navigation, drawer }) {
+  const dispatch = useDispatch();
+  const [kids, setKids] = useState([]);
+  const [Displayedkids, setDisplayedkids] = useState([]);
   const styling = {
     backgroundColor: "#fff",
     marginTop: 5,
   };
+
   let MyFamilies = useSelector((state) => state.Families);
-  let kids = [];
-  MyFamilies.forEach((f) => {
-    f.kids.forEach((k) => {
-      kids.push({ ...k, lastName: f.fatherLastName });
+  useEffect(() => {
+    let kids = [];
+    MyFamilies.forEach((f) => {
+      f.kids.forEach((k) => {
+        kids.push({
+          familyId: f.id,
+          ...k,
+          lastName: f.fatherLastName,
+          title: k.name + " " + f.fatherLastName,
+        });
+      });
     });
-  });
+    setKids(kids);
+    setDisplayedkids(kids);
+  }, [MyFamilies]);
+
+  const viewKid = (kid) => {
+    navigation.navigate("KidProfile", { kid ,fetchFamillies});
+  };
+  const handleSearch = (text) => {
+    setDisplayedkids(kids.filter((k) => k.title.includes(text)));
+  };
+
+  const updateState = (data) => {
+    return {
+      type: "updateFamiliesList",
+      data: data,
+    };
+  };
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", async () => {
+      fetchFamillies();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
+  const fetchFamillies = async () => {
+    const res = await getFamilies();
+    dispatch(updateState(res.data.result));
+  };
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />
@@ -63,11 +105,17 @@ export default function Orphans({ navigation, drawer }) {
           h={42}
           textAlign="right"
           placeholder="البحث عن يتيم"
+          onChangeText={(text) => handleSearch(text)}
           {...styling}
         />
 
-        <ScrollView style={styles.Content}>
-          <Kids kids={kids} />
+        <ScrollView
+          contentContainerStyle={{
+            paddingBottom: 25,
+          }}
+          style={styles.Content}
+        >
+          <Kids kids={Displayedkids} viewKid={viewKid} />
         </ScrollView>
       </View>
       <Toast config={toastConfig} />
@@ -142,7 +190,7 @@ const styles = StyleSheet.create({
   },
   Content: {
     width: "100%",
-    maxHeight: "78%",
+    maxHeight: "85%",
     backgroundColor: "#f5f5f5",
     display: "flex",
     paddingTop: 10,

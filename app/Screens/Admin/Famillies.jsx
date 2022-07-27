@@ -25,7 +25,8 @@ import { useDispatch } from "react-redux";
 
 export default function Families({ navigation, drawer }) {
   const dispatch = useDispatch();
-
+  const [famillies, setfamillies] = useState([]);
+  const [Displayedfamillies, setDisplayedfamillies] = useState([]);
   const showToast = () => {
     Toast.show({
       type: "success",
@@ -48,13 +49,34 @@ export default function Families({ navigation, drawer }) {
     };
   };
   useEffect(() => {
+    setfamillies(MyFamilies);
+    setDisplayedfamillies(MyFamilies);
+  }, [MyFamilies]);
+
+  useEffect(() => {
     const unsubscribe = navigation.addListener("focus", async () => {
       const res = await getFamilies();
-      dispatch(updateState(res.data.result));
+      dispatch(
+        updateState(
+          res.data.result.map((f) => ({
+            ...f,
+            title:
+              f.motherFullName +
+              " " +
+              f.fatherFirstName +
+              " " +
+              f.fatherLastName,
+          }))
+        )
+      );
     });
 
     return unsubscribe;
   }, [navigation]);
+
+  const handleSearch = (text) => {
+    setDisplayedfamillies(famillies.filter((k) => k.title.includes(text)));
+  };
 
   return (
     <View style={styles.container}>
@@ -93,10 +115,11 @@ export default function Families({ navigation, drawer }) {
           textAlign="right"
           placeholder="البحث عن عائلة"
           {...styling}
+          onChangeText={(text) => handleSearch(text)}
         />
 
         <ScrollView style={styles.Content}>
-          {MyFamilies.map((f) => (
+          {Displayedfamillies.map((f) => (
             <FamilyInfosContainer
               key={f._id}
               AvatarSize={40}

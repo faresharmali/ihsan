@@ -21,13 +21,13 @@ import WidowSectionBottomBar from "../../Navigation/WidowSectionBottomBar";
 export default function Widows({ navigation, drawer }) {
   const dispatch = useDispatch();
 
-
-  const openModal = (data) => {
-    navigation.navigate("Family", data);
+  const openModal = (id) => {
+    navigation.navigate("WidowProfile", { id });
   };
   let Widows = useSelector((state) => state.Families).map((w) => ({
     0: w.motherFullName,
     1: w.phone,
+    id: w.id,
   }));
   const updateState = (data) => {
     return {
@@ -62,22 +62,25 @@ export default function Widows({ navigation, drawer }) {
         </View>
       </View>
       <View style={styles.Section}>
-        <ScrollView style={styles.Content}>
+        <ScrollView
+          contentContainerStyle={{
+            paddingBottom: 25,
+          }}
+          style={styles.Content}
+        >
           {Widows.map((f) => (
             <DataContainer
               key={f.name}
               AvatarSize={22}
               data={f}
               pic={Family}
-              openFamily={() => openModal(f)}
+              openFamily={() => openModal(f.id)}
             />
           ))}
         </ScrollView>
       </View>
       <Toast config={toastConfig} />
       <WidowSectionBottomBar navigation={navigation} />
-
-     
     </View>
   );
 }

@@ -19,8 +19,11 @@ import Family from "../../../assets/avatars/family.png";
 import Kids from "../AdministrationSection/Famillies/Kids";
 import Toast from "react-native-toast-message";
 import toastConfig from "../../Components/ToastConfiguration";
-import FamilyInfosContainer from "../../Components/Containers/FamilyInfosContainer";
+import { useSelector } from "react-redux";
 export default function Information({ route, navigation }) {
+  let Info = useSelector((state) => state.Informations).filter(
+    (i) => i.id == route.params.data.id
+  )[0];
   return (
     <View style={styles.container}>
       <StatusBar style="light" />
@@ -28,14 +31,23 @@ export default function Information({ route, navigation }) {
       <View style={styles.pageEntity}>
         <View style={styles.IconsContainer}>
           <Icon as={Ionicons} size={8} color="#fff" name="md-chevron-back" />
-          <Icon
-            as={MaterialCommunityIcons}
-            size={8}
-            color="#fff"
-            name="square-edit-outline"
-          />
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("UpdateInformation", {
+                infos: Info,
+                fetchInformations: route.params.fetchInformations,
+              })
+            }
+          >
+            <Icon
+              as={MaterialCommunityIcons}
+              size={8}
+              color="#fff"
+              name="square-edit-outline"
+            />
+          </TouchableOpacity>
         </View>
-        <Text style={styles.EntityTitle}>{route.params[0]}</Text>
+        <Text style={styles.EntityTitle}>{Info[0]}</Text>
       </View>
 
       <ScrollView
@@ -43,20 +55,18 @@ export default function Information({ route, navigation }) {
         style={styles.Content}
       >
         <View style={styles.ActivityDetails}>
-          <Text style={styles.Text}>المعلومة : {route.params[0]}</Text>
-          <Text style={styles.Text}>القسم المعني : {route.params[1]}</Text>
+          <Text style={styles.Text}>المعلومة : {Info[0]}</Text>
+          <Text style={styles.Text}>القسم المعني : {Info[1]}</Text>
           <Text style={styles.Text}>نوع المعلومة : {route.type}</Text>
-          <Text style={styles.Text}>اضيف من قبل : {route.params.author}</Text>
+          <Text style={styles.Text}>اضيف من قبل : {Info.author}</Text>
           <Text style={styles.Text}>التاريح : 25/09/2022</Text>
         </View>
         <View style={styles.People}>
           <Text style={styles.title}>المعنيين</Text>
-          {route.params.benificier == "orphan" && (
-            <Kids kids={route.params.kids} />
-          )}
+          {Info.benificier == "orphan" && <Kids kids={Info.kids} />}
           <ScrollView>
-            {route.params.benificier == "family" &&
-              route.params.famillies.map((f) => (
+            {Info.benificier == "family" &&
+              Info.famillies.map((f) => (
                 <TouchableOpacity style={styles.DataContainer}>
                   <Image source={Family} style={{ width: 40, height: 40 }} />
                   <View style={styles.infos}>

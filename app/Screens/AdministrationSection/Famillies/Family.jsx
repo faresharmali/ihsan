@@ -29,6 +29,10 @@ export default function FamilyScreen({ route, navigation }) {
   let family = useSelector(
     (state) => state.Families.filter((f) => f._id == route.params._id)[0]
   );
+  let kids = [];
+  family.kids.forEach((k) => {
+    kids.push({ ...k, lastName: family.fatherLastName });
+  });
   let Demands = useSelector((state) => state.Informations).filter(
     (info) =>
       info.famillies.some((family) => family.id === route.params.id) &&
@@ -60,14 +64,17 @@ export default function FamilyScreen({ route, navigation }) {
       <View style={styles.pageEntity}>
         <View style={styles.IconsContainer}>
           <Icon as={Ionicons} size={8} color="#fff" name="md-chevron-back" />
-          <TouchableOpacity onPress={()=>navigation.navigate("UpdateFamily",{infos:family})}>
-
-          <Icon
-            as={MaterialCommunityIcons}
-            size={8}
-            color="#fff"
-            name="square-edit-outline"
-          />
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("UpdateFamily", { infos: family })
+            }
+          >
+            <Icon
+              as={MaterialCommunityIcons}
+              size={8}
+              color="#fff"
+              name="square-edit-outline"
+            />
           </TouchableOpacity>
         </View>
         <Image style={styles.EntityImage} source={Family} />
@@ -101,11 +108,7 @@ export default function FamilyScreen({ route, navigation }) {
       {section == "children" && (
         <>
           <ScrollView style={styles.Content}>
-            <Kids
-              kids={family.kids}
-              lastName={family.fatherLastName}
-              viewKid={viewKid}
-            />
+            <Kids kids={kids} viewKid={viewKid} />
           </ScrollView>
           <TouchableOpacity
             onPress={() =>

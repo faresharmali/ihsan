@@ -14,53 +14,39 @@ import {
   Ionicons,
   AntDesign,
 } from "@expo/vector-icons";
-import Family from "../../../../assets/icons/child.png";
-import KidInfo from "./Kidinfo";
-import icon from "../../../../assets/icons/information.png";
-import store from "../../../store";
-import DataContainer from "../../../Components/DataContainer";
+import Family from "../../../assets/avatars/family.png";
+import icon from "../../../assets/icons/information.png";
+import DataContainer from "../../Components/DataContainer";
 import { useSelector } from "react-redux";
 import Toast from "react-native-toast-message";
-import toastConfig from "../../../Components/ToastConfiguration";
-import { UpdateFamilyInfos } from "../../../api/family";
-export default function KidProfile({ route, navigation }) {
-  let Families = useSelector((state) => state.Families);
-  let family = Families.filter((f) => f.id == route.params.kid.familyId)[0];
-  let kid = family.kids.filter((k) => k.id == route.params.kid.id)[0];
-  kid = { ...kid, lastName: family.fatherLastName, familyId: family.id };
+import toastConfig from "../../Components/ToastConfiguration";
+import WidowInfos from "../../Components/WidowInfos";
+export default function WidowProfile({ route, navigation }) {
   const [section, setSection] = useState("infos");
-  const [refresh, setRefresh] = useState(false);
-
-  let Benifits = useSelector((state) => state.Informations).filter(
-    (info) =>
-      info.kids.some((kid) => kid.id === route.params.kid.id) &&
-      info.type == "benefit"
+  let family = useSelector(
+    (state) => state.Families.filter((f) => f.id == route.params.id)[0]
   );
   let Demands = useSelector((state) => state.Informations).filter(
     (info) =>
-      info.kids.some((kid) => kid.id === route.params.kid.id) &&
+      info.famillies.some((family) => family.id === route.params.id) &&
       info.type == "demand"
   );
-  let Kofal = useSelector((state) => state.Donators).filter((Donator) =>
-    Donator.orphans.some((kid) => kid.id == route.params.kid.id)
+  let Benifits = useSelector((state) => state.Informations).filter(
+    (info) =>
+      info.famillies.some((family) => family.id === route.params.id) &&
+      info.type == "benefit"
   );
-  store.subscribe(() => {
-    setRefresh(!refresh);
-  });
 
-  const updateInfos = async (infos) => {
-    let family = Families.filter((f) => f.id == infos.familyId)[0];
-    let kids = family.kids.filter((k) => k.id != infos.id);
-    kids.push(infos);
-    family.kids = [...kids];
-    const res = await UpdateFamilyInfos(family);
-    if (res.ok) {
-      route.params.fetchFamillies();
-    } else {
-      alert("error");
-    }
+  const showToast = () => {
+    Toast.show({
+      type: "success",
+      text1: "نجحت العملية",
+      text2: " تمت اضافة الأبن بنجاح  👋",
+    });
   };
-
+  const viewKid = (kid) => {
+    navigation.navigate("KidProfile", { kid, showToast });
+  };
   return (
     <View style={styles.container}>
       <StatusBar style="light" />
@@ -70,27 +56,18 @@ export default function KidProfile({ route, navigation }) {
           <Icon as={Ionicons} size={8} color="#fff" name="md-chevron-back" />
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate("UpdateOrphan", { infos: kid, updateInfos })
+              navigation.navigate("UpdateFamily", { infos: family })
             }
-          >
-            <Icon
-              as={MaterialCommunityIcons}
-              size={8}
-              color="#fff"
-              name="square-edit-outline"
-            />
-          </TouchableOpacity>
+          ></TouchableOpacity>
         </View>
         <Image style={styles.EntityImage} source={Family} />
-
-        <Text style={styles.EntityTitle}>{`${kid.name}  ${kid.lastName}`}</Text>
+        <Text style={styles.EntityTitle}>{family.motherFullName}</Text>
         <View style={styles.Navigation}>
           <TouchableOpacity onPress={() => setSection("infos")}>
             <View style={styles.NavigationItem}>
               <Text style={styles.NavigationItemText}>معلومات</Text>
             </View>
           </TouchableOpacity>
-
           <TouchableOpacity onPress={() => setSection("demands")}>
             <View style={styles.NavigationItem}>
               <Text style={styles.NavigationItemText}>طلبات</Text>
@@ -101,32 +78,44 @@ export default function KidProfile({ route, navigation }) {
               <Text style={styles.NavigationItemText}>استفادات</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => setSection("kofal")}>
-            <View style={styles.NavigationItem}>
-              <Text style={styles.NavigationItemText}>الكفال</Text>
-            </View>
-          </TouchableOpacity>
         </View>
       </View>
 
-      {section == "infos" && <KidInfo data={kid} />}
+      {section == "infos" && (
+        <>
+          <ScrollView
+            contentContainerStyle={{
+              paddingBottom: 25,
+            }}
+            style={styles.Content}
+          >
+            <WidowInfos data={family} />
+          </ScrollView>
+        </>
+      )}
       {section == "demands" && (
-        <ScrollView style={styles.Content}>
+        <ScrollView
+          contentContainerStyle={{
+            paddingTop: 25,
+            paddingBottom: 25,
+          }}
+          style={styles.Content}
+        >
           {Demands.map((u) => (
             <DataContainer AvatarSize={25} data={u} pic={icon} />
           ))}
         </ScrollView>
       )}
       {section == "benefits" && (
-        <ScrollView style={styles.Content}>
+        <ScrollView
+          contentContainerStyle={{
+            paddingTop: 25,
+
+            paddingBottom: 25,
+          }}
+          style={styles.Content}
+        >
           {Benifits.map((u) => (
-            <DataContainer AvatarSize={25} data={u} pic={icon} />
-          ))}
-        </ScrollView>
-      )}
-      {section == "kofal" && (
-        <ScrollView style={styles.Content}>
-          {Kofal.map((u) => (
             <DataContainer AvatarSize={25} data={u} pic={icon} />
           ))}
         </ScrollView>
@@ -171,7 +160,6 @@ const styles = StyleSheet.create({
   Navigation: {
     width: "90%",
     flexDirection: "row-reverse",
-    justifyContent: "center",
     backgroundColor: "#fff",
     borderRadius: 10,
     shadowColor: "#000",
@@ -185,15 +173,14 @@ const styles = StyleSheet.create({
   NavigationItem: {
     height: "100%",
     justifyContent: "center",
+    width: 110,
     margin: 5,
     marginTop: 0,
     marginBottom: 0,
-    width: 80,
     alignItems: "center",
   },
 
   Content: {
-    marginTop: 30,
     width: "100%",
     maxHeight: "72.5%",
     display: "flex",

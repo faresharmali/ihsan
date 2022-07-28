@@ -11,7 +11,13 @@ import { Icon } from "native-base";
 import { MaterialIcons, Entypo } from "@expo/vector-icons";
 export default function FamilyInfosContainer(props) {
   return (
-    <TouchableOpacity onLongPress={()=>props.selectFamily(props.data.id)} onPress={props.openFamily} style={styles.DataContainer}>
+    <TouchableOpacity
+      onLongPress={
+        props.selectFamily ? () => props.selectFamily(props.data.id) : () => {}
+      }
+      onPress={props.openFamily}
+      style={styles.DataContainer}
+    >
       <Image
         source={props.pic}
         style={{ width: props.AvatarSize, height: props.AvatarSize }}
@@ -33,7 +39,6 @@ export default function FamilyInfosContainer(props) {
               <Text> {props.data.adresse}</Text>
             </>
           )}
-      
         </View>
       </View>
     </TouchableOpacity>

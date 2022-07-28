@@ -29,7 +29,7 @@ export default function Reports({ navigation, drawer }) {
   };
 
   const openModal = (data) => {
-    navigation.navigate("Family", data);
+    navigation.navigate("WidowReport", { infos: data, fetchInformations });
   };
   let Reports = useSelector((state) => state.Reports).filter(
     (report) => report.section == "قسم الأرامل"
@@ -42,22 +42,24 @@ export default function Reports({ navigation, drawer }) {
   };
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", async () => {
-      const res = await getReports();
-      dispatch(
-        updateState(
-          res.data.result.map((user) => ({
-            0: user.title,
-            1: user.type,
-            2: user.content,
-           ...user
-          }))
-        )
-      );
+      fetchInformations();
     });
 
     return unsubscribe;
   }, [navigation]);
-
+  const fetchInformations = async () => {
+    const res = await getReports();
+    dispatch(
+      updateState(
+        res.data.result.map((user) => ({
+          0: user.title,
+          1: user.type,
+          2: user.content,
+          ...user,
+        }))
+      )
+    );
+  };
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />
@@ -101,7 +103,6 @@ export default function Reports({ navigation, drawer }) {
         <Icon as={Entypo} name="plus" size={8} color="#fff" />
       </TouchableOpacity>
       <WidowSectionBottomBar navigation={navigation} />
-
     </View>
   );
 }

@@ -112,7 +112,6 @@ export default function KafelProfile({ route, navigation }) {
     showDeleteModal(false);
   };
   const selectOrphan = (id) => {
-    console.log("selected", id);
     showDeleteModal2(true);
     setSelectedOrphan(id);
   };

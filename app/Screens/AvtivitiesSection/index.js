@@ -11,6 +11,7 @@ import Activity from "./Activity.jsx";
 import AddProgramItem from "../../Forms/AddProgramItem.jsx";
 import AdminProfile from "../Profiles/adminProfile.jsx";
 import Program from "./program.jsx";
+import UpdateActivity from "../../UpdateForms/UpdateActivity.jsx";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
@@ -64,6 +65,10 @@ export default function ActivitiesSection({ navigation }) {
         options={TransitionFromBottom}
         name="AddProgramItem"
         component={AddProgramItem}
+      />
+      <Stack.Screen
+        name="UpdateActivity"
+        component={UpdateActivity}
       />
     </Stack.Navigator>
   );

@@ -55,24 +55,47 @@ export default function Information({ route, navigation }) {
         style={styles.Content}
       >
         <View style={styles.ActivityDetails}>
-          <Text style={styles.Text}>المعلومة : {Info[0]}</Text>
-          <Text style={styles.Text}>القسم المعني : {Info[1]}</Text>
-          <Text style={styles.Text}>نوع المعلومة : {route.type}</Text>
-          <Text style={styles.Text}>اضيف من قبل : {Info.author}</Text>
-          <Text style={styles.Text}>التاريح : 25/09/2022</Text>
+          <Text style={styles.Text}>
+            <Text style={styles.textTitle}> المعلومة :</Text> {Info[0]}
+          </Text>
+          <Text style={styles.Text}>
+            {" "}
+            <Text style={styles.textTitle}>القسم المعني :</Text> {Info[1]}
+          </Text>
+
+          <Text style={styles.Text}>
+            {" "}
+            <Text style={styles.textTitle}>تفاصيل :</Text> {Info.content}
+          </Text>
+          <Text style={styles.Text}>
+            <Text style={styles.textTitle}>اضيف من قبل :</Text> {Info.author}
+          </Text>
+          <Text style={styles.Text}>
+            {" "}
+            <Text style={styles.textTitle}>التاريخ :</Text> 25/09/2022
+          </Text>
         </View>
         <View style={styles.People}>
           <Text style={styles.title}>المعنيين</Text>
-          {Info.benificier == "orphan" && <Kids kids={Info.kids} />}
+
+          {Info.benificier == "orphan" && (
+            <>
+              <Kids kids={Info.kids} viewKid={() => {}} />
+            </>
+          )}
           <ScrollView>
             {Info.benificier == "family" &&
               Info.famillies.map((f) => (
-                <TouchableOpacity style={styles.DataContainer}>
-                  <Image source={Family} style={{ width: 40, height: 40 }} />
-                  <View style={styles.infos}>
-                    <Text style={styles.UserPersonal}>{`عائلة ${f.name}`}</Text>
-                  </View>
-                </TouchableOpacity>
+                <>
+                  <TouchableOpacity style={styles.DataContainer}>
+                    <Image source={Family} style={{ width: 40, height: 40 }} />
+                    <View style={styles.infos}>
+                      <Text
+                        style={styles.UserPersonal}
+                      >{`عائلة ${f.name}`}</Text>
+                    </View>
+                  </TouchableOpacity>
+                </>
               ))}
           </ScrollView>
         </View>
@@ -161,5 +184,8 @@ const styles = StyleSheet.create({
     margin: 15,
     width: "100%",
     textAlign: "center",
+  },
+  textTitle: {
+    color: "#348578",
   },
 });

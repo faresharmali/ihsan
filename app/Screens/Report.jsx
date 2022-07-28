@@ -14,17 +14,14 @@ import {
   Ionicons,
   AntDesign,
 } from "@expo/vector-icons";
-import Family from "../../../assets/avatars/family.png";
 
-import Kids from "../AdministrationSection/Famillies/Kids";
 import Toast from "react-native-toast-message";
-import toastConfig from "../../Components/ToastConfiguration";
+import toastConfig from "../Components/ToastConfiguration";
 import { useSelector } from "react-redux";
-export default function Activity({ route, navigation }) {
-  let Infos = useSelector((state) => state.Reports).filter(
+export default function Report({ route, navigation }) {
+  let Info = useSelector((state) => state.Reports).filter(
     (i) => i.id == route.params.infos.id
   )[0];
-
   return (
     <View style={styles.container}>
       <StatusBar style="light" />
@@ -32,12 +29,11 @@ export default function Activity({ route, navigation }) {
       <View style={styles.pageEntity}>
         <View style={styles.IconsContainer}>
           <Icon as={Ionicons} size={8} color="#fff" name="md-chevron-back" />
-
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate("UpdateActivity", {
-                infos: Infos,
-                fetchActivities: route.params.fetchActivities,
+              navigation.navigate("UpdateReport", {
+                infos: Info,
+                fetchInformations: route.params.fetchInformations,
               })
             }
           >
@@ -49,7 +45,7 @@ export default function Activity({ route, navigation }) {
             />
           </TouchableOpacity>
         </View>
-        <Text style={styles.EntityTitle}>نشاط</Text>
+        <Text style={styles.EntityTitle}>تقرير</Text>
       </View>
 
       <ScrollView
@@ -58,43 +54,23 @@ export default function Activity({ route, navigation }) {
       >
         <View style={styles.ActivityDetails}>
           <Text style={styles.Text}>
-            {" "}
-            <Text style={styles.textTitle}> النشاط :</Text> {Infos[0]}
+            <Text style={styles.textTitle}> العنوان :</Text> {Info[0]}
           </Text>
           <Text style={styles.Text}>
             {" "}
-            <Text style={styles.textTitle}> نوع النشاط :</Text> النشاط{" "}
-            {Infos[1]}
+            <Text style={styles.textTitle}>نوع التقرير :</Text> {Info.type}
           </Text>
           <Text style={styles.Text}>
             {" "}
-            <Text style={styles.textTitle}> اضيف من قبل :</Text>
-            {Infos.author}
+            <Text style={styles.textTitle}>تفاصيل :</Text> {Info.content}
+          </Text>
+          <Text style={styles.Text}>
+            <Text style={styles.textTitle}>اضيف من قبل :</Text> {Info.author}
           </Text>
           <Text style={styles.Text}>
             {" "}
-            <Text style={styles.textTitle}> التاريح : </Text>{" "}
-            {new Date(Infos.date).getFullYear() +
-              "/" +
-              (new Date(Infos.date).getMonth() + 1) +
-              "/" +
-              new Date(Infos.date).getDate()}
+            <Text style={styles.textTitle}>التاريخ :</Text> 25/09/2022
           </Text>
-        </View>
-        <View style={styles.People}>
-          <Text style={styles.title}>المستفيدين من النشاط</Text>
-          {Infos.benificier == "orphan" && (
-            <Kids kids={Infos.kids} viewKid={() => {}} />
-          )}
-          {Infos.benificier == "family" &&
-            Infos.famillies.map((f) => (
-              <TouchableOpacity style={styles.DataContainer}>
-                <Image source={Family} style={{ width: 40, height: 40 }} />
-                <View style={styles.infos}>
-                  <Text style={styles.UserPersonal}>{`عائلة ${f.name}`}</Text>
-                </View>
-              </TouchableOpacity>
-            ))}
         </View>
       </ScrollView>
 

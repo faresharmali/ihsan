@@ -12,6 +12,8 @@ import Reports from "./Reports.jsx";
 import AddReport from "../../Forms/AddReport.jsx";
 import Program from "./Program.jsx";
 import AddProgramItem from "../../Forms/AddProgramItem.jsx";
+import Report from "../Report.jsx";
+import UpdateReport from "../../UpdateForms/UpdateReport.jsx";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
@@ -65,6 +67,15 @@ export default function HealthSection({ navigation }) {
           options={TransitionFromBottom}
           name="AddProgramItem"
           component={AddProgramItem}
+        />
+        <Stack.Screen
+          options={TransitionFromBottom}
+          name="Report"
+          component={Report}
+        />
+        <Stack.Screen
+          name="UpdateReport"
+          component={UpdateReport}
         />
       </Stack.Navigator>
     </>

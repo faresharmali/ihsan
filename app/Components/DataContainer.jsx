@@ -11,7 +11,11 @@ import { Icon } from "native-base";
 import { MaterialIcons, Entypo } from "@expo/vector-icons";
 export default function DataContainer(props) {
   return (
-    <TouchableOpacity onPress={props.openFamily} style={styles.DataContainer}>
+    <TouchableOpacity
+      onLongPress={props.select ? ()=>props.select(props.data.id) : () => {}}
+      onPress={props.openFamily}
+      style={styles.DataContainer}
+    >
       <Image
         source={props.pic}
         style={{ width: props.AvatarSize, height: props.AvatarSize }}
@@ -25,7 +29,7 @@ export default function DataContainer(props) {
               <Text> {props.data[1]}</Text>
             </>
           )}
-          {props.data[2] &&  (
+          {props.data[2] && (
             <>
               <Icon
                 style={{ marginRight: 10, marginLeft: 5 }}
@@ -34,7 +38,7 @@ export default function DataContainer(props) {
                 size={4}
                 color="#000"
               />
-              <Text>{props.data[2].trim()!="" && props.data[2]}</Text>
+              <Text>{props.data[2].trim() != "" && props.data[2]}</Text>
             </>
           )}
         </View>

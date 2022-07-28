@@ -13,73 +13,79 @@ import AdminProfile from "../Profiles/adminProfile.jsx";
 import Program from "./Program.jsx";
 import AddProgramItem from "../../Forms/AddProgramItem.jsx";
 import WidowProfile from "../Profiles/WidowProfile";
+import Report from "../Report.jsx";
+import UpdateReport from "../../UpdateForms/UpdateReport.jsx";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
 export default function WidowSection({ navigation }) {
   return (
     <>
-  
-    <Stack.Navigator
-      initialRouteName="Widows"
-      screenOptions={{
-        gestureEnabled: true,
-        gestureDirection: "vertical",
-        headerShown: false,
-      }}
-    >
-      <Stack.Screen
-        options={slideFromRight}
-        name="WidowMembers"
-        component={Members}
-      />
-      <Stack.Screen
-        options={slideFromRight}
-        name="Widows"
-        component={Widows}
-      />
-      <Stack.Screen
-        options={slideFromRight}
-        name="WidowReports"
-        component={Reports}
-      />
-      <Stack.Screen
-        options={TransitionFromBottom}
-        name="WidowAddReport"
-        component={AddReport}
-      />
-      <Stack.Screen
-        options={slideFromRight}
-        name="WidowsDonators"
-        component={WidowsDonators}
-      />
-      <Stack.Screen
-        options={slideFromRight}
-        name="WidowsBureau"
-        component={Bureau}
-      />
-      <Stack.Screen
-        options={TransitionFromBottom}
-        name="WidowMembersProfile"
-        component={AdminProfile}
-      />
-      <Stack.Screen
-        options={TransitionFromBottom}
-        name="AddProgramItem"
-        component={AddProgramItem}
-      />
-      <Stack.Screen
-        options={TransitionFromBottom}
-        name="WidowProfile"
-        component={WidowProfile}
-      />
-      <Stack.Screen
-        options={slideFromRight}
-        name="WidowProgram"
-        component={Program}
-      />
-
-    </Stack.Navigator>
-</>
+      <Stack.Navigator
+        initialRouteName="Widows"
+        screenOptions={{
+          gestureEnabled: true,
+          gestureDirection: "vertical",
+          headerShown: false,
+        }}
+      >
+        <Stack.Screen
+          options={slideFromRight}
+          name="WidowMembers"
+          component={Members}
+        />
+        <Stack.Screen
+          options={slideFromRight}
+          name="Widows"
+          component={Widows}
+        />
+        <Stack.Screen
+          options={slideFromRight}
+          name="WidowReports"
+          component={Reports}
+        />
+        <Stack.Screen
+          options={TransitionFromBottom}
+          name="WidowAddReport"
+          component={AddReport}
+        />
+        <Stack.Screen
+          options={slideFromRight}
+          name="WidowsDonators"
+          component={WidowsDonators}
+        />
+        <Stack.Screen
+          options={slideFromRight}
+          name="WidowsBureau"
+          component={Bureau}
+        />
+        <Stack.Screen
+          options={TransitionFromBottom}
+          name="WidowMembersProfile"
+          component={AdminProfile}
+        />
+        <Stack.Screen
+          options={TransitionFromBottom}
+          name="AddProgramItem"
+          component={AddProgramItem}
+        />
+        <Stack.Screen
+          options={TransitionFromBottom}
+          name="WidowProfile"
+          component={WidowProfile}
+        />
+        <Stack.Screen
+          options={slideFromRight}
+          name="WidowProgram"
+          component={Program}
+        />
+        <Stack.Screen
+          options={TransitionFromBottom}
+          name="WidowReport"
+          component={Report}
+        />
+        <Stack.Screen name="UpdateReport" component={UpdateReport} />
+      </Stack.Navigator>
+    </>
   );
 }

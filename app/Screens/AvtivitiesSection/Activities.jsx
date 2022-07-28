@@ -5,6 +5,7 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
+  BackHandler,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { FontAwesome5, Entypo, MaterialIcons } from "@expo/vector-icons";
@@ -14,13 +15,14 @@ import { useSelector } from "react-redux";
 import toastConfig from "../../Components/ToastConfiguration";
 import Toast from "react-native-toast-message";
 import DataContainer from "../../Components/DataContainer";
-import { getActivities } from "../../api/activities";
+import { getActivities, deleteActivity } from "../../api/activities";
 import { useDispatch } from "react-redux";
 import ActivitiesSectionBottomBar from "../../Navigation/ActivitiesSectionBottomBar";
-
+import DeleteConfirmation from "../../Components/Modals/DeleteConfirmation";
 export default function Activities({ navigation, drawer }) {
   const dispatch = useDispatch();
-
+  const [selectedActivity, selectTheActivity] = useState(null);
+  const [deleteModal, showdeleteModal] = useState(null);
   const showToast = () => {
     Toast.show({
       type: "success",
@@ -30,7 +32,7 @@ export default function Activities({ navigation, drawer }) {
   };
 
   const openModal = (data) => {
-    navigation.navigate("Activity", data);
+    navigation.navigate("Activity", { infos: data, fetchActivities });
   };
   let Reports = useSelector((state) => state.Reports);
   let LoggedUser = useSelector((state) => state.Auth);
@@ -43,24 +45,52 @@ export default function Activities({ navigation, drawer }) {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", async () => {
-      const res = await getActivities(LoggedUser.token);
-      dispatch(
-        updateState(
-          res.data.result.map((user) => ({
-            0: user.title,
-            1: user.type,
-            kids: user.kids,
-            famillies: user.famillies,
-            type: user.type,
-            author: user.author,
-            benificier: user.benificier,
-          }))
-        )
-      );
+      fetchActivities();
     });
 
     return unsubscribe;
   }, [navigation]);
+
+  const fetchActivities = async () => {
+    const res = await getActivities(LoggedUser.token);
+    dispatch(
+      updateState(
+        res.data.result.map((user) => ({
+          0: user.title,
+          1: user.type,
+          ...user,
+        }))
+      )
+    );
+    showdeleteModal(false)
+
+  };
+  const deleteActivitys = async () => {
+    const res = await deleteActivity({id:selectedActivity});
+    if (res.ok) {
+      fetchActivities();
+    } else {
+      alert("error");
+    }
+  };
+  const selectActivity = (id) => {
+    showdeleteModal(true);
+    selectTheActivity(id);
+  };
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => {
+        if (deleteModal) {
+          showdeleteModal(false);
+          return true;
+        } else {
+          return false;
+        }
+      }
+    );
+    return () => backHandler.remove();
+  }, [deleteModal]);
 
   return (
     <View style={styles.container}>
@@ -90,6 +120,7 @@ export default function Activities({ navigation, drawer }) {
               data={f}
               pic={Family}
               openFamily={() => openModal(f)}
+              select={selectActivity}
             />
           ))}
         </ScrollView>
@@ -102,6 +133,7 @@ export default function Activities({ navigation, drawer }) {
         <Icon as={Entypo} name="plus" size={8} color="#fff" />
       </TouchableOpacity>
       <ActivitiesSectionBottomBar navigation={navigation} />
+      {deleteModal && <DeleteConfirmation Confirme={deleteActivitys} />}
     </View>
   );
 }

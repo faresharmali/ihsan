@@ -1,15 +1,16 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import { Icon } from "native-base";
-export default function NumberStat({
+export default function TransactionStat({
   number,
   Title,
   IconName,
   IconType,
   iconSize,
+  fullSize
 }) {
   return (
-    <View style={styles.StatContainer}>
+    <View style={{...styles.StatContainer,width:fullSize ?  "100%" : "49%"}}>
       <Icon
         as={IconType}
         name={IconName}
@@ -30,8 +31,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   StatContainer: {
-    width: 183,
-    height: 45,
+    height: 60,
     backgroundColor: "#348578",
     borderRadius: 7,
     shadowColor: "#000",
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
 
   title: {
     color: "#fff",
-    fontSize: 13,
+    fontSize: 14,
     fontFamily: "Tajawal-Medium",
   },
 });

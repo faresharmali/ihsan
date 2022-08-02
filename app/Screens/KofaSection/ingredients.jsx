@@ -5,6 +5,7 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
+  BackHandler,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { FontAwesome5, Entypo, MaterialIcons } from "@expo/vector-icons";
@@ -16,8 +17,12 @@ import Toast from "react-native-toast-message";
 import IngredientContainer from "../../Components/Containers/IngredientContainer";
 import { useDispatch } from "react-redux";
 import KofaSectionBottomBar from "../../Navigation/KofaSectionBottomBar";
-import { GetIngredients } from "../../api/user";
+import { GetIngredients, DeleteIngredient } from "../../api/user";
+import DeleteConfirmation from "../../Components/Modals/DeleteConfirmation";
 export default function Ingredients({ navigation, drawer }) {
+  const [deleteModal, showDeleteModal] = useState(false);
+  const [selectedIngredient, setselectedIngredient] = useState(null);
+
   const dispatch = useDispatch();
 
   const showToast = () => {
@@ -30,7 +35,7 @@ export default function Ingredients({ navigation, drawer }) {
 
   const openModal = (data) => {};
   let Ingredients = useSelector((state) => state.Ingredients);
-  console.log("ingredients",Ingredients)
+  console.log("ingredients", Ingredients);
   let LoggedUser = useSelector((state) => state.Auth);
   const updateState = (data) => {
     return {
@@ -40,26 +45,56 @@ export default function Ingredients({ navigation, drawer }) {
   };
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener("focus", async () => {
-      const res = await GetIngredients(LoggedUser.token);
-        if(res.ok){
-            dispatch(
-                updateState(
-                  res.result.map((ingredient) => ({
-                    0: ingredient.name,
-                    1: ingredient.unite,
-                    2: ingredient.quantity,
-                 
-                  }))
-                )
-              );
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => {
+        if (deleteModal) {
+          showDeleteModal(false);
+          return true;
         }
 
-    });
+        return false;
+      }
+    );
+    return () => backHandler.remove();
+  }, [deleteModal]);
 
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", async () => {
+      fetchData();
+    });
 
     return unsubscribe;
   }, [navigation]);
+  const select = (id) => {
+    setselectedIngredient(id);
+    showDeleteModal(true);
+  };
+  const deleteIngtedient = async () => {
+    const res = await DeleteIngredient({ id: selectedIngredient });
+    if (res.ok) {
+      fetchData();
+
+      showDeleteModal(false);
+    } else {
+      alert("error");
+    }
+  };
+  const fetchData = async () => {
+    const res = await GetIngredients(LoggedUser.token);
+    if (res.ok) {
+      dispatch(
+        updateState(
+          res.result.map((ingredient) => ({
+            0: ingredient.name,
+            1: ingredient.unite,
+            2: ingredient.quantity,
+            id: ingredient.id,
+          }))
+        )
+      );
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -82,6 +117,7 @@ export default function Ingredients({ navigation, drawer }) {
         <ScrollView style={styles.Content}>
           {Ingredients.map((f) => (
             <IngredientContainer
+              select={select}
               key={f.id}
               AvatarSize={22}
               data={f}
@@ -98,6 +134,7 @@ export default function Ingredients({ navigation, drawer }) {
       >
         <Icon as={Entypo} name="plus" size={8} color="#fff" />
       </TouchableOpacity>
+      {deleteModal && <DeleteConfirmation Confirme={deleteIngtedient} />}
       <KofaSectionBottomBar navigation={navigation} />
     </View>
   );

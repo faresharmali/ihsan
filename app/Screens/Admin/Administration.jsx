@@ -21,11 +21,12 @@ import KidProfile from "../AdministrationSection/Famillies/kidProfile.jsx";
 import KafelProfile from "../Profiles/kafelProfile.jsx";
 import Distributeur from "../Profiles/Distubuteur.jsx";
 import Information from "../InformationsSection/information.jsx";
+import UpdateInformation from "../../UpdateForms/UpdateInformation.jsx";
 import UpdateUser from "../../UpdateForms/UpdateUser.jsx";
 import UpdateWasset from "../../UpdateForms/UpdateWasset.jsx";
 import AddOrphan from "../../UpdateForms/AddOrphan.jsx";
 import UpdateFamily from "../../UpdateForms/UpdateFamily.jsx";
-import UpdateOrphan from  "../../UpdateForms/UpdateOrphan.jsx";
+import UpdateOrphan from "../../UpdateForms/UpdateOrphan.jsx";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
@@ -124,30 +125,24 @@ export default function Administration({ navigation }) {
           name="Wasset"
           component={Distributeur}
         />
+        <Stack.Screen options={TransitionFromBottom} name="Information">
+          {(props) => (
+            <Information
+              {...props}
+              drawer={navigation}
+              updatePath={"UpdateInformationAdmin"}
+            />
+          )}
+        </Stack.Screen>
+
+        <Stack.Screen name="UpdateUser" component={UpdateUser} />
+        <Stack.Screen name="UpdateWasset" component={UpdateWasset} />
+        <Stack.Screen name="AddOrphan" component={AddOrphan} />
+        <Stack.Screen name="UpdateFamily" component={UpdateFamily} />
+        <Stack.Screen name="UpdateOrphan" component={UpdateOrphan} />
         <Stack.Screen
-          options={TransitionFromBottom}
-          name="InformationAdmin"
-          component={Information}
-        />
-        <Stack.Screen
-          name="UpdateUser"
-          component={UpdateUser}
-        />
-        <Stack.Screen
-          name="UpdateWasset"
-          component={UpdateWasset}
-        />
-        <Stack.Screen
-          name="AddOrphan"
-          component={AddOrphan}
-        />
-        <Stack.Screen
-          name="UpdateFamily"
-          component={UpdateFamily}
-        />
-        <Stack.Screen
-          name="UpdateOrphan"
-          component={UpdateOrphan}
+          name="UpdateInformationAdmin"
+          component={UpdateInformation}
         />
       </Stack.Navigator>
     </>

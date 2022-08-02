@@ -14,6 +14,8 @@ import Program from "./Program.jsx";
 import AddProgramItem from "../../Forms/AddProgramItem.jsx";
 import Report from "../Report.jsx";
 import UpdateReport from "../../UpdateForms/UpdateReport.jsx";
+import UpdateInformation from "../../UpdateForms/UpdateInformation.jsx";
+import Information from "../InformationsSection/information.jsx";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
@@ -73,9 +75,20 @@ export default function HealthSection({ navigation }) {
           name="Report"
           component={Report}
         />
+        <Stack.Screen name="UpdateReport" component={UpdateReport} />
+        <Stack.Screen options={TransitionFromBottom} name="InformationAdmin">
+          {(props) => (
+            <Information
+              {...props}
+              drawer={navigation}
+              updatePath={"UpdateInformationHealth"}
+            />
+          )}
+        </Stack.Screen>
+
         <Stack.Screen
-          name="UpdateReport"
-          component={UpdateReport}
+          name="UpdateInformationHealth"
+          component={UpdateInformation}
         />
       </Stack.Navigator>
     </>

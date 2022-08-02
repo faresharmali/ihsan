@@ -16,6 +16,20 @@ export default function FinanceSectionBottomBar(props) {
       <View style={styles.BottomBar}>
         <View style={styles.itemContainer}>
           <TouchableOpacity
+            onPress={() => props.navigation.navigate("FinancePage")}
+          >
+            <View style={styles.bottomBarITem}>
+              <Icon
+                as={FontAwesome}
+                name="bar-chart"
+                color={"#fff"}
+                size={5}
+              />
+
+              <Text style={styles.bottomBarITemText}>المالية</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
             onPress={() => props.navigation.navigate("FinanceMembers")}
           >
             <View style={styles.bottomBarITem}>

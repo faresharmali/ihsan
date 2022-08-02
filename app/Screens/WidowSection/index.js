@@ -15,6 +15,8 @@ import AddProgramItem from "../../Forms/AddProgramItem.jsx";
 import WidowProfile from "../Profiles/WidowProfile";
 import Report from "../Report.jsx";
 import UpdateReport from "../../UpdateForms/UpdateReport.jsx";
+import Information from "../InformationsSection/information.jsx";
+import UpdateInformation from "../../UpdateForms/UpdateInformation.jsx";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
@@ -29,36 +31,29 @@ export default function WidowSection({ navigation }) {
           headerShown: false,
         }}
       >
-        <Stack.Screen
-          options={slideFromRight}
-          name="WidowMembers"
-          component={Members}
-        />
-        <Stack.Screen
-          options={slideFromRight}
-          name="Widows"
-          component={Widows}
-        />
-        <Stack.Screen
-          options={slideFromRight}
-          name="WidowReports"
-          component={Reports}
-        />
+        <Stack.Screen options={slideFromRight} name="WidowMembers">
+          {(props) => <Members {...props} drawer={navigation} />}
+        </Stack.Screen>
+        <Stack.Screen options={slideFromRight} name="Widows">
+          {(props) => <Widows {...props} drawer={navigation} />}
+        </Stack.Screen>
+        <Stack.Screen options={slideFromRight} name="WidowReports">
+          {(props) => <Reports {...props} drawer={navigation} />}
+        </Stack.Screen>
+
         <Stack.Screen
           options={TransitionFromBottom}
           name="WidowAddReport"
           component={AddReport}
         />
-        <Stack.Screen
-          options={slideFromRight}
-          name="WidowsDonators"
-          component={WidowsDonators}
-        />
-        <Stack.Screen
-          options={slideFromRight}
-          name="WidowsBureau"
-          component={Bureau}
-        />
+
+        <Stack.Screen options={slideFromRight} name="WidowsDonators">
+          {(props) => <WidowsDonators {...props} drawer={navigation} />}
+        </Stack.Screen>
+        <Stack.Screen options={slideFromRight} name="WidowsBureau">
+          {(props) => <Bureau {...props} drawer={navigation} />}
+        </Stack.Screen>
+
         <Stack.Screen
           options={TransitionFromBottom}
           name="WidowMembersProfile"
@@ -74,17 +69,30 @@ export default function WidowSection({ navigation }) {
           name="WidowProfile"
           component={WidowProfile}
         />
-        <Stack.Screen
-          options={slideFromRight}
-          name="WidowProgram"
-          component={Program}
-        />
+
+        <Stack.Screen options={slideFromRight} name="WidowProgram">
+          {(props) => <Program {...props} drawer={navigation} />}
+        </Stack.Screen>
         <Stack.Screen
           options={TransitionFromBottom}
           name="WidowReport"
           component={Report}
         />
         <Stack.Screen name="UpdateReport" component={UpdateReport} />
+
+        <Stack.Screen options={TransitionFromBottom} name="InformationAdmin">
+          {(props) => (
+            <Information
+              {...props}
+              drawer={navigation}
+              updatePath={"UpdateInformationWidow"}
+            />
+          )}
+        </Stack.Screen>
+        <Stack.Screen
+          name="UpdateInformationWidow"
+          component={UpdateInformation}
+        />
       </Stack.Navigator>
     </>
   );

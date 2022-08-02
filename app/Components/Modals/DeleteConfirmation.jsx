@@ -1,16 +1,9 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
-import { Icon } from "native-base";
-import {
-  MaterialCommunityIcons,
-  Ionicons,
-  AntDesign,
-} from "@expo/vector-icons";
+
 import { Button } from "react-native-paper";
 
-import { Box, Fab } from "native-base";
-import icon from "../../../assets/icons/information.png";
 
 export default function DeleteConfirmation({ Confirme }) {
   return (

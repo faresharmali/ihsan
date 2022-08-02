@@ -37,19 +37,24 @@ export default function Patients({ navigation, drawer }) {
     let kids = [];
     Families.forEach((f) => {
       f.kids.forEach((k) => {
-        kids.push({
-          name: k.name + " " + f.fatherLastName,
-          number: f.phone,
-          address: f.adresse,
-          type: "kid",
-        });
+        if (k.sick) {
+          kids.push({
+            name: k.name + " " + f.fatherLastName,
+            number: f.phone,
+            address: f.adresse,
+            type: "kid",
+            sickness:f.sickness,
+          });
+        }
       });
     });
-    let moms = Families.map((f) => ({
+    let moms = Families.filter((m)=>m.sick).map((f) => ({
       name: f.motherFullName,
       number: f.phone,
       address: f.adresse,
       type: "mom",
+      sickness:f.sickness,
+
     }));
     let List = [...moms, ...kids];
     setPatientList(List);

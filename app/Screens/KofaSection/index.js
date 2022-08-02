@@ -14,6 +14,9 @@ import Ingredients from "./ingredients.jsx";
 import AddIngredient from "../../Forms/AddIngredient.jsx";
 import KofaStatus from "./status.jsx";
 import ChangeKofaStatus from "../../Forms/ChangeStatus.jsx";
+import Information from "../InformationsSection/information.jsx";
+import UpdateInformation from "../../UpdateForms/UpdateInformation";
+
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
@@ -66,6 +69,20 @@ export default function KofaSection({ navigation }) {
         options={TransitionFromBottom}
         name="ChangeKofaStatus"
         component={ChangeKofaStatus}
+      />
+
+      <Stack.Screen options={TransitionFromBottom} name="Information">
+        {(props) => (
+          <Information
+            {...props}
+            drawer={navigation}
+            updatePath={"UpdateInformationKofa"}
+          />
+        )}
+      </Stack.Screen>
+      <Stack.Screen
+        name="UpdateInformationKofa"
+        component={UpdateInformation}
       />
     </Stack.Navigator>
   );

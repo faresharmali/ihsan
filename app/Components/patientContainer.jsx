@@ -11,7 +11,7 @@ import { Icon } from "native-base";
 import {
   MaterialIcons,
   Entypo,
-  MaterialCommunityIcons,
+  FontAwesome ,
 } from "@expo/vector-icons";
 export default function PatientContainer(props) {
   return (
@@ -34,12 +34,12 @@ export default function PatientContainer(props) {
 
           <Icon
             style={{ marginRight: 10, marginLeft: 5 }}
-            as={Entypo}
-            name="clock"
+            as={FontAwesome }
+            name="thermometer"
             size={4}
             color="#000"
           />
-          <Text>{props.data.address}</Text>
+          <Text>{props.data.sickness}</Text>
         </View>
       </View>
     </TouchableOpacity>

@@ -16,6 +16,8 @@ import Donations from "./Donations.jsx";
 import AddDonation from "../../Forms/AddDonation.jsx";
 import Program from "./Program.jsx";
 import AddProgramItem from "../../Forms/AddProgramItem.jsx";
+import Information from "../InformationsSection/information.jsx";
+import UpdateInformation from "../../UpdateForms/UpdateInformation.jsx";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
@@ -30,26 +32,21 @@ export default function OrpahansSection({ navigation }) {
           headerShown: false,
         }}
       >
-        <Stack.Screen
-          options={slideFromRight}
-          name="OrpahnsDonators"
-          component={OrpahnsDonators}
-        />
-        <Stack.Screen
-          options={slideFromRight}
-          name="OrpahnsFamilies"
-          component={Families}
-        />
-        <Stack.Screen
-          options={slideFromRight}
-          name="OrpahnsMembers"
-          component={Members}
-        />
-        <Stack.Screen
-          options={slideFromRight}
-          name="OrpahnsBureau"
-          component={Bureau}
-        />
+          <Stack.Screen options={slideFromRight} name="OrpahnsDonators">
+          {(props) => <OrpahnsDonators {...props} drawer={navigation} />}
+        </Stack.Screen>
+      
+
+        <Stack.Screen options={slideFromRight} name="OrpahnsFamilies">
+          {(props) => <Families {...props} drawer={navigation} />}
+        </Stack.Screen>
+        <Stack.Screen options={slideFromRight} name="OrpahnsMembers">
+          {(props) => <Members {...props} drawer={navigation} />}
+        </Stack.Screen>
+        <Stack.Screen options={slideFromRight} name="OrpahnsBureau">
+          {(props) => <Bureau {...props} drawer={navigation} />}
+        </Stack.Screen>
+
         <Stack.Screen
           options={TransitionFromBottom}
           name="AddReservation"
@@ -75,20 +72,31 @@ export default function OrpahansSection({ navigation }) {
           name="AddDonation"
           component={AddDonation}
         />
-        <Stack.Screen
-          options={slideFromRight}
-          name="Donations"
-          component={Donations}
-        />
+
+        <Stack.Screen options={slideFromRight} name="Donations">
+          {(props) => <Donations {...props} drawer={navigation} />}
+        </Stack.Screen>
         <Stack.Screen
           options={TransitionFromBottom}
           name="AddProgramItem"
           component={AddProgramItem}
         />
+
+        <Stack.Screen options={slideFromRight} name="OrphansProgram">
+          {(props) => <Program {...props} drawer={navigation} />}
+        </Stack.Screen>
+        <Stack.Screen options={TransitionFromBottom} name="InformationAdmin">
+          {(props) => (
+            <Information
+              {...props}
+              drawer={navigation}
+              updatePath={"UpdateInformationOrphan"}
+            />
+          )}
+        </Stack.Screen>
         <Stack.Screen
-          options={slideFromRight}
-          name="OrphansProgram"
-          component={Program}
+          name="UpdateInformationOrphan"
+          component={UpdateInformation}
         />
       </Stack.Navigator>
     </>

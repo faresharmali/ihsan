@@ -14,7 +14,6 @@ import {
   Ionicons,
   AntDesign,
 } from "@expo/vector-icons";
-import Family from "../../../assets/avatars/family.png";
 
 import man from "../../../assets/avatars/man.png";
 import info from "../../../assets/icons/information.png";
@@ -24,11 +23,10 @@ import { useSelector } from "react-redux";
 export default function AdminProfile({ route, navigation }) {
   const [section, setSection] = useState("infos");
 
-  const Familli = useSelector((state) => state.Families)
 
   let Informations = useSelector((state) => state.Informations).filter((info)=>info.author==route.params.name);
   const openModal = (data) => {
-    navigation.navigate("InformationAdmin", data);
+    navigation.navigate("InformationAdmin", {data});
   };
   return (
     <View style={styles.container}>

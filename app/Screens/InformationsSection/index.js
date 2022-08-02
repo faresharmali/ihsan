@@ -20,27 +20,31 @@ export default function InformationSection({ navigation }) {
         headerShown: false,
       }}
     >
-       <Stack.Screen
+
+      <Stack.Screen
         options={slideFromRight}
         name="Informations"
         component={Informations}
       />
-       <Stack.Screen
+      <Stack.Screen
         options={TransitionFromBottom}
         name="AddInformation"
         component={AddInformation}
       />
-       <Stack.Screen
-        options={TransitionFromBottom}
-        name="Information"
-        component={Information}
-      />
-       <Stack.Screen
-        name="UpdateInformation"
+      <Stack.Screen options={TransitionFromBottom} name="Information">
+        {(props) => (
+          <Information
+            {...props}
+            drawer={navigation}
+            updatePath={"UpdateInformationInfo"}
+          />
+        )}
+      </Stack.Screen>
+      <Stack.Screen
+        name="UpdateInformationInfo"
         component={UpdateInformation}
       />
-
-
     </Stack.Navigator>
+    
   );
 }

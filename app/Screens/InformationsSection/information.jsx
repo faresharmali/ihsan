@@ -20,7 +20,7 @@ import Kids from "../AdministrationSection/Famillies/Kids";
 import Toast from "react-native-toast-message";
 import toastConfig from "../../Components/ToastConfiguration";
 import { useSelector } from "react-redux";
-export default function Information({ route, navigation }) {
+export default function Information({ route, navigation,updatePath }) {
   let Info = useSelector((state) => state.Informations).filter(
     (i) => i.id == route.params.data.id
   )[0];
@@ -33,7 +33,7 @@ export default function Information({ route, navigation }) {
           <Icon as={Ionicons} size={8} color="#fff" name="md-chevron-back" />
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate("UpdateInformation", {
+              navigation.navigate(updatePath, {
                 infos: Info,
                 fetchInformations: route.params.fetchInformations,
               })

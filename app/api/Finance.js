@@ -1,4 +1,4 @@
-const api = "http://192.168.100.21:3000";
+const api = "http://192.168.100.222:3000";
 const axios = require("axios");
 export const getTransactions = async () => {
   try {

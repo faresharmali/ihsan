@@ -3,14 +3,14 @@ import React from "react";
 
 export default function IngredientContainer(props) {
   return (
-    <TouchableOpacity onPress={props.openFamily} style={styles.DataContainer}>
+    <TouchableOpacity onLongPress={()=>props.select(props.data.id)} onPress={props.openFamily} style={styles.DataContainer}>
       <Image
         source={props.pic}
         style={{ width: props.AvatarSize, height: props.AvatarSize,marginLeft:20 }}
       />
       <View style={styles.infos}>
         <Text style={styles.UserPersonal}>{props.data[0]} - </Text>
-        <Text style={styles.UserPersonal}> x {props.data[2]}  </Text>
+        <Text style={styles.UserPersonal}> {props.data[2]}  </Text>
         <Text style={styles.UserPersonal}>{props.data[1]} </Text>
       </View>
     </TouchableOpacity>

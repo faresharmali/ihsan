@@ -25,7 +25,6 @@ import FamilyInfosContainer from "../../Components/Containers/FamilyInfosContain
 import DeleteConfirmation from "../../Components/Modals/DeleteConfirmation";
 import { UpdateUser, getUsers } from "../../api/user";
 import { useSelector, useDispatch } from "react-redux";
-
 export default function Distributeur({ route, navigation }) {
   const [section, setSection] = useState("infos");
   const [deleteModal, showDeleteModal] = useState(false);
@@ -46,7 +45,7 @@ export default function Distributeur({ route, navigation }) {
     (info) => info.author == StateUser.name
   );
   const openModal = (data) => {
-    navigation.navigate("InformationAdmin", data);
+    navigation.navigate("Information", {data,updatePath:"UpdateInformationKofa"});
   };
   const deleteFamily = async () => {
     let User = { ...StateUser };

@@ -11,6 +11,8 @@ import AddEducationMember from "../../Forms/AddEducationGroupe.jsx";
 import AdminProfile from "../Profiles/adminProfile.jsx";
 import Program from "./program.jsx";
 import AddProgramItem from "../../Forms/AddProgramItem.jsx";
+import Information from "../InformationsSection/information.jsx";
+import UpdateInformation from "../../UpdateForms/UpdateInformation.jsx";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
@@ -65,6 +67,19 @@ export default function EducationSection({ navigation }) {
         options={TransitionFromBottom}
         name="AddProgramItem"
         component={AddProgramItem}
+      />
+            <Stack.Screen options={TransitionFromBottom} name="InformationAdmin">
+        {(props) => (
+          <Information
+            {...props}
+            drawer={navigation}
+            updatePath={"UpdateInformationEducation"}
+          />
+        )}
+      </Stack.Screen>
+      <Stack.Screen
+        name="UpdateInformationEducation"
+        component={UpdateInformation}
       />
 
     </Stack.Navigator>

@@ -13,6 +13,9 @@ import Program from "./program.jsx";
 import AddProgramItem from "../../Forms/AddProgramItem.jsx";
 import Information from "../InformationsSection/information.jsx";
 import UpdateInformation from "../../UpdateForms/UpdateInformation.jsx";
+import Bureau from "../Bureau/Bureau.jsx";
+import EducationSectionBottomBar from "../../Navigation/EducationSectionBottomBar.js";
+import AddReservation from "../../Forms/AddReservation.jsx";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
@@ -27,26 +30,24 @@ export default function EducationSection({ navigation }) {
         headerShown: false,
       }}
     >
-      <Stack.Screen
-        options={slideFromRight}
-        name="Members"
-        component={Members}
-      />
-      <Stack.Screen
-        options={slideFromRight}
-        name="EducationDonators"
-        component={EducationDonators}
-      />
-      <Stack.Screen
-        options={slideFromRight}
-        name="EducationOrphans"
-        component={EducationOrphans}
-      />
-      <Stack.Screen
-        options={slideFromRight}
-        name="KafalaFekriya"
-        component={KafalaFekriya}
-      />
+
+<Stack.Screen options={slideFromRight} name="Members">
+        {(props) => <Members {...props} drawer={navigation} />}
+      </Stack.Screen>
+<Stack.Screen options={slideFromRight} name="EducationDonators">
+        {(props) => <EducationDonators {...props} drawer={navigation} />}
+      </Stack.Screen>
+<Stack.Screen options={slideFromRight} name="EducationOrphans">
+        {(props) => <EducationOrphans {...props} drawer={navigation} />}
+      </Stack.Screen>
+<Stack.Screen options={slideFromRight} name="KafalaFekriya">
+        {(props) => <KafalaFekriya {...props} drawer={navigation} />}
+      </Stack.Screen>
+<Stack.Screen options={slideFromRight} name="EducationProgram">
+        {(props) => <Program {...props} drawer={navigation} />}
+      </Stack.Screen>
+
+
       <Stack.Screen
         options={TransitionFromBottom}
         name="AddEducationMember"
@@ -57,18 +58,19 @@ export default function EducationSection({ navigation }) {
         name="EducationMemberProfile"
         component={AdminProfile}
       />
-
       <Stack.Screen
-        options={slideFromRight}
-        name="EducationProgram"
-        component={Program}
+        options={TransitionFromBottom}
+        name="AddReservation"
+        component={AddReservation}
       />
+
+   
       <Stack.Screen
         options={TransitionFromBottom}
         name="AddProgramItem"
         component={AddProgramItem}
       />
-            <Stack.Screen options={TransitionFromBottom} name="InformationAdmin">
+      <Stack.Screen options={TransitionFromBottom} name="InformationAdmin">
         {(props) => (
           <Information
             {...props}
@@ -81,7 +83,15 @@ export default function EducationSection({ navigation }) {
         name="UpdateInformationEducation"
         component={UpdateInformation}
       />
-
+      <Stack.Screen options={slideFromRight} name="EducationBurau">
+        {(props) => (
+          <Bureau
+            {...props}
+            drawer={navigation}
+            BottomBar={EducationSectionBottomBar}
+          />
+        )}
+      </Stack.Screen>
     </Stack.Navigator>
   );
 }

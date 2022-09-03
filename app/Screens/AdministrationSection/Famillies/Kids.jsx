@@ -13,7 +13,6 @@ export default function Kids(props) {
       {props.kids.map((k) => (
         <TouchableOpacity
           onPress={() => props.viewKid(k)}
-          onLongPress={() => alert("wech ?")}
           key={k.name}
           style={styles.DataContainer}
         >

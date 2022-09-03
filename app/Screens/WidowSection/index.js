@@ -9,6 +9,7 @@ import Reports from "./Reports.jsx";
 import AddReport from "../../Forms/AddReport.jsx";
 import WidowsDonators from "./Donators.jsx";
 import Bureau from "../Bureau/Bureau.jsx";
+import AddReservation from "../../Forms/AddReservation.jsx";
 import AdminProfile from "../Profiles/adminProfile.jsx";
 import Program from "./Program.jsx";
 import AddProgramItem from "../../Forms/AddProgramItem.jsx";
@@ -17,6 +18,7 @@ import Report from "../Report.jsx";
 import UpdateReport from "../../UpdateForms/UpdateReport.jsx";
 import Information from "../InformationsSection/information.jsx";
 import UpdateInformation from "../../UpdateForms/UpdateInformation.jsx";
+import WidowSectionBottomBar from "../../Navigation/WidowSectionBottomBar.js";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
@@ -24,7 +26,7 @@ export default function WidowSection({ navigation }) {
   return (
     <>
       <Stack.Navigator
-        initialRouteName="Widows"
+        initialRouteName="WidowMembers"
         screenOptions={{
           gestureEnabled: true,
           gestureDirection: "vertical",
@@ -50,8 +52,10 @@ export default function WidowSection({ navigation }) {
         <Stack.Screen options={slideFromRight} name="WidowsDonators">
           {(props) => <WidowsDonators {...props} drawer={navigation} />}
         </Stack.Screen>
+
+        
         <Stack.Screen options={slideFromRight} name="WidowsBureau">
-          {(props) => <Bureau {...props} drawer={navigation} />}
+          {(props) => <Bureau {...props} drawer={navigation} BottomBar={WidowSectionBottomBar} />}
         </Stack.Screen>
 
         <Stack.Screen
@@ -63,6 +67,11 @@ export default function WidowSection({ navigation }) {
           options={TransitionFromBottom}
           name="AddProgramItem"
           component={AddProgramItem}
+        />
+        <Stack.Screen
+          options={TransitionFromBottom}
+          name="AddReservation"
+          component={AddReservation}
         />
         <Stack.Screen
           options={TransitionFromBottom}

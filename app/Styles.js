@@ -13,8 +13,16 @@ module.exports = StyleSheet.create({
     paddingTop: "15%",
     width: "100%",
     alignItems: "center",
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#DFE0E3",
     minHeight: "100%",
+  },
+  illustationContainer:{
+    width:"100%",
+    height:400,
+    backgroundColor:"#348578",
+    position:"absolute",
+    borderBottomLeftRadius:15,
+    borderBottomRightRadius:15,
   },
   FormContainer: {
     backgroundColor: "#fff",
@@ -37,24 +45,24 @@ module.exports = StyleSheet.create({
   LoginTitle: {
     fontSize: 25,
     margin: 10,
-    color: "#000",
+    color: "#fff",
     margin: 0,
     fontFamily: "Amiri-Bold",
   },
   Logo: {
-    width: 85,
-    height: 125,
+    width: 90,
+    height: 129,
   },
 
   Button: {
     flexDirection: "row-reverse",
     height: 50,
-    width: 230,
+    width: 200,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#348578",
     marginTop: 25,
-    borderRadius: 60,
+    borderRadius: 10,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,

@@ -19,7 +19,9 @@ import styles from "./styles";
 import TransactionContainer from "../../Components/TransactionContainer";
 export default function Income({ navigation, drawer }) {
   const [active, setActive] = useState(6);
-
+  const [displayedData, setDisplayedData] = useState([]);
+  const [AllTransactions, seAllTransactions] = useState([]);
+  const [filterBy, setfilterBy] = useState("all");
   const dispatch = useDispatch();
   const showToast = () => {
     Toast.show({
@@ -43,20 +45,32 @@ export default function Income({ navigation, drawer }) {
     return unsubscribe;
   }, [navigation]);
 
-  const filterInformations = (section) => {
-    if (section == "all") {
-      setUsersList(userList);
-    } else if (section == "قسم الأيتام") {
-      setUsersList(
-        userList.filter(
-          (info) => info[2] == section || info[2] == "وسيط اجتماعي"
-        )
-      );
+  let Transactions = useSelector((state) => state.Finance).transactions.filter(
+    (t) => t.income
+  );
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", async () => {
+      seAllTransactions(Transactions);
+      if (filterBy.trim() == "all") setDisplayedData(Transactions);
+      else setDisplayedData(Transactions.filter((t) => t.type == filterBy));
+    });
+
+    return unsubscribe;
+  }, [Transactions]);
+
+  const openTransaction = (id) => {
+    navigation.navigate("Transaction", { id, type: "مدخول" });
+  };
+
+  const filterData = (type) => {
+    setfilterBy(type);
+    if (type == "all") {
+      setDisplayedData(AllTransactions);
     } else {
-      setUsersList(userList.filter((info) => info[2] == section));
+      setDisplayedData(AllTransactions.filter((t) => t.type == type));
     }
   };
-  let Transactions = useSelector((state) => state.Finance).transactions.filter((t)=>t.income);
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />
@@ -76,7 +90,7 @@ export default function Income({ navigation, drawer }) {
       <View style={styles.containerFilter}>
         <TouchableWithoutFeedback
           onPress={() => {
-            filterInformations("قسم الادارة");
+            filterData("تبرع");
             setActive(1);
           }}
         >
@@ -98,7 +112,7 @@ export default function Income({ navigation, drawer }) {
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback
           onPress={() => {
-            filterInformations("قسم الصحة");
+            filterData("زكاة");
             setActive(2);
           }}
         >
@@ -120,7 +134,7 @@ export default function Income({ navigation, drawer }) {
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback
           onPress={() => {
-            filterInformations("قسم الأيتام");
+            filterData("تحويل");
             setActive(3);
           }}
         >
@@ -142,7 +156,7 @@ export default function Income({ navigation, drawer }) {
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback
           onPress={() => {
-            filterInformations("قسم القفة");
+            filterData("كفالة");
             setActive(4);
           }}
         >
@@ -164,7 +178,7 @@ export default function Income({ navigation, drawer }) {
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback
           onPress={() => {
-            filterInformations("قسم التعليم");
+            filterData("حصالة");
             setActive(5);
           }}
         >
@@ -186,7 +200,7 @@ export default function Income({ navigation, drawer }) {
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback
           onPress={() => {
-            filterInformations("all");
+            filterData("all");
             setActive(6);
           }}
         >
@@ -195,7 +209,7 @@ export default function Income({ navigation, drawer }) {
               ...styles.filterItem,
               backgroundColor: active == 6 ? "#348578" : "#fff",
             }}
-          > 
+          >
             <Text
               style={{
                 ...styles.filterText,
@@ -209,8 +223,12 @@ export default function Income({ navigation, drawer }) {
       </View>
       <View style={styles.Section}>
         <ScrollView style={styles.Content}>
-          {Transactions.map((transaction)=>(
-            <TransactionContainer data={transaction}/>
+          {displayedData.map((transaction) => (
+            <TransactionContainer
+              key={transaction.identifier}
+              open={openTransaction}
+              data={transaction}
+            />
           ))}
         </ScrollView>
       </View>

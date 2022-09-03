@@ -65,7 +65,7 @@ export default function ActivitiesSectionBottomBar(props) {
               <Text style={styles.bottomBarITemText}>البرنامج</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate("Bureau")}>
+          <TouchableOpacity onPress={() => navigation.navigate("ActivityBureau")}>
             <View style={styles.bottomBarITem}>
               <Icon as={FontAwesome} name="building" color={"#ffff"} size={4} />
 

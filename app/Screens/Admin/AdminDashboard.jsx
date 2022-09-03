@@ -21,10 +21,21 @@ import NumberStat from "../../Components/statistics components/NumberStat";
 import { useEffect } from "react";
 import { getUsers, getDonators } from "../../api/user";
 import { getFamilies } from "../../api/family";
+import { getInformations } from "../../api/informations";
+import { useSelector } from "react-redux";
+import { GetEducationGroupes } from "../../api/activities";
 export default function AdminDashboard({ navigation }) {
+  let LoggedUser = useSelector((state) => state.Auth);
+
   const [usersCount, setUsersNumber] = useState(0);
   const [KofalNumber, seKofalNumber] = useState(0);
   const [FamilyNumber, seFamilyNumber] = useState(0);
+  const [KafalaFikriya, setKafalaFikriya] = useState(0);
+  const [Education, setEducation] = useState(0);
+  const [orphans, setOrphans] = useState(0);
+  const [Kafala, setKafala] = useState(0);
+  const [Mohsins, setMohsins] = useState(0);
+  const [KafelKids, setKafelKids] = useState(0);
   const [DonationFamilyNumber, setDonationFamilyNumber] = useState(0);
   var date = new Date();
   var months = [
@@ -81,12 +92,6 @@ export default function AdminDashboard({ navigation }) {
         )
       );
       setUsersNumber(res.data.result.length);
-      res = await getFamilies();
-      dispatch(updateState("updateFamiliesList", res.data.result));
-      setDonationFamilyNumber(
-        res.data.result.filter((f) => f.donation > 0).length
-      );
-      seFamilyNumber(res.data.result.length);
       res = await getDonators();
       dispatch(
         updateState(
@@ -95,11 +100,58 @@ export default function AdminDashboard({ navigation }) {
             0: user.name,
             1: user.phone,
             2: user.job,
-         ...user
+            ...user,
           }))
         )
       );
-      seKofalNumber(res.data.result.length);
+      let kafalaAmount = 0;
+      seKofalNumber(res.data.result.filter((k) => k.type == "kafel").length);
+      setMohsins(res.data.result.filter((k) => k.type != "kafel").length);
+      let donatedKids = [];
+
+      res.data.result
+        .filter((k) => k.type == "kafel")
+        .forEach((k) => {
+          donatedKids = [...donatedKids, ...k.orphans];
+          kafalaAmount += k.donationAmount;
+        });
+      let kids = donatedKids.map((k) => k.id);
+      setKafala(kafalaAmount);
+
+      res = await getFamilies();
+      dispatch(updateState("updateFamiliesList", res.data.result));
+      setDonationFamilyNumber(
+        res.data.result.filter((f) => f.donation > 0).length
+      );
+      let SoutientEduc = 0;
+      let orphans = 0;
+      let DoneKids = 0;
+      res.data.result.forEach((f) => {
+        f.kids.forEach((k) => {
+          orphans++;
+          if (k.Education) SoutientEduc++;
+          if (kids.includes(k.id)) DoneKids++;
+        });
+      });
+      setKafelKids(DoneKids)
+      setEducation(SoutientEduc);
+      setOrphans(orphans);
+      seFamilyNumber(res.data.result.length);
+
+      res = await getInformations(LoggedUser.token);
+      dispatch(
+        updateState(
+          "UpdateInformations",
+          res.data.result.map((information) => ({
+            0: information.title,
+            1: information.section,
+            ...information,
+          }))
+        )
+      );
+      res = await GetEducationGroupes();
+      setKafalaFikriya(res.data.result.length);
+      dispatch(updateState("updateEducationMembers", res.data.result));
     });
     return unsubscribe;
   }, [navigation]);
@@ -131,7 +183,7 @@ export default function AdminDashboard({ navigation }) {
               IconType={FontAwesome}
             />
             <NumberStat
-              number={400}
+              number={Mohsins}
               Title={" المحسنين"}
               IconName={"charity"}
               IconType={MaterialCommunityIcons}
@@ -145,7 +197,7 @@ export default function AdminDashboard({ navigation }) {
               IconType={MaterialCommunityIcons}
             />
             <NumberStat
-              number={400}
+              number={Kafala}
               Title={" مبلغ الكفالة الاجمالي"}
               IconName={"donate"}
               IconType={FontAwesome5}
@@ -157,13 +209,13 @@ export default function AdminDashboard({ navigation }) {
 
           <View style={styles.StatContainer}>
             <NumberStat
-              number={400}
+              number={orphans}
               Title={" الأيتام المسجلين"}
               IconName={"child"}
               IconType={FontAwesome}
             />
             <NumberStat
-              number={400}
+              number={KafelKids}
               Title={" الأيتام المكفولين"}
               IconName={"child"}
               IconType={FontAwesome}
@@ -186,57 +238,20 @@ export default function AdminDashboard({ navigation }) {
         </View>
 
         <View style={styles.Section}>
-          <Text style={styles.sectionTitle}> قسم القفة :</Text>
-
-          <View style={styles.StatContainer}>
-            <NumberStat
-              number={400}
-              Title={" القفف الشهرية"}
-              IconName={"shopping-bag"}
-              IconType={FontAwesome5}
-            />
-            <NumberStat
-              number={400}
-              Title={"حالة القفة"}
-              IconName={"shopping-bag"}
-              IconType={FontAwesome5}
-            />
-          </View>
-        </View>
-
-        <View style={styles.Section}>
           <Text style={styles.sectionTitle}> قسم التعليم :</Text>
 
           <View style={styles.StatContainer}>
             <NumberStat
-              number={400}
-              Title={"المستفيدين من دروس الدعم"}
+              number={Education}
+              Title={"دروس الدعم"}
               IconName={"school"}
               IconType={Ionicons}
             />
             <NumberStat
-              number={400}
-              Title={"المستفيدين من الكفالة الفكرية"}
+              number={KafalaFikriya}
+              Title={"الكفالة الفكرية"}
               IconName={"school"}
               IconType={Ionicons}
-            />
-          </View>
-        </View>
-        <View style={styles.Section}>
-          <Text style={styles.sectionTitle}> قسم الأرامل :</Text>
-
-          <View style={styles.StatContainer}>
-            <NumberStat
-              number={400}
-              Title={"المستفيدين من مشروع"}
-              IconName={""}
-              IconType={""}
-            />
-            <NumberStat
-              number={400}
-              Title={"المستفيدين من الكفالة الفكرية"}
-              IconName={""}
-              IconType={""}
             />
           </View>
         </View>

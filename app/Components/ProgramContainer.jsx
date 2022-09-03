@@ -12,7 +12,7 @@ import { Icon } from "native-base";
 import { MaterialIcons, Entypo } from "@expo/vector-icons";
 export default function ProgramContainer(props) {
   return (
-    <TouchableOpacity style={styles.DataContainer}>
+    <TouchableOpacity onLongPress={()=>props.select(props.program.id)} style={styles.DataContainer}>
       <Image
         source={img}
         style={{ width: 30, height: 30, marginLeft: 5, marginRight: 5 }}

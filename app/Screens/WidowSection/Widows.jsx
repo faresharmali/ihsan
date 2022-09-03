@@ -147,6 +147,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 15,
     borderTopLeftRadius: 15,
     display: "flex",
+    paddingTop:10,
     alignItems: "center",
   },
   Content: {

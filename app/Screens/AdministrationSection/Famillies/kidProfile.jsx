@@ -26,6 +26,8 @@ import { UpdateFamilyInfos } from "../../../api/family";
 export default function KidProfile({ route, navigation }) {
   let Families = useSelector((state) => state.Families);
   let family = Families.filter((f) => f.id == route.params.kid.familyId)[0];
+  console.log("paramss",route.params)
+  console.log("familss",family)
   let kid = family.kids.filter((k) => k.id == route.params.kid.id)[0];
   kid = { ...kid, lastName: family.fatherLastName, familyId: family.id };
   const [section, setSection] = useState("infos");

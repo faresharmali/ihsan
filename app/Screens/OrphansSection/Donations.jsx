@@ -40,6 +40,10 @@ export default function Donations({ navigation, drawer }) {
     return unsubscribe;
   }, [navigation]);
 
+  const openKafala = (id) => {
+    navigation.navigate("Kafala",{id})
+
+  };
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />
@@ -61,7 +65,7 @@ export default function Donations({ navigation, drawer }) {
       <View style={styles.Section}>
         <ScrollView style={styles.Content}>
           {Donations.map((donation) => (
-            <KafalaContainer data={donation} />
+            <KafalaContainer open={openKafala} data={donation} />
           ))}
         </ScrollView>
       </View>

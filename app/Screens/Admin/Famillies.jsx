@@ -37,9 +37,12 @@ export default function Families({ navigation, drawer }) {
   const styling = {
     backgroundColor: "#fff",
     marginTop: 5,
+    fontSize:15,
+    fontFamily: "Tajawal-Medium",
+
   };
   const openModal = (data) => {
-    navigation.navigate("Family", data);
+    navigation.navigate("Family", {...data});
   };
   let MyFamilies = useSelector((state) => state.Families);
   const updateState = (data) => {
@@ -77,7 +80,6 @@ export default function Families({ navigation, drawer }) {
   const handleSearch = (text) => {
     setDisplayedfamillies(famillies.filter((k) => k.title.includes(text)));
   };
-
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />

@@ -11,8 +11,8 @@ import { useSelector } from "react-redux";
 import DeleteSwipable from "../../Components/Containers/DeleteSwipable";
 LogBox.ignoreAllLogs();
 import ProgramContainer from "../../Components/ProgramContainer";
+import KofaSectionBottomBar from "../../Navigation/KofaSectionBottomBar";
 import DeleteConfirmation from "../../Components/Modals/DeleteConfirmation";
-import EducationSectionBottomBar from "../../Navigation/EducationSectionBottomBar";
 export default function Program({ navigation, drawer }) {
     const user = useSelector((state) => state.Auth).token;
   const [program, setProgram] = useState([]);
@@ -53,7 +53,7 @@ export default function Program({ navigation, drawer }) {
   const fetchProgram = async () => {
     const res = await getProgram({ departement: "Education" }, user);
     if (res.data.ok) {
-      setProgram(res.data.result.filter((p) => p.section == "قسم التعليم"));
+      setProgram(res.data.result.filter((p) => p.section == "قسم القفة"));
     } else {
     }
   };
@@ -85,7 +85,7 @@ export default function Program({ navigation, drawer }) {
         </TouchableOpacity>
 
         <View style={styles.containerTitle}>
-          <Text style={styles.ScreenEntityTitle}> البرنامج : قسم التعليم </Text>
+          <Text style={styles.ScreenEntityTitle}> البرنامج : قسم القفة </Text>
           <MaterialCommunityIcons name="account-group" size={30} color="#fff" />
         </View>
       </View>
@@ -110,7 +110,7 @@ export default function Program({ navigation, drawer }) {
           navigation.navigate("AddProgramItem", {
             showToast,
             fetchProgram,
-            section: "قسم التعليم",
+            section: "قسم القفة",
           })
         }
         style={styles.fab}
@@ -125,7 +125,7 @@ export default function Program({ navigation, drawer }) {
         setIsPanelActive={setDeletePannelActive}
       />
       {deleteModal && <DeleteConfirmation Confirme={deleteprogram} />}
-      <EducationSectionBottomBar navigation={navigation} />
+      <KofaSectionBottomBar navigation={navigation} />
     </View>
   );
 }

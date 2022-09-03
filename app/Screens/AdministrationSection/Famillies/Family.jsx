@@ -6,6 +6,7 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
+  BackHandler,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { Icon } from "native-base";
@@ -23,6 +24,7 @@ import DataContainer from "../../../Components/DataContainer";
 import { useSelector } from "react-redux";
 import Toast from "react-native-toast-message";
 import toastConfig from "../../../Components/ToastConfiguration";
+
 export default function FamilyScreen({ route, navigation }) {
   const [section, setSection] = useState("infos");
   const [refresh, setRefresh] = useState(false);
@@ -31,7 +33,7 @@ export default function FamilyScreen({ route, navigation }) {
   );
   let kids = [];
   family.kids.forEach((k) => {
-    kids.push({ ...k, lastName: family.fatherLastName });
+    kids.push({ ...k, lastName: family.fatherLastName, familyId: family.id });
   });
   let Demands = useSelector((state) => state.Informations).filter(
     (info) =>
@@ -57,6 +59,7 @@ export default function FamilyScreen({ route, navigation }) {
   const viewKid = (kid) => {
     navigation.navigate("KidProfile", { kid, showToast });
   };
+
   return (
     <View style={styles.container}>
       <StatusBar style="light" />

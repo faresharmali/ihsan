@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   TouchableOpacity,
+  BackHandler,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Icon } from "native-base";
@@ -13,19 +14,40 @@ import { MaterialCommunityIcons, Entypo, AntDesign } from "@expo/vector-icons";
 import Toast from "react-native-toast-message";
 import toastConfig from "../../Components/ToastConfiguration";
 import { useSelector } from "react-redux";
-import { getReservations } from "../../api/user";
+import { getReservations, DeleteReservation } from "../../api/user";
 import { useDispatch } from "react-redux";
-import BottomBar from "../../Navigation/BottomBar";
-export default function Bureau({ navigation, drawer }) {
+import KofaSectionBottomBar from "../../Navigation/KofaSectionBottomBar";
+import DeleteConfirmation from "../../Components/Modals/DeleteConfirmation";
+import RNDateTimePicker from "@react-native-community/datetimepicker";
+
+export default function Bureau({ navigation, drawer ,BottomBar}) {
   const [active, setActive] = useState(6);
   const [MeetingList, setMeetingList] = useState([]);
   const [AllMeetingList, setAllMeetingList] = useState([]);
+  const [deleteModal, showDeleteModal] = useState(false);
+  const [selectedMeet, setselectedMeet] = useState(null);
+  const [showDatePicker, setshowDatePicker] = useState(false);
+  const [date, setdate] = useState(null);
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => {
+        if (deleteModal) {
+          showDeleteModal(false);
+          return true;
+        }
+
+        return false;
+      }
+    );
+    return () => backHandler.remove();
+  }, [deleteModal]);
 
   let Meetings = useSelector((state) => state.Meetings);
   useEffect(() => {
     setMeetingList(Meetings);
     setAllMeetingList(Meetings);
-    console.log("meets", Meetings);
   }, [Meetings]);
 
   const dispatch = useDispatch();
@@ -45,56 +67,58 @@ export default function Bureau({ navigation, drawer }) {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", async () => {
-      const res = await getReservations();
+      fetchData();
       setActive(6);
-      dispatch(
-        updateState(
-          res.data.meetings
-            .sort((a, b) => new Date(a.date) - new Date(b.date))
-            .filter(
-              (me) => new Date(me.date) >= new Date().setHours(0, 0, 0, 0)
-            )
-        )
-      );
     });
 
     return unsubscribe;
   }, [navigation]);
 
-  const Meet = ({ item }) => {
-    return (
-      <View style={{ marginRight: 10, marginTop: 10 }}>
-        <View
-          style={{
-            flexDirection: "row-reverse",
-            justifyContent: "flex-start",
-            alignItems: "center",
-            backgroundColor: "#fff",
-            elevation: 1,
-            borderRadius: 5,
-          }}
-        >
-          <View style={styles.TimeContainer}>
-            <Text style={styles.time}>{item.DateString}</Text>
-            <Text style={styles.time}>
-              من :{" "}
-              {JSON.parse(item.time).start.hours +
-                ":" +
-                JSON.parse(item.time).start.minutes}
-            </Text>
-            <Text style={styles.time}>
-              الى :{" "}
-              {JSON.parse(item.time).end.hours +
-                ":" +
-                JSON.parse(item.time).end.minutes}
-            </Text>
-          </View>
-          <Text style={styles.ItemDetails}>{item.description}</Text>
-        </View>
-      </View>
+  const fetchData = async () => {
+    const res = await getReservations();
+    dispatch(
+      updateState(
+        res.data.meetings
+          .sort((a, b) => new Date(a.date) - new Date(b.date))
+          .filter((me) => new Date(me.date) >= new Date().setHours(0, 0, 0, 0))
+      )
     );
   };
-  const filterInformations = (filter) => {
+  const Meet = ({ item }) => {
+    return (
+      <TouchableOpacity
+        onLongPress={() => selectMeet(item.id)}
+        style={{
+          flexDirection: "row-reverse",
+          justifyContent: "flex-start",
+          alignItems: "center",
+          backgroundColor: "#fff",
+          elevation: 1,
+          borderRadius: 5,
+          marginTop: 10,
+          width: "95%",
+        }}
+      >
+        <View style={styles.TimeContainer}>
+          <Text style={styles.time}>{item.DateString}</Text>
+          <Text style={styles.time}>
+            من :{" "}
+            {JSON.parse(item.time).start.hours +
+              ":" +
+              JSON.parse(item.time).start.minutes}
+          </Text>
+          <Text style={styles.time}>
+            الى :{" "}
+            {JSON.parse(item.time).end.hours +
+              ":" +
+              JSON.parse(item.time).end.minutes}
+          </Text>
+        </View>
+        <Text style={styles.ItemDetails}>{item.description}</Text>
+      </TouchableOpacity>
+    );
+  };
+  const filterInformations = (filter, ChosenDate) => {
     if (filter == "all") {
       setMeetingList(AllMeetingList);
     } else if (filter == "day") {
@@ -118,7 +142,7 @@ export default function Bureau({ navigation, drawer }) {
               MaxDate.setHours(0, 0, 0, 0)
         )
       );
-    } else {
+    } else if (filter == "month") {
       let date = new Date();
       let MaxDate = new Date();
       MaxDate.setDate(MaxDate.getDate() + 30);
@@ -131,8 +155,59 @@ export default function Bureau({ navigation, drawer }) {
               MaxDate.setHours(0, 0, 0, 0)
         )
       );
+    } else {
+      if (ChosenDate) {
+        setMeetingList(
+          AllMeetingList.filter(
+            (meet) =>
+              new Date(meet.date).setHours(0, 0, 0, 0) ==
+              ChosenDate.setHours(0, 0, 0, 0)
+          )
+        );
+      }
     }
   };
+  const selectMeet = (id) => {
+    setselectedMeet(id);
+    showDeleteModal(true);
+  };
+  const deleteMeet = async () => {
+    const res = await DeleteReservation({ id: selectedMeet });
+    if (res.ok) {
+      fetchData();
+      showDeleteModal(false);
+    } else {
+      alert("error");
+    }
+  };
+
+  const filterPerDate = () => {
+    setshowDatePicker(true);
+  };
+  const HandleDate = (date) => {
+    if (date.nativeEvent.timestamp) {
+      let MyDate = new Date(date.nativeEvent.timestamp);
+
+      let month =
+        (MyDate.getMonth() + 1 + "").length > 1
+          ? MyDate.getMonth() + 1 + ""
+          : "0" + (MyDate.getMonth() + 1);
+      let day =
+        (MyDate.getDate() + "").length > 1
+          ? MyDate.getDate() + ""
+          : "0" + MyDate.getDate();
+
+      setdate(MyDate.getFullYear() + "-" + month + "-" + day);
+      filterInformations("date", MyDate);
+    } else {
+    }
+    setshowDatePicker(false);
+  };
+  useEffect(() => {
+    if (active != 0) {
+      setdate(null);
+    }
+  }, [active]);
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />
@@ -155,6 +230,29 @@ export default function Bureau({ navigation, drawer }) {
         </View>
       </View>
       <View style={styles.containerFilter}>
+        <TouchableWithoutFeedback
+          onPress={() => {
+            filterInformations("date");
+            setActive(0);
+            filterPerDate();
+          }}
+        >
+          <View
+            style={{
+              ...styles.filterItem,
+              backgroundColor: active == 0 ? "#348578" : "#fff",
+            }}
+          >
+            <Text
+              style={{
+                ...styles.filterText,
+                color: active == 0 ? "#fff" : "#000",
+              }}
+            >
+              {date ? date : "التاريخ"}
+            </Text>
+          </View>
+        </TouchableWithoutFeedback>
         <TouchableWithoutFeedback
           onPress={() => {
             filterInformations("day");
@@ -245,7 +343,13 @@ export default function Bureau({ navigation, drawer }) {
         </TouchableWithoutFeedback>
       </View>
       <View style={styles.contentContainer}>
-        <ScrollView style={styles.Content}>
+        <ScrollView
+          contentContainerStyle={{
+            alignItems: "center",
+            paddingBottom: 25,
+          }}
+          style={styles.Content}
+        >
           {MeetingList.map((m) => (
             <Meet item={m} />
           ))}
@@ -253,12 +357,22 @@ export default function Bureau({ navigation, drawer }) {
       </View>
       <TouchableOpacity
         onPress={() => navigation.navigate("AddReservation", { showToast })}
-        style={styles.fab}
+        style={{ ...styles.fab, ...styles.filter }}
       >
         <Icon as={Entypo} name="plus" size={8} color="#fff" />
       </TouchableOpacity>
 
       <Toast config={toastConfig} />
+      {deleteModal && <DeleteConfirmation Confirme={deleteMeet} />}
+      {showDatePicker && (
+        <RNDateTimePicker
+          is24Hour={true}
+          locale="ar-dz"
+          mode="date"
+          value={new Date()}
+          onChange={HandleDate}
+        />
+      )}
       <BottomBar navigation={navigation} />
     </View>
   );
@@ -368,7 +482,7 @@ const styles = StyleSheet.create({
     padding: 6,
     backgroundColor: "#fff",
     borderRadius: 5,
-    minWidth: 85,
+    minWidth: 71,
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {

@@ -1,24 +1,44 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  BackHandler,
+} from "react-native";
 import React, { useState, useEffect } from "react";
 import { Icon, ScrollView } from "native-base";
 import { MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
 import { LogBox } from "react-native";
 import Toast from "react-native-toast-message";
 import toastConfig from "../../Components/ToastConfiguration";
-import { getProgram } from "../../api/activities";
+import { getProgram, DeleteProgramItem } from "../../api/activities";
 import { useSelector } from "react-redux";
 import DeleteSwipable from "../../Components/Containers/DeleteSwipable";
 LogBox.ignoreAllLogs();
 import ProgramContainer from "../../Components/ProgramContainer";
-import EducationSectionBottomBar from "../../Navigation/EducationSectionBottomBar";
-
+import DeleteConfirmation from "../../Components/Modals/DeleteConfirmation";
+import ActivitiesSectionBottomBar from "../../Navigation/ActivitiesSectionBottomBar";
 export default function Program({ navigation, drawer }) {
+  const user = useSelector((state) => state.Auth).token;
   const [program, setProgram] = useState([]);
   const [DeletePannelActive, setDeletePannelActive] = useState(false);
   const [PressedProgram, setPressedProgram] = useState(false);
-
-  const user = useSelector((state) => state.Auth).token;
+  const [deleteModal, showDeleteModal] = useState(false);
+  const [selectedProgram, setSelectedProgram] = useState(null);
+  const selectProgram = (id) => {
+    setSelectedProgram(id);
+    showDeleteModal(true);
+  };
+  const deleteprogram = async () => {
+    const res = await DeleteProgramItem({ id: selectedProgram }, user);
+    if (res.ok) {
+      fetchProgram();
+      showDeleteModal(false);
+    } else {
+      alert("error");
+    }
+  };
   useEffect(async () => {
     const unsubscribe = navigation.addListener("focus", async () => {
       await fetchProgram();
@@ -34,7 +54,7 @@ export default function Program({ navigation, drawer }) {
     });
   };
   const fetchProgram = async () => {
-    const res = await getProgram({ departement: "activities" }, user);
+    const res = await getProgram({ departement: "Education" }, user);
     if (res.data.ok) {
       setProgram(
         res.data.result.filter((p) => p.section == "قسم الأنشطة الخيرية")
@@ -42,6 +62,21 @@ export default function Program({ navigation, drawer }) {
     } else {
     }
   };
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => {
+        if (deleteModal) {
+          showDeleteModal(false);
+
+          return true;
+        } else {
+          return false;
+        }
+      }
+    );
+    return () => backHandler.remove();
+  }, [deleteModal]);
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />
@@ -55,7 +90,7 @@ export default function Program({ navigation, drawer }) {
         </TouchableOpacity>
 
         <View style={styles.containerTitle}>
-          <Text style={styles.ScreenEntityTitle}> البرنامج : قسم الأنشطة </Text>
+          <Text style={styles.ScreenEntityTitle}> البرنامج : قسم الأنشطة الخيرية </Text>
           <MaterialCommunityIcons name="account-group" size={30} color="#fff" />
         </View>
       </View>
@@ -67,6 +102,7 @@ export default function Program({ navigation, drawer }) {
       >
         {program.map((program) => (
           <ProgramContainer
+            select={selectProgram}
             setDeletePannelActive={setDeletePannelActive}
             setPressedProgram={setPressedProgram}
             program={program}
@@ -93,7 +129,8 @@ export default function Program({ navigation, drawer }) {
         isPanelActive={DeletePannelActive}
         setIsPanelActive={setDeletePannelActive}
       />
-      <EducationSectionBottomBar navigation={navigation} />
+      {deleteModal && <DeleteConfirmation Confirme={deleteprogram} />}
+      <ActivitiesSectionBottomBar navigation={navigation} />
     </View>
   );
 }

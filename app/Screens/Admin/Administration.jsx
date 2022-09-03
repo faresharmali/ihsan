@@ -27,6 +27,7 @@ import UpdateWasset from "../../UpdateForms/UpdateWasset.jsx";
 import AddOrphan from "../../UpdateForms/AddOrphan.jsx";
 import UpdateFamily from "../../UpdateForms/UpdateFamily.jsx";
 import UpdateOrphan from "../../UpdateForms/UpdateOrphan.jsx";
+import BottomBar from "../../Navigation/BottomBar.js";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
@@ -35,7 +36,7 @@ export default function Administration({ navigation }) {
   return (
     <>
       <Stack.Navigator
-        initialRouteName="Famillies"
+        initialRouteName="Users"
         screenOptions={{
           gestureEnabled: true,
           gestureDirection: "vertical",
@@ -89,22 +90,24 @@ export default function Administration({ navigation }) {
           name="KafelProfile"
           component={KafelProfile}
         />
-        <Stack.Screen
-          options={slideFromRight}
-          name="Bureau"
-          component={Bureau}
-        />
+
+        <Stack.Screen options={slideFromRight} name="Bureau">
+          {(props) => (
+            <Bureau {...props} drawer={navigation} BottomBar={BottomBar} />
+          )}
+        </Stack.Screen>
         <Stack.Screen
           options={TransitionFromBottom}
           name="AddReservation"
           component={AddReservation}
         />
-        <Stack.Screen options={slideFromRight} name="Kofal" component={Kofal} />
-        <Stack.Screen
-          options={slideFromRight}
-          name="Orphans"
-          component={Orphans}
-        />
+        <Stack.Screen options={slideFromRight} name="Kofal">
+          {(props) => <Kofal {...props} drawer={navigation} />}
+        </Stack.Screen>
+        <Stack.Screen options={slideFromRight} name="Orphans">
+          {(props) => <Orphans {...props} drawer={navigation} />}
+        </Stack.Screen>
+      
         <Stack.Screen
           options={TransitionFromBottom}
           name="AddDonator"

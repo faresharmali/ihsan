@@ -201,6 +201,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 15,
     display: "flex",
     alignItems: "center",
+    paddingTop:15,
   },
   Content: {
     width: "100%",

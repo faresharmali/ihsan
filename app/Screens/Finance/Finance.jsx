@@ -69,12 +69,12 @@ export default function Finance({ navigation }) {
     const unsubscribe = navigation.addListener("focus", async () => {
       const res = await getTransactions();
       dispatch(updateState(res.data.result));
-      let outcomes = res.data.result.filter((t) => !t.income);
+      let outcomes = res.data.result.filter((t) => !t.income && t.type!="تحويل");
       let outComesCount = 0;
       outcomes.forEach((outcome) => {
         outComesCount += outcome.amount;
       });
-      let incomes = res.data.result.filter((t) => t.income);
+      let incomes = res.data.result.filter((t) => t.income && t.type!="تحويل");
       let inComesCount = 0;
       incomes.forEach((income) => {
         inComesCount += income.amount;

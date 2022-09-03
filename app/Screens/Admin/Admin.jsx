@@ -16,7 +16,7 @@ import FinanceSection from "../Finance";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import { RegisterToken } from "../../api/user";
-
+import { useSelector } from "react-redux";
 const Drawer = createDrawerNavigator();
 
 Notifications.setNotificationHandler({
@@ -32,9 +32,9 @@ export default function Dashboard(props) {
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
-
+  const user=useSelector((state) => state.Auth).id
   useEffect(() => {
-    registerForPushNotificationsAsync().then((token) => {
+    registerForPushNotificationsAsync(user).then((token) => {
       setExpoPushToken(token);
     });
 
@@ -67,7 +67,7 @@ export default function Dashboard(props) {
             <DrawerContent {...prop} pageHandler={props.PageHandler} />
           )}
           screenOptions={{ headerShown: false }}
-          initialRouteName="KofaSection"
+          initialRouteName="Home"
         >
           <Drawer.Screen name="Home">
             {(props) => (
@@ -142,7 +142,8 @@ const styles = StyleSheet.create({
   sidebar: {},
 });
 
-async function registerForPushNotificationsAsync() {
+async function registerForPushNotificationsAsync(user) {
+  console.log("tokeen user",user)
   let token;
   if (Device.isDevice) {
     const { status: existingStatus } =
@@ -157,7 +158,7 @@ async function registerForPushNotificationsAsync() {
       return;
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
-    RegisterToken(token);
+    RegisterToken(token, user);
   } else {
     alert("Must use physical device for Push Notifications");
   }

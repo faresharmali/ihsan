@@ -29,7 +29,6 @@ export default function AddChild({ route, navigation }) {
   const [SelectedModules, setSelectedModules] = useState([]);
   const [sick, setSickness] = useState(false);
   const [showButton, setshowButton] = useState(true);
-
   const [ChildData, setChildData] = useState({
     id: uuid.v4(),
     name: "",

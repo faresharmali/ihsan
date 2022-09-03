@@ -56,27 +56,7 @@ export default function EducationOrphans({ navigation, drawer }) {
         </View>
       </View>
       <View style={styles.Section}>
-        <Input
-          InputRightElement={
-            <Icon
-              style={{ marginRight: 10 }}
-              as={<MaterialIcons name="search" />}
-              size={5}
-              ml="2"
-              color="#348578"
-            />
-          }
-          style={styles.input}
-          w={{
-            base: "90%",
-            md: "50%",
-          }}
-          h={42}
-          textAlign="right"
-          placeholder="البحث عن يتيم"
-          {...styling}
-        />
-
+       
         <ScrollView style={styles.Content}>
           <Kids kids={kids} />
         </ScrollView>
@@ -150,6 +130,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 15,
     display: "flex",
     alignItems: "center",
+    paddingTop:10
   },
   Content: {
     width: "100%",

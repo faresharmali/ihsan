@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   TouchableWithoutFeedback,
+  BackHandler
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { FontAwesome5, Entypo, MaterialIcons } from "@expo/vector-icons";
@@ -15,11 +16,15 @@ import { useSelector } from "react-redux";
 import toastConfig from "../../Components/ToastConfiguration";
 import Toast from "react-native-toast-message";
 import DataContainer from "../../Components/DataContainer";
-import { getInformations } from "../../api/informations";
+import { getInformations,DeleteInformation } from "../../api/informations";
 import { useDispatch } from "react-redux";
 import InformationSectionBottomBar from "../../Navigation/InformationsBottomBar";
+import DeleteConfirmation from "../../Components/Modals/DeleteConfirmation";
 export default function Informations({ navigation, drawer }) {
   const [InformationsList, setInformationList] = useState([]);
+  const [deleteModal,showDeleteModal]=useState(false)
+  const [selectedInfo,setSelectedInfo]=useState(null)
+
   const [filteringSection, setfilteringSection] = useState("all");
   const dispatch = useDispatch();
   let Informations = useSelector((state) => state.Informations);
@@ -89,6 +94,36 @@ export default function Informations({ navigation, drawer }) {
       )
     );
   };
+  const selectInformation=async (id)=>{
+    setSelectedInfo(id)
+    showDeleteModal(true)
+  }
+
+  const deleteInfo=async ()=>{
+    const res = await DeleteInformation({id:selectedInfo})
+    if(res.ok){
+      fetchInformations()
+      showDeleteModal(false)
+    }else{
+      alert("error")
+    }
+  }
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => {
+        if (  deleteModal ) {
+          showDeleteModal(false);
+          
+          return true;
+        } else {
+          return false;
+        }
+      }
+    );
+    return () => backHandler.remove();
+  }, [deleteModal]);
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />
@@ -254,6 +289,7 @@ export default function Informations({ navigation, drawer }) {
         >
           {InformationsList.map((f) => (
             <DataContainer
+            select={selectInformation}
               key={f.id}
               AvatarSize={22}
               data={f}
@@ -275,10 +311,13 @@ export default function Informations({ navigation, drawer }) {
       >
         <Icon as={Entypo} name="plus" size={8} color="#fff" />
       </TouchableOpacity>
+
+     {deleteModal && <DeleteConfirmation Confirme={deleteInfo} />} 
       <InformationSectionBottomBar
         filterData={filterData}
         navigation={navigation}
       />
+
     </View>
   );
 }

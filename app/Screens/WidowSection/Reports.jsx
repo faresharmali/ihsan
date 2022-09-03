@@ -170,6 +170,8 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 15,
     display: "flex",
     alignItems: "center",
+    paddingTop:10,
+
   },
   Content: {
     width: "100%",

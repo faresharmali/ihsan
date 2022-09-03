@@ -7,7 +7,6 @@ import Members from "./Members.jsx";
 import AdminProfile from "../Profiles/adminProfile.jsx";
 import Distributeur from "../Profiles/Distubuteur.jsx";
 import Families from "./famillies.jsx";
-import Bureau from "./Bureau";
 import AddReservation from "../../Forms/AddReservation.jsx";
 import KofaDonators from "./Donators.jsx";
 import Ingredients from "./ingredients.jsx";
@@ -16,7 +15,10 @@ import KofaStatus from "./status.jsx";
 import ChangeKofaStatus from "../../Forms/ChangeStatus.jsx";
 import Information from "../InformationsSection/information.jsx";
 import UpdateInformation from "../../UpdateForms/UpdateInformation";
-
+import KofaSectionBottomBar from "../../Navigation/KofaSectionBottomBar.js";
+import Bureau from "../Bureau/Bureau.jsx";
+import Program from "./Program.jsx";
+import AddProgramItem from "../../Forms/AddProgramItem.jsx";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
@@ -38,6 +40,10 @@ export default function KofaSection({ navigation }) {
       <Stack.Screen options={TransitionFromBottom} name="KofaMemberProfile">
         {(props) => <AdminProfile {...props} drawer={navigation} />}
       </Stack.Screen>
+
+      <Stack.Screen options={TransitionFromBottom} name="AddProgramItem">
+        {(props) => <AddProgramItem {...props} drawer={navigation} />}
+      </Stack.Screen>
       <Stack.Screen options={TransitionFromBottom} name="DistributeurProfiile">
         {(props) => <Distributeur {...props} drawer={navigation} />}
       </Stack.Screen>
@@ -46,7 +52,7 @@ export default function KofaSection({ navigation }) {
         {(props) => <Families {...props} drawer={navigation} />}
       </Stack.Screen>
       <Stack.Screen options={slideFromRight} name="KofaBureau">
-        {(props) => <Bureau {...props} drawer={navigation} />}
+        {(props) => <Bureau {...props} drawer={navigation} BottomBar={KofaSectionBottomBar} />}
       </Stack.Screen>
       <Stack.Screen options={TransitionFromBottom} name="AddReservation">
         {(props) => <AddReservation {...props} drawer={navigation} />}
@@ -56,6 +62,9 @@ export default function KofaSection({ navigation }) {
       </Stack.Screen>
       <Stack.Screen options={slideFromRight} name="Ingredients">
         {(props) => <Ingredients {...props} drawer={navigation} />}
+      </Stack.Screen>
+      <Stack.Screen options={slideFromRight} name="ActivitiesProgram">
+        {(props) => <Program {...props} drawer={navigation} />}
       </Stack.Screen>
       <Stack.Screen
         options={TransitionFromBottom}

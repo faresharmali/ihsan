@@ -11,8 +11,7 @@ import React, { useState } from "react";
 import { Input, Stack, Icon, Checkbox } from "native-base";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { Button } from "react-native-paper";
-import { CreateFamily } from "../api/family";
-import uuid from "react-native-uuid";
+
 import { useSelector } from "react-redux";
 import Swipable from "../Components/Containers/swipable";
 import { UpdateFamilyInfos } from "../api/family";

@@ -20,7 +20,7 @@ import Kids from "../AdministrationSection/Famillies/Kids";
 import Toast from "react-native-toast-message";
 import toastConfig from "../../Components/ToastConfiguration";
 import { useSelector } from "react-redux";
-export default function Information({ route, navigation,updatePath }) {
+export default function Information({ route, navigation, updatePath }) {
   let Info = useSelector((state) => state.Informations).filter(
     (i) => i.id == route.params.data.id
   )[0];
@@ -72,7 +72,14 @@ export default function Information({ route, navigation,updatePath }) {
           </Text>
           <Text style={styles.Text}>
             {" "}
-            <Text style={styles.textTitle}>التاريخ :</Text> 25/09/2022
+            <Text style={styles.textTitle}>التاريخ :</Text>{" "}
+            {Info.date
+              ? new Date(Info.date).getFullYear() +
+                "/" +
+                (new Date(Info.date).getMonth() + 1) +
+                "/" +
+                new Date(Info.date).getDate()
+              : ""}
           </Text>
         </View>
         <View style={styles.People}>

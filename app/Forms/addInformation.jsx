@@ -420,7 +420,7 @@ export default function AddInformation({ route, navigation }) {
         type={"family"}
         title="العائلات المستفيدة"
         getSelectedData={getSelectedData}
-        data={Famillies.map((o) => ({ ...o, title: o.fatherLastName }))}
+        data={Famillies.map((o) => ({ ...o, title:"عائلة "+ o.fatherLastName }))}
         isPanelActive={isFamiltPanelActive}
         setIsPanelActive={setIsFamiltPanelActive}
         setshowButton={setshowButton}

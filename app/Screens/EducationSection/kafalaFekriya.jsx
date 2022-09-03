@@ -34,7 +34,6 @@ export default function KafalaFekriya({ navigation, drawer }) {
     });
   };
   let EducationMembers = useSelector((state) => state.EducationMembers);
-  console.log("EducationMembers",EducationMembers)
   useEffect(() => {
     setPatientList(EducationMembers);
     filtered == "all"
@@ -52,7 +51,6 @@ export default function KafalaFekriya({ navigation, drawer }) {
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", async () => {
       const res = await GetEducationGroupes();
-      console.log("res",res.data.result)
       dispatch(
         updateState(
         res.data.result

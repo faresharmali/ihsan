@@ -2,9 +2,9 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React from "react";
 import { Icon } from "native-base";
 import { MaterialIcons, FontAwesome5, FontAwesome } from "@expo/vector-icons";
-export default function TransactionContainer({data}) {
+export default function TransactionContainer({data,open}) {
   return (
-    <View style={styles.DataContainer}>
+    <TouchableOpacity onPress={()=>open(data.identifier)} style={styles.DataContainer}>
       <FontAwesome5
         style={{ marginLeft: 10 }}
         name="hand-holding-heart"
@@ -44,7 +44,7 @@ export default function TransactionContainer({data}) {
           <Text>{data.amount} دج</Text>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 const styles = StyleSheet.create({

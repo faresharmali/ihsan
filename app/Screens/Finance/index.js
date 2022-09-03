@@ -15,6 +15,7 @@ import Finance from "./Finance";
 import AdminProfile from "../Profiles/adminProfile";
 import Information from "../InformationsSection/information";
 import UpdateInformation from "../../UpdateForms/UpdateInformation";
+import Transaction from "../Profiles/Transaction";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
@@ -28,26 +29,32 @@ export default function FinanceSection({ navigation }) {
         headerShown: false,
       }}
     >
-      <Stack.Screen
-        options={slideFromRight}
-        name="FinanceMembers"
-        component={FinanceMembers}
-      />
-      <Stack.Screen options={slideFromRight} name="Income" component={Income} />
-      <Stack.Screen
-        options={slideFromRight}
-        name="Outcome"
-        component={Outcome}
-      />
-      <Stack.Screen
-        options={slideFromRight}
-        name="Hassalat"
-        component={Hassalat}
-      />
+
+<Stack.Screen options={slideFromRight} name="FinanceMembers">
+        {(props) => <FinanceMembers {...props} drawer={navigation} />}
+      </Stack.Screen>
+<Stack.Screen options={slideFromRight} name="Income">
+        {(props) => <Income {...props} drawer={navigation} />}
+      </Stack.Screen>
+<Stack.Screen options={slideFromRight} name="Outcome">
+        {(props) => <Outcome {...props} drawer={navigation} />}
+      </Stack.Screen>
+<Stack.Screen options={slideFromRight} name="Hassalat">
+        {(props) => <Hassalat {...props} drawer={navigation} />}
+      </Stack.Screen>
+<Stack.Screen options={slideFromRight} name="FinancePage">
+        {(props) => <Finance {...props} drawer={navigation} />}
+      </Stack.Screen>
+
       <Stack.Screen
         options={TransitionFromBottom}
         name="AddIncome"
         component={AddIncome}
+      />
+      <Stack.Screen
+        options={TransitionFromBottom}
+        name="Transaction"
+        component={Transaction}
       />
       <Stack.Screen
         options={TransitionFromBottom}
@@ -64,11 +71,7 @@ export default function FinanceSection({ navigation }) {
         name="FinanceMemberProfile"
         component={AdminProfile}
       />
-      <Stack.Screen
-        options={slideFromRight}
-        name="FinancePage"
-        component={Finance}
-      />
+  
       <Stack.Screen options={TransitionFromBottom} name="InformationAdmin">
         {(props) => (
           <Information

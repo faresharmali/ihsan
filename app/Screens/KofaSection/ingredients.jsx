@@ -35,7 +35,6 @@ export default function Ingredients({ navigation, drawer }) {
 
   const openModal = (data) => {};
   let Ingredients = useSelector((state) => state.Ingredients);
-  console.log("ingredients", Ingredients);
   let LoggedUser = useSelector((state) => state.Auth);
   const updateState = (data) => {
     return {
@@ -202,6 +201,8 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 15,
     borderTopLeftRadius: 15,
     display: "flex",
+    paddingTop:10,
+
     alignItems: "center",
   },
   Content: {

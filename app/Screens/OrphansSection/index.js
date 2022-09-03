@@ -6,7 +6,7 @@ import {
 import OrpahnsDonators from "./Donators.jsx";
 import Families from "./Families.jsx";
 import Members from "./Members.jsx";
-import Bureau from "./Bureau.jsx";
+import Bureau from "../Bureau/Bureau.jsx";
 import AddReservation from "../../Forms/AddReservation.jsx";
 import Family from "../AdministrationSection/Famillies/Family";
 import AdminProfile from "../Profiles/adminProfile";
@@ -18,6 +18,7 @@ import Program from "./Program.jsx";
 import AddProgramItem from "../../Forms/AddProgramItem.jsx";
 import Information from "../InformationsSection/information.jsx";
 import UpdateInformation from "../../UpdateForms/UpdateInformation.jsx";
+import Kafala from "../Profiles/Kafala.jsx";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
@@ -25,17 +26,16 @@ export default function OrpahansSection({ navigation }) {
   return (
     <>
       <Stack.Navigator
-        initialRouteName="Donations"
+        initialRouteName="OrpahnsMembers"
         screenOptions={{
           gestureEnabled: true,
           gestureDirection: "vertical",
           headerShown: false,
         }}
       >
-          <Stack.Screen options={slideFromRight} name="OrpahnsDonators">
+        <Stack.Screen options={slideFromRight} name="OrpahnsDonators">
           {(props) => <OrpahnsDonators {...props} drawer={navigation} />}
         </Stack.Screen>
-      
 
         <Stack.Screen options={slideFromRight} name="OrpahnsFamilies">
           {(props) => <Families {...props} drawer={navigation} />}
@@ -44,7 +44,13 @@ export default function OrpahansSection({ navigation }) {
           {(props) => <Members {...props} drawer={navigation} />}
         </Stack.Screen>
         <Stack.Screen options={slideFromRight} name="OrpahnsBureau">
-          {(props) => <Bureau {...props} drawer={navigation} />}
+          {(props) => (
+            <Bureau
+              {...props}
+              drawer={navigation}
+              BottomBar={OrpahnsSectionBottomBar}
+            />
+          )}
         </Stack.Screen>
 
         <Stack.Screen
@@ -71,6 +77,11 @@ export default function OrpahansSection({ navigation }) {
           options={TransitionFromBottom}
           name="AddDonation"
           component={AddDonation}
+        />
+        <Stack.Screen
+          options={TransitionFromBottom}
+          name="Kafala"
+          component={Kafala}
         />
 
         <Stack.Screen options={slideFromRight} name="Donations">

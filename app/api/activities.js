@@ -1,4 +1,4 @@
-const api = "http://192.168.100.222:3000/activities";
+const api = "https://ihsanapp.herokuapp.com/activities";
 const axios = require("axios");
 
 export const CreateActivity = async (data, token) => {
@@ -45,7 +45,7 @@ export const CreateProgramItem = async (data, token) => {
       headers: {
         token: token,
       },
-      data,
+      ...data,
     });
     return res;
   } catch (e) {
@@ -95,6 +95,19 @@ export const deleteActivity = async (data, token) => {
   console.log("datadata",data)
   try {
     const res = await axios.post(api + "/delete", {
+      headers: {
+        token: token,
+      },
+      ...data,
+    });
+    return res.data;
+  } catch (e) {
+    console.error("error", e);
+  }
+};
+export const DeleteProgramItem = async (data, token) => {
+  try {
+    const res = await axios.post(api + "/deleteprogram", {
       headers: {
         token: token,
       },

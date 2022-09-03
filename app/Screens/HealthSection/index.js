@@ -16,6 +16,9 @@ import Report from "../Report.jsx";
 import UpdateReport from "../../UpdateForms/UpdateReport.jsx";
 import UpdateInformation from "../../UpdateForms/UpdateInformation.jsx";
 import Information from "../InformationsSection/information.jsx";
+import Bureau from "../Bureau/Bureau.jsx";
+import AddReservation from "../../Forms/AddReservation.jsx";
+import HealthSectionBottomBar from "../../Navigation/HealthSectionBottomBar.js";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
@@ -30,41 +33,40 @@ export default function HealthSection({ navigation }) {
           headerShown: false,
         }}
       >
-        <Stack.Screen
-          options={slideFromRight}
-          name="HealthMembers"
-          component={Members}
-        />
-        <Stack.Screen
-          options={slideFromRight}
-          name="HealthDonators"
-          component={HealthDonators}
-        />
-        <Stack.Screen
-          options={slideFromRight}
-          name="Patients"
-          component={Patients}
-        />
+        <Stack.Screen options={slideFromRight} name="HealthMembers">
+        {(props) => <Members {...props} drawer={navigation} />}
+      </Stack.Screen>
+        <Stack.Screen options={slideFromRight} name="HealthDonators">
+        {(props) => <HealthDonators {...props} drawer={navigation} />}
+      </Stack.Screen>
+        <Stack.Screen options={slideFromRight} name="Patients">
+        {(props) => <Patients {...props} drawer={navigation} />}
+      </Stack.Screen>
+        <Stack.Screen options={slideFromRight} name="HealthReports">
+        {(props) => <Reports {...props} drawer={navigation} />}
+      </Stack.Screen>
+        <Stack.Screen options={slideFromRight} name="HealthProgram">
+        {(props) => <Program {...props} drawer={navigation} />}
+      </Stack.Screen>
+
+ 
         <Stack.Screen
           options={TransitionFromBottom}
           name="MemberProfile"
           component={AdminProfile}
         />
         <Stack.Screen
-          options={slideFromRight}
-          name="HealthReports"
-          component={Reports}
+          options={TransitionFromBottom}
+          name="AddReservation"
+          component={AddReservation}
         />
+
         <Stack.Screen
           options={TransitionFromBottom}
           name="HealthAddReport"
           component={AddReport}
         />
-        <Stack.Screen
-          options={slideFromRight}
-          name="HealthProgram"
-          component={Program}
-        />
+
         <Stack.Screen
           options={TransitionFromBottom}
           name="AddProgramItem"
@@ -82,6 +84,15 @@ export default function HealthSection({ navigation }) {
               {...props}
               drawer={navigation}
               updatePath={"UpdateInformationHealth"}
+            />
+          )}
+        </Stack.Screen>
+        <Stack.Screen options={slideFromRight} name="HealthBureau">
+          {(props) => (
+            <Bureau
+              {...props}
+              drawer={navigation}
+              BottomBar={HealthSectionBottomBar}
             />
           )}
         </Stack.Screen>

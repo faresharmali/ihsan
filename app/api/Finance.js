@@ -1,4 +1,4 @@
-const api = "http://192.168.100.222:3000";
+const api = "https://ihsanapp.herokuapp.com";
 const axios = require("axios");
 export const getTransactions = async () => {
   try {

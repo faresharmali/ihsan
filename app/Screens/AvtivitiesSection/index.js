@@ -14,6 +14,9 @@ import Program from "./program.jsx";
 import UpdateActivity from "../../UpdateForms/UpdateActivity.jsx";
 import Information from "../InformationsSection/information";
 import UpdateInformation from "../../UpdateForms/UpdateInformation";
+import ActivitiesSectionBottomBar from "../../Navigation/ActivitiesSectionBottomBar.js";
+import Bureau from "../Bureau/Bureau.jsx";
+import AddReservation from "../../Forms/AddReservation.jsx";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
@@ -27,27 +30,30 @@ export default function ActivitiesSection({ navigation }) {
         headerShown: false,
       }}
     >
-      <Stack.Screen
-        options={slideFromRight}
-        name="ActivitiesMembers"
-        component={Members}
-      />
-      <Stack.Screen
-        options={slideFromRight}
-        name="Activities"
-        component={Activities}
-      />
-
+      <Stack.Screen options={slideFromRight} name="ActivitiesMembers">
+        {(props) => <Members {...props} drawer={navigation} />}
+      </Stack.Screen>
+      <Stack.Screen options={slideFromRight} name="Activities">
+        {(props) => <Activities {...props} drawer={navigation} />}
+      </Stack.Screen>
+      <Stack.Screen options={slideFromRight} name="ActivityDonators">
+        {(props) => <ActivityDonators {...props} drawer={navigation} />}
+      </Stack.Screen>
+      <Stack.Screen options={slideFromRight} name="ActivitiesProgram">
+        {(props) => <Program {...props} drawer={navigation} />}
+      </Stack.Screen>
+   
       <Stack.Screen
         options={TransitionFromBottom}
         name="AddActivity"
         component={AddActivity}
       />
       <Stack.Screen
-        options={slideFromRight}
-        name="ActivityDonators"
-        component={ActivityDonators}
+        options={TransitionFromBottom}
+        name="AddReservation"
+        component={AddReservation}
       />
+     
       <Stack.Screen
         options={TransitionFromBottom}
         name="Activity"
@@ -58,26 +64,28 @@ export default function ActivitiesSection({ navigation }) {
         name="ActivityMemberProfile"
         component={AdminProfile}
       />
-      <Stack.Screen
-        options={slideFromRight}
-        name="ActivitiesProgram"
-        component={Program}
-      />
+    
       <Stack.Screen
         options={TransitionFromBottom}
         name="AddProgramItem"
         component={AddProgramItem}
       />
-      <Stack.Screen
-        name="UpdateActivity"
-        component={UpdateActivity}
-      />
-            <Stack.Screen options={TransitionFromBottom} name="InformationAdmin">
+      <Stack.Screen name="UpdateActivity" component={UpdateActivity} />
+      <Stack.Screen options={TransitionFromBottom} name="InformationAdmin">
         {(props) => (
           <Information
             {...props}
             drawer={navigation}
             updatePath={"UpdateInformationActivity"}
+          />
+        )}
+      </Stack.Screen>
+      <Stack.Screen options={slideFromRight} name="ActivityBureau">
+        {(props) => (
+          <Bureau
+            {...props}
+            drawer={navigation}
+            BottomBar={ActivitiesSectionBottomBar}
           />
         )}
       </Stack.Screen>

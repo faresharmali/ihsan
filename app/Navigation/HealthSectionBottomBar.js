@@ -67,7 +67,7 @@ export default function HealthSectionBottomBar(props) {
               <Text style={styles.bottomBarITemText}>التقارير</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => props.navigation.navigate("Bureau")}>
+          <TouchableOpacity onPress={() => props.navigation.navigate("HealthBureau")}>
             <View style={styles.bottomBarITem}>
               <Icon as={FontAwesome} name="building" color={"#ffff"} size={4} />
 

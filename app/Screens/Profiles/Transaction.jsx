@@ -16,11 +16,11 @@ import {
 } from "@expo/vector-icons";
 
 import Toast from "react-native-toast-message";
-import toastConfig from "../Components/ToastConfiguration";
+import toastConfig from "../../Components/ToastConfiguration";
 import { useSelector } from "react-redux";
-export default function Report({ route, navigation }) {
-  let Info = useSelector((state) => state.Reports).filter(
-    (i) => i.id == route.params.infos.id
+export default function Transaction({ route, navigation, updatePath }) {
+  let Donation = useSelector((state) => state.Finance).transactions.filter(
+    (i) => i.identifier == route.params.id
   )[0];
   return (
     <View style={styles.container}>
@@ -28,24 +28,11 @@ export default function Report({ route, navigation }) {
 
       <View style={styles.pageEntity}>
         <View style={styles.IconsContainer}>
-          <Icon as={Ionicons} size={8} color="#fff" name="md-chevron-back" />
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("UpdateReport", {
-                infos: Info,
-                fetchInformations: route.params.fetchInformations,
-              })
-            }
-          >
-            <Icon
-              as={MaterialCommunityIcons}
-              size={8}
-              color="#fff"
-              name="square-edit-outline"
-            />
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Icon as={Ionicons} size={8} color="#fff" name="md-chevron-back" />
           </TouchableOpacity>
         </View>
-        <Text style={styles.EntityTitle}>تقرير</Text>
+        <Text style={styles.EntityTitle}>{route.params.type}</Text>
       </View>
 
       <ScrollView
@@ -54,28 +41,27 @@ export default function Report({ route, navigation }) {
       >
         <View style={styles.ActivityDetails}>
           <Text style={styles.Text}>
-            <Text style={styles.textTitle}> العنوان :</Text> {Info[0]}
+            <Text style={styles.textTitle}> {route.params.type=="مصروف" ? "الدافع": "المستلم"}  :</Text> {Donation.receiver}
+          </Text>
+
+          <Text style={styles.Text}>
+            {" "}
+            <Text style={styles.textTitle}> النوع :</Text> {Donation.type}
           </Text>
           <Text style={styles.Text}>
             {" "}
-            <Text style={styles.textTitle}>نوع التقرير :</Text> {Info.type}
+            <Text style={styles.textTitle}> المبلغ :</Text> {Donation.amount}
           </Text>
-          <Text style={styles.Text}>
-            {" "}
-            <Text style={styles.textTitle}>تفاصيل :</Text> {Info.content}
-          </Text>
-          <Text style={styles.Text}>
-            <Text style={styles.textTitle}>اضيف من قبل :</Text> {Info.author}
-          </Text>
+
           <Text style={styles.Text}>
             {" "}
             <Text style={styles.textTitle}>التاريخ :</Text>{" "}
-            {Info.date
-              ? new Date(Info.date).getFullYear() +
+            {Donation.date
+              ? new Date(Donation.date).getFullYear() +
                 "/" +
-                (new Date(Info.date).getMonth() + 1) +
+                (new Date(Donation.date).getMonth() + 1) +
                 "/" +
-                new Date(Info.date).getDate()
+                new Date(Donation.date).getDate()
               : ""}
           </Text>
         </View>

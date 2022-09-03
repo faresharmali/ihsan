@@ -13,19 +13,18 @@ const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
 export default function InformationSection({ navigation }) {
   return (
     <Stack.Navigator
-      initialRouteName="Members"
+      initialRouteName="Informations"
       screenOptions={{
         gestureEnabled: true,
         gestureDirection: "vertical",
         headerShown: false,
       }}
     >
+<Stack.Screen options={slideFromRight} name="Informations">
+        {(props) => <Informations {...props} drawer={navigation} />}
+      </Stack.Screen>
 
-      <Stack.Screen
-        options={slideFromRight}
-        name="Informations"
-        component={Informations}
-      />
+
       <Stack.Screen
         options={TransitionFromBottom}
         name="AddInformation"

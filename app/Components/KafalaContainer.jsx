@@ -4,7 +4,7 @@ import { Icon } from "native-base";
 import { MaterialIcons, FontAwesome5, FontAwesome } from "@expo/vector-icons";
 export default function KafalaContainer(props) {
   return (
-    <View style={styles.DataContainer}>
+    <TouchableOpacity onPress={()=>props.open(props.data.identifier)} style={styles.DataContainer}>
       <FontAwesome5
         style={{ marginLeft: 10 }}
         name="hand-holding-heart"
@@ -44,7 +44,7 @@ export default function KafalaContainer(props) {
           <Text>{props.data.amount} دج</Text>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 const styles = StyleSheet.create({

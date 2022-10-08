@@ -84,7 +84,7 @@ export default function AddHassala({ route, navigation }) {
           <Icon as={FontAwesome} name="user-plus" size={7} color="#348578" />
           <Text style={styles.PageTitile}>اضافة حصالة</Text>
         </View>
-        <TouchableWithoutFeedback onPress={() => navigation.navigate("Kofal")}>
+        <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
           <Icon
             style={styles.back}
             as={FontAwesome}

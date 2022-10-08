@@ -161,7 +161,7 @@ const AddTransaction = async () => {
 
           <Text style={styles.PageTitile}>اضافة مداخيل</Text>
         </View>
-        <TouchableWithoutFeedback onPress={() => navigation.navigate("Kofal")}>
+        <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
           <Icon
             style={styles.back}
             as={FontAwesome}

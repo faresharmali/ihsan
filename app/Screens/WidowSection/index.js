@@ -19,6 +19,9 @@ import UpdateReport from "../../UpdateForms/UpdateReport.jsx";
 import Information from "../InformationsSection/information.jsx";
 import UpdateInformation from "../../UpdateForms/UpdateInformation.jsx";
 import WidowSectionBottomBar from "../../Navigation/WidowSectionBottomBar.js";
+import FinanceView from "../FinanceViews/Finance.jsx";
+import AddIncomeView from "../FinanceViews/addIncome.jsx";
+import AddOutcomeView from "../FinanceViews/addOutCome.jsx";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
@@ -53,9 +56,14 @@ export default function WidowSection({ navigation }) {
           {(props) => <WidowsDonators {...props} drawer={navigation} />}
         </Stack.Screen>
 
-        
         <Stack.Screen options={slideFromRight} name="WidowsBureau">
-          {(props) => <Bureau {...props} drawer={navigation} BottomBar={WidowSectionBottomBar} />}
+          {(props) => (
+            <Bureau
+              {...props}
+              drawer={navigation}
+              BottomBar={WidowSectionBottomBar}
+            />
+          )}
         </Stack.Screen>
 
         <Stack.Screen
@@ -102,6 +110,19 @@ export default function WidowSection({ navigation }) {
           name="UpdateInformationWidow"
           component={UpdateInformation}
         />
+        <Stack.Screen options={slideFromRight} name="WidowFinanceView">
+          {(props) => <FinanceView {...props} drawer={navigation} />}
+        </Stack.Screen>
+        <Stack.Screen
+        options={TransitionFromBottom}
+        name="AddIncomeWidow"
+        component={AddIncomeView}
+      />
+      <Stack.Screen
+        options={TransitionFromBottom}
+        name="AddOutcomeWidow"
+        component={AddOutcomeView}
+      />
       </Stack.Navigator>
     </>
   );

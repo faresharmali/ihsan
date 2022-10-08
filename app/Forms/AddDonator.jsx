@@ -217,7 +217,7 @@ export default function AddDonator({ route, navigation }) {
 
           <Text style={styles.PageTitile}>اضافة محسن</Text>
         </View>
-        <TouchableWithoutFeedback onPress={() => navigation.navigate("Kofal")}>
+        <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
           <Icon
             style={styles.back}
             as={FontAwesome}

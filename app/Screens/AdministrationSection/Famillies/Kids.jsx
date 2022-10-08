@@ -14,7 +14,7 @@ export default function Kids(props) {
       {props.kids.map((k) => (
         <TouchableOpacity
           onPress={() => props.viewKid(k)}
-          key={k.name}
+          key={k.id}
           style={styles.DataContainer}
         >
           <Image source={Kid} style={styles.avatar} />

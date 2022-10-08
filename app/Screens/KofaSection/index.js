@@ -19,6 +19,9 @@ import KofaSectionBottomBar from "../../Navigation/KofaSectionBottomBar.js";
 import Bureau from "../Bureau/Bureau.jsx";
 import Program from "./Program.jsx";
 import AddProgramItem from "../../Forms/AddProgramItem.jsx";
+import FinanceView from "../FinanceViews/Finance.jsx";
+import AddIncomeView from "../FinanceViews/addIncome.jsx";
+import AddOutcomeView from "../FinanceViews/addOutCome.jsx";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
@@ -26,13 +29,17 @@ const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
 export default function KofaSection({ navigation }) {
   return (
     <Stack.Navigator
-      initialRouteName="Members"
+      initialRouteName="KofaMembers"
       screenOptions={{
         gestureEnabled: true,
         gestureDirection: "vertical",
         headerShown: false,
       }}
     >
+     
+       <Stack.Screen options={slideFromRight} name="KofaFinanceView">
+        {(props) => <FinanceView {...props} drawer={navigation} />}
+      </Stack.Screen>
       <Stack.Screen options={slideFromRight} name="KofaMembers">
         {(props) => <Members {...props} drawer={navigation} />}
       </Stack.Screen>
@@ -92,6 +99,16 @@ export default function KofaSection({ navigation }) {
       <Stack.Screen
         name="UpdateInformationKofa"
         component={UpdateInformation}
+      />
+        <Stack.Screen
+        options={TransitionFromBottom}
+        name="AddIncomeKofa"
+        component={AddIncomeView}
+      />
+      <Stack.Screen
+        options={TransitionFromBottom}
+        name="AddOutcomekofa"
+        component={AddOutcomeView}
       />
     </Stack.Navigator>
   );

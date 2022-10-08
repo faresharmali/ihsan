@@ -17,6 +17,9 @@ import UpdateInformation from "../../UpdateForms/UpdateInformation";
 import ActivitiesSectionBottomBar from "../../Navigation/ActivitiesSectionBottomBar.js";
 import Bureau from "../Bureau/Bureau.jsx";
 import AddReservation from "../../Forms/AddReservation.jsx";
+import FinanceView from "../FinanceViews/Finance.jsx";
+import AddIncomeView from "../FinanceViews/addIncome.jsx";
+import AddOutcomeView from "../FinanceViews/addOutCome.jsx";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
@@ -41,6 +44,10 @@ export default function ActivitiesSection({ navigation }) {
       </Stack.Screen>
       <Stack.Screen options={slideFromRight} name="ActivitiesProgram">
         {(props) => <Program {...props} drawer={navigation} />}
+      </Stack.Screen>
+   
+      <Stack.Screen options={slideFromRight} name="ActivitiesFinanceView">
+        {(props) => <FinanceView {...props} drawer={navigation} />}
       </Stack.Screen>
    
       <Stack.Screen
@@ -69,6 +76,16 @@ export default function ActivitiesSection({ navigation }) {
         options={TransitionFromBottom}
         name="AddProgramItem"
         component={AddProgramItem}
+      />
+      <Stack.Screen
+        options={TransitionFromBottom}
+        name="AddIncomeActivities"
+        component={AddIncomeView}
+      />
+      <Stack.Screen
+        options={TransitionFromBottom}
+        name="AddOutcomeActivities"
+        component={AddOutcomeView}
       />
       <Stack.Screen name="UpdateActivity" component={UpdateActivity} />
       <Stack.Screen options={TransitionFromBottom} name="InformationAdmin">

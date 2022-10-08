@@ -245,7 +245,7 @@ export default function UpdateActivity({ route, navigation }) {
 
           <Text style={styles.PageTitile}>تعديل نشاط</Text>
         </View>
-        <TouchableWithoutFeedback onPress={() => navigation.navigate("Kofal")}>
+        <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
           <Icon
             style={styles.back}
             as={FontAwesome}

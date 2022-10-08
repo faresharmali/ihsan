@@ -5,12 +5,13 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
+  TouchableWithoutFeedback,
+  BackHandler
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import BottomBar from "../../../Navigation/BottomBar";
 import { Icon } from "native-base";
 import { FontAwesome5, Entypo, AntDesign } from "@expo/vector-icons";
-import { Input, Stack } from "native-base";
 import { useSelector } from "react-redux";
 import toastConfig from "../../../Components/ToastConfiguration";
 import Toast from "react-native-toast-message";
@@ -19,15 +20,16 @@ import { useDispatch } from "react-redux";
 import { getFamilies } from "../../../api/family";
 import { PrintData } from "../../../Components/Print";
 import { getAge } from "../../../Components/Print";
+import AgeFilterModal from "../../../Components/Containers/FilterOrphansSwipeable";
 export default function Orphans({ navigation, drawer }) {
+  const [date, setdate] = useState(null);
+
   const dispatch = useDispatch();
+  const [active, setActive] = useState(6);
+  const [isPanelActive, setIsPanelActive] = useState(false);
   const [kids, setKids] = useState([]);
   const [Displayedkids, setDisplayedkids] = useState([]);
-  const styling = {
-    backgroundColor: "#fff",
-    marginTop: 5,
-  };
-
+  const [filteredData, setfilteredData] = useState([]);
   let MyFamilies = useSelector((state) => state.Families);
   useEffect(() => {
     let kids = [];
@@ -43,14 +45,29 @@ export default function Orphans({ navigation, drawer }) {
     });
     setKids(kids);
     setDisplayedkids(kids);
+    setfilteredData(kids);
   }, [MyFamilies]);
 
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => {
+        if (isPanelActive) {
+          setIsPanelActive(false);
+          return true;
+        } else {
+          return false;
+        }
+      }
+    );
+    return () => backHandler.remove();
+  }, [isPanelActive]);
+
   const viewKid = (kid) => {
-    navigation.navigate("KidProfile", { kid ,fetchFamillies});
+    navigation.navigate("KidProfile", { kid, fetchFamillies });
   };
-  const handleSearch = (text) => {
-    setDisplayedkids(kids.filter((k) => k.title.includes(text)));
-  };
+
 
   const updateState = (data) => {
     return {
@@ -74,7 +91,7 @@ export default function Orphans({ navigation, drawer }) {
   const print = async () => {
     console.log(Displayedkids)
     let headings = [
-     
+
       "المستوى الدراسي",
       "العمر",
       "الجنس",
@@ -83,8 +100,43 @@ export default function Orphans({ navigation, drawer }) {
     ]
     PrintData("قائمة اللأيتام ", headings, Displayedkids.map((t) => (
       {
-        scolarity: t.scolarity,age: getAge(t.year + "-" + t.month + "-" + t.day),gender: t.gender, name: t.title
+        scolarity: t.scolarity, age: getAge(t.year + "-" + t.month + "-" + t.day), gender: t.gender, name: t.title
       })))
+
+  }
+
+  const filterInformations = (filter) => {
+    if (filter == "all") {
+      setdate("العمر")
+      setDisplayedkids(kids);
+      setfilteredData(kids);
+
+    } else if (filter == "age") {
+      setIsPanelActive(true)
+    } else if (filter == "sick") {
+      setfilteredData(filteredData.filter((kid) => kid.sick));
+      setDisplayedkids(filteredData.filter((kid) => kid.sick));
+
+    } else if (filter == "education") {
+
+      setfilteredData(filteredData.filter((kid) => kid.Education));
+      setDisplayedkids(filteredData.filter((kid) => kid.Education));
+    }
+  };
+
+  const FilterByAge = (inputs) => {
+    let MyKids = [...filteredData]
+
+    setIsPanelActive(false)
+    if (inputs.min.trim() != "") {
+      MyKids = MyKids.filter((k) => getAge(k.year + "-" + k.month + "-" + k.day) >= parseInt(inputs.min))
+    }
+    if (inputs.max.trim() != "") {
+      MyKids = MyKids.filter((k) => getAge(k.year + "-" + k.month + "-" + k.day) <= parseInt(inputs.max))
+    }
+    setdate(inputs.min + "-" + inputs.max)
+    setfilteredData(MyKids)
+    setDisplayedkids(MyKids)
 
   }
 
@@ -98,7 +150,7 @@ export default function Orphans({ navigation, drawer }) {
           style={styles.menuContainer}
         >
           <Icon as={Entypo} name="menu" size={8} color="#fff" />
-          
+
         </TouchableOpacity>
 
         <View style={styles.containerTitle}>
@@ -112,8 +164,98 @@ export default function Orphans({ navigation, drawer }) {
           </TouchableOpacity>
         </View>
       </View>
+      <View style={styles.containerFilter}>
+        <TouchableWithoutFeedback
+          onPress={() => {
+            filterInformations("age");
+            setActive(0);
+          }}
+        >
+          <View
+            style={{
+              ...styles.filterItem,
+              backgroundColor: active == 0 ? "#348578" : "#fff",
+            }}
+          >
+            <Text
+              style={{
+                ...styles.filterText,
+                color: active == 0 ? "#fff" : "#000",
+              }}
+            >
+              {date ? date : "العمر"}
+            </Text>
+          </View>
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback
+          onPress={() => {
+            filterInformations("sick");
+            setActive(2);
+          }}
+        >
+          <View
+            style={{
+              ...styles.filterItem,
+              backgroundColor: active == 2 ? "#348578" : "#fff",
+            }}
+          >
+            <Text
+              style={{
+                ...styles.filterText,
+                color: active == 2 ? "#fff" : "#000",
+              }}
+            >
+              مرضى{" "}
+            </Text>
+          </View>
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback
+          onPress={() => {
+            filterInformations("education");
+            setActive(3);
+          }}
+        >
+          <View
+            style={{
+              ...styles.filterItem,
+              backgroundColor: active == 3 ? "#348578" : "#fff",
+            }}
+          >
+            <Text
+              style={{
+                ...styles.filterText,
+                color: active == 3 ? "#fff" : "#000",
+              }}
+            >
+              دروس الدعم{" "}
+            </Text>
+          </View>
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback
+          onPress={() => {
+            filterInformations("all");
+            setActive(6);
+          }}
+        >
+          <View
+            style={{
+              ...styles.filterItem,
+              backgroundColor: active == 6 ? "#348578" : "#fff",
+            }}
+          >
+            <Text
+              style={{
+                ...styles.filterText,
+                color: active == 6 ? "#fff" : "#000",
+              }}
+            >
+              الكل
+            </Text>
+          </View>
+        </TouchableWithoutFeedback>
+      </View>
       <View style={styles.Section}>
-      
+
         <ScrollView
           contentContainerStyle={{
             paddingBottom: 25,
@@ -124,6 +266,7 @@ export default function Orphans({ navigation, drawer }) {
         </ScrollView>
       </View>
       <Toast config={toastConfig} />
+      {isPanelActive && <AgeFilterModal confirm={FilterByAge} />}
       <BottomBar navigation={navigation} />
     </View>
   );
@@ -188,11 +331,9 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "90%",
     backgroundColor: "#f5f5f5",
-    borderTopRightRadius: 15,
-    borderTopLeftRadius: 15,
+
     display: "flex",
     alignItems: "center",
-    paddingTop:10
   },
   Content: {
     width: "100%",
@@ -224,5 +365,35 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 65,
     right: 10,
+  },
+  containerFilter: {
+    borderTopRightRadius: 15,
+    borderTopLeftRadius: 15,
+    backgroundColor: "#f5f5f5",
+    width: "100%",
+    flexDirection: "row-reverse",
+    justifyContent: "space-between",
+    paddingTop: 20,
+    padding: 10,
+    paddingLeft: 10,
+    paddingRight: 10,
+  },
+  filterItem: {
+    padding: 6,
+    backgroundColor: "#fff",
+    borderRadius: 5,
+    minWidth: 85,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 1.41,
+    elevation: 3,
+  },
+  filterText: {
+    fontFamily: "Tajawal-Medium",
   },
 });

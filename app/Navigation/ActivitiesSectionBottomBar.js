@@ -72,6 +72,21 @@ export default function ActivitiesSectionBottomBar(props) {
               <Text style={styles.bottomBarITemText}>المقر</Text>
             </View>
           </TouchableOpacity>
+          <TouchableOpacity onPress={() =>
+             navigation.navigate("ActivitiesFinanceView", {
+              section:"قسم الأنشطة الخيرية",
+              navigator: "activities",
+              incomeRoute: "AddIncomeActivities",
+              outcomeRoute: "AddOutcomeActivities",
+            }) }
+            >
+            
+                        <View style={styles.bottomBarITem}>
+              <Icon as={FontAwesome} name="building" color={"#ffff"} size={4} />
+
+              <Text style={styles.bottomBarITemText}>المالية</Text>
+            </View>
+          </TouchableOpacity>
          
        
         </View>

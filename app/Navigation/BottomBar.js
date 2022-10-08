@@ -46,7 +46,7 @@ export default function BottomBar({navigation}) {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate("Kofal")}
+          onPress={() => navigation.navigate("kofal")}
         >
           <View style={styles.bottomBarITem}>
             <Icon

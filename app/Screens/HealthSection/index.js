@@ -19,6 +19,9 @@ import Information from "../InformationsSection/information.jsx";
 import Bureau from "../Bureau/Bureau.jsx";
 import AddReservation from "../../Forms/AddReservation.jsx";
 import HealthSectionBottomBar from "../../Navigation/HealthSectionBottomBar.js";
+import FinanceView from "../FinanceViews/Finance.jsx";
+import AddIncomeView from "../FinanceViews/addIncome.jsx";
+import AddOutcomeView from "../FinanceViews/addOutCome.jsx";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
@@ -97,10 +100,25 @@ export default function HealthSection({ navigation }) {
           )}
         </Stack.Screen>
 
+
         <Stack.Screen
           name="UpdateInformationHealth"
           component={UpdateInformation}
         />
+
+<Stack.Screen options={slideFromRight} name="HealthFinanceView">
+        {(props) => <FinanceView {...props} drawer={navigation} />}
+      </Stack.Screen>
+               <Stack.Screen
+        options={TransitionFromBottom}
+        name="AddIncomeHealth"
+        component={AddIncomeView}
+      />
+      <Stack.Screen
+        options={TransitionFromBottom}
+        name="AddOutcomeHealth"
+        component={AddOutcomeView}
+      />
       </Stack.Navigator>
     </>
   );

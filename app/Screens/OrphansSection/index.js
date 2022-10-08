@@ -19,6 +19,9 @@ import AddProgramItem from "../../Forms/AddProgramItem.jsx";
 import Information from "../InformationsSection/information.jsx";
 import UpdateInformation from "../../UpdateForms/UpdateInformation.jsx";
 import Kafala from "../Profiles/Kafala.jsx";
+import FinanceView from "../FinanceViews/Finance.jsx";
+import AddIncomeView from "../FinanceViews/addIncome.jsx";
+import AddOutcomeView from "../FinanceViews/addOutCome.jsx";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
@@ -109,6 +112,20 @@ export default function OrpahansSection({ navigation }) {
           name="UpdateInformationOrphan"
           component={UpdateInformation}
         />
+        
+<Stack.Screen options={slideFromRight} name="OrphansFinanceView">
+        {(props) => <FinanceView {...props} drawer={navigation} />}
+      </Stack.Screen>
+               <Stack.Screen
+        options={TransitionFromBottom}
+        name="AddIncomeOrphans"
+        component={AddIncomeView}
+      />
+      <Stack.Screen
+        options={TransitionFromBottom}
+        name="AddOutcomeOrphans"
+        component={AddOutcomeView}
+      />
       </Stack.Navigator>
     </>
   );

@@ -83,6 +83,22 @@ export default function EducationSectionBottomBar(props) {
               <Text style={styles.bottomBarITemText}>البرنامج</Text>
             </View>
           </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              props.navigation.navigate("EducationFinanceView", {
+                section: "قسم التعليم",
+                navigator: "Education",
+                incomeRoute: "AddIncomeEducation",
+                outcomeRoute: "AddOutcomeEducation",
+              })
+            }
+          >
+            <View style={styles.bottomBarITem}>
+              <Icon as={FontAwesome} name="building" color={"#ffff"} size={4} />
+
+              <Text style={styles.bottomBarITemText}>المالية</Text>
+            </View>
+          </TouchableOpacity>
         </View>
       </View>
     </View>

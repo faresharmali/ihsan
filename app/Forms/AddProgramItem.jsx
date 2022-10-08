@@ -99,7 +99,7 @@ export default function AddProgramItem({ route, navigation }) {
 
           <Text style={styles.PageTitile}>اضافة برنامج</Text>
         </View>
-        <TouchableWithoutFeedback onPress={() => navigation.navigate("Kofal")}>
+        <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
           <Icon
             style={styles.back}
             as={FontAwesome}

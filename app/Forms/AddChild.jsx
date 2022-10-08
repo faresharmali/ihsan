@@ -57,7 +57,6 @@ export default function AddChild({ route, navigation }) {
     setLevelChoiceVisible(false);
   };
   const validate = () => {
-    console.log(ChildData)
     let valid = true;
     let FieldErrors = { ...errors };
     if (ChildData.name.trim() == "") {

@@ -121,7 +121,7 @@ export default function CloseHassala({ route, navigation }) {
 
                     <Text style={styles.PageTitile}>استلام الحصالة</Text>
                 </View>
-                <TouchableWithoutFeedback onPress={() => navigation.navigate("Kofal")}>
+                <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
                     <Icon
                         style={styles.back}
                         as={FontAwesome}

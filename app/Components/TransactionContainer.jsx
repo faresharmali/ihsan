@@ -2,15 +2,10 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React from "react";
 import { Icon } from "native-base";
 import { MaterialIcons, FontAwesome5, FontAwesome } from "@expo/vector-icons";
-export default function TransactionContainer({data,open}) {
+export default function TransactionContainer({icon,data,open}) {
   return (
     <TouchableOpacity onPress={()=>open(data.identifier)} style={styles.DataContainer}>
-      <FontAwesome5
-        style={{ marginLeft: 10 }}
-        name="hand-holding-heart"
-        size={25}
-        color="#348578"
-      />
+     {icon}
 
       <View style={styles.infos}>
         <Text style={styles.UserPersonal}>

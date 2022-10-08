@@ -77,6 +77,22 @@ export default function WidowSectionBottomBar({ navigation }) {
               <Text style={styles.bottomBarITemText}>البرنامج</Text>
             </View>
           </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("WidowFinanceView", {
+                section: "قسم الأرامل",
+                navigator: "Widow",
+                incomeRoute: "AddIncomeWidow",
+                outcomeRoute: "AddOutcomeWidow",
+              })
+            }
+          >
+            <View style={styles.bottomBarITem}>
+              <Icon as={FontAwesome} name="building" color={"#ffff"} size={4} />
+
+              <Text style={styles.bottomBarITemText}>المالية</Text>
+            </View>
+          </TouchableOpacity>
         </View>
       </View>
     </View>

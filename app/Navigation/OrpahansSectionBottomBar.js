@@ -83,6 +83,22 @@ export default function OrpahnsSectionBottomBar({ navigation }) {
               <Text style={styles.bottomBarITemText}>البرنامج</Text>
             </View>
           </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("OrphansFinanceView", {
+                section: "قسم الأيتام",
+                navigator: "Orphans",
+                incomeRoute: "AddIncomeOrphans",
+                outcomeRoute: "AddOutcomeOrphans",
+              })
+            }
+          >
+            <View style={styles.bottomBarITem}>
+              <Icon as={FontAwesome} name="building" color={"#ffff"} size={4} />
+
+              <Text style={styles.bottomBarITemText}>المالية</Text>
+            </View>
+          </TouchableOpacity>
         </View>
       </View>
     </View>

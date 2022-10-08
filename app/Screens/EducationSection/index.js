@@ -16,6 +16,9 @@ import UpdateInformation from "../../UpdateForms/UpdateInformation.jsx";
 import Bureau from "../Bureau/Bureau.jsx";
 import EducationSectionBottomBar from "../../Navigation/EducationSectionBottomBar.js";
 import AddReservation from "../../Forms/AddReservation.jsx";
+import FinanceView from "../FinanceViews/Finance.jsx";
+import AddIncomeView from "../FinanceViews/addIncome.jsx";
+import AddOutcomeView from "../FinanceViews/addOutCome.jsx";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
@@ -92,6 +95,19 @@ export default function EducationSection({ navigation }) {
           />
         )}
       </Stack.Screen>
+      <Stack.Screen options={slideFromRight} name="EducationFinanceView">
+          {(props) => <FinanceView {...props} drawer={navigation} />}
+        </Stack.Screen>
+        <Stack.Screen
+        options={TransitionFromBottom}
+        name="AddIncomeEducation"
+        component={AddIncomeView}
+      />
+      <Stack.Screen
+        options={TransitionFromBottom}
+        name="AddOutcomeEducation"
+        component={AddOutcomeView}
+      />
     </Stack.Navigator>
   );
 }

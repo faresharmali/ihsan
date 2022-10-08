@@ -54,13 +54,7 @@ export default function KofaSectionBottomBar(props) {
               <Text style={styles.bottomBarITemText}>المحسنين</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate("KofaBureau")}>
-            <View style={styles.bottomBarITem}>
-              <Icon as={FontAwesome} name="building" color={"#ffff"} size={4} />
 
-              <Text style={styles.bottomBarITemText}>المقر</Text>
-            </View>
-          </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate("Ingredients")}>
             <View style={styles.bottomBarITem}>
               <Icon as={FontAwesome} name="list" color={"#fff"} size={4} />
@@ -68,7 +62,7 @@ export default function KofaSectionBottomBar(props) {
               <Text style={styles.bottomBarITemText}>المكونات</Text>
             </View>
           </TouchableOpacity>
-         
+
           <TouchableOpacity onPress={() => navigation.navigate("KofaStatus")}>
             <View style={styles.bottomBarITem}>
               <Icon
@@ -88,6 +82,22 @@ export default function KofaSectionBottomBar(props) {
               <Icon as={FontAwesome5} name="child" color={"#fff"} size={4} />
 
               <Text style={styles.bottomBarITemText}>البرنامج</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("KofaFinanceView", {
+                section: "قسم القفة",
+                navigator: "kofa",
+                incomeRoute: "AddIncomeKofa",
+                outcomeRoute: "AddOutcomekofa",
+              })
+            }
+          >
+            <View style={styles.bottomBarITem}>
+              <Icon as={FontAwesome} name="building" color={"#ffff"} size={4} />
+
+              <Text style={styles.bottomBarITemText}>المالية</Text>
             </View>
           </TouchableOpacity>
         </View>

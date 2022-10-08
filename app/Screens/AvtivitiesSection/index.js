@@ -21,6 +21,7 @@ import FinanceView from "../FinanceViews/Finance.jsx";
 import AddIncomeView from "../FinanceViews/addIncome.jsx";
 import AddOutcomeView from "../FinanceViews/addOutCome.jsx";
 const Stack = createStackNavigator();
+import Transaction from "../Profiles/Transaction.jsx";
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
 export default function ActivitiesSection({ navigation }) {
@@ -81,6 +82,11 @@ export default function ActivitiesSection({ navigation }) {
         options={TransitionFromBottom}
         name="AddIncomeActivities"
         component={AddIncomeView}
+      />
+      <Stack.Screen
+        options={TransitionFromBottom}
+        name="ActivitiesTransaction"
+        component={Transaction}
       />
       <Stack.Screen
         options={TransitionFromBottom}

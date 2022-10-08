@@ -8,7 +8,7 @@ import {
     TouchableWithoutFeedback,
 } from "react-native";
 import React, { useState, useEffect } from "react";
-import { FontAwesome5, Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
+import { FontAwesome5, Entypo, MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
 import { Icon } from "native-base";
 import { useSelector, useDispatch } from "react-redux";
 import toastConfig from "../../Components/ToastConfiguration";
@@ -22,6 +22,7 @@ import EducationSectionBottomBar from "../../Navigation/EducationSectionBottomBa
 import HealthSectionBottomBar from "../../Navigation/HealthSectionBottomBar";
 import WidowSectionBottomBar from "../../Navigation/WidowSectionBottomBar";
 import OrpahnsSectionBottomBar from "../../Navigation/OrpahansSectionBottomBar";
+import { PrintData } from "../../Components/Print";
 export default function FinanceView({ route, navigation, drawer }) {
     const [active, setActive] = useState(1);
     const [displayedData, setDisplayedData] = useState([]);
@@ -42,21 +43,40 @@ export default function FinanceView({ route, navigation, drawer }) {
         return unsubscribe;
     }, [navigation]);
     let Transactions = useSelector((state) => state.Finance).transactions
-    
+
     useEffect(() => {
         seAllTransactions(Transactions);
-        setDisplayedData(Transactions.filter((t) => t.income == filterBy && t.section==route.params.section));
+        setDisplayedData(Transactions.filter((t) => t.income == filterBy && t.section == route.params.section));
     }, [Transactions]);
 
     const openTransaction = (id) => {
-        setfilterBy(type)
-        navigation.navigate("Transaction", { id, type: "مدخول" });
+        navigation.navigate(route.params.transaction, { id, type: "مدخول" });
     };
 
     const filterData = (type) => {
         setfilterBy(type)
-        setDisplayedData(AllTransactions.filter((t) => t.income == type && t.section==route.params.section));
+        setDisplayedData(AllTransactions.filter((t) => t.income == type && t.section == route.params.section));
     };
+    const print = async () => {
+        let headings = [
+            " التاريخ",
+            " المبلغ",
+            " المستلم",
+            " النوع",
+
+        ]
+        const title = (active == 1 ? ' المداخيل :' : 'المصاريف : ') + " " + route.params.section
+        PrintData(title, headings, displayedData.map((t) => (
+            {
+                date: new Date(t.date).getFullYear() +
+                    "/" +
+                    (new Date(t.date).getMonth() + 1) +
+                    "/" +
+                    new Date(t.date).getDate(), amount: t.amount, receiver: t.receiver, type: t.type
+            })))
+
+    }
+
     return (
         <View style={styles.container}>
             <StatusBar style="dark" />
@@ -71,6 +91,12 @@ export default function FinanceView({ route, navigation, drawer }) {
                 <View style={styles.containerTitle}>
                     <Text style={styles.ScreenEntityTitle}>المالية : {route.params.section}</Text>
                     <FontAwesome5 name="hand-holding-heart" size={25} color="#fff" />
+                    <TouchableOpacity
+                        onPress={() => print()}
+                        style={styles.menuContainer}
+                    >
+                        <Icon as={AntDesign} name="printer" size={8} color="#fff" />
+                    </TouchableOpacity>
                 </View>
             </View>
             <View style={styles.containerFilter}>

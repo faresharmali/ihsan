@@ -22,6 +22,7 @@ import WidowSectionBottomBar from "../../Navigation/WidowSectionBottomBar.js";
 import FinanceView from "../FinanceViews/Finance.jsx";
 import AddIncomeView from "../FinanceViews/addIncome.jsx";
 import AddOutcomeView from "../FinanceViews/addOutCome.jsx";
+import Transaction from "../Profiles/Transaction.jsx";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
@@ -122,6 +123,11 @@ export default function WidowSection({ navigation }) {
         options={TransitionFromBottom}
         name="AddOutcomeWidow"
         component={AddOutcomeView}
+      />
+      <Stack.Screen
+        options={TransitionFromBottom}
+        name="WidowTransaction"
+        component={Transaction}
       />
       </Stack.Navigator>
     </>

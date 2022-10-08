@@ -90,6 +90,8 @@ export default function OrpahnsSectionBottomBar({ navigation }) {
                 navigator: "Orphans",
                 incomeRoute: "AddIncomeOrphans",
                 outcomeRoute: "AddOutcomeOrphans",
+                transaction: "OrphansTransaction",
+
               })
             }
           >

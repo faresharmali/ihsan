@@ -22,6 +22,7 @@ import HealthSectionBottomBar from "../../Navigation/HealthSectionBottomBar.js";
 import FinanceView from "../FinanceViews/Finance.jsx";
 import AddIncomeView from "../FinanceViews/addIncome.jsx";
 import AddOutcomeView from "../FinanceViews/addOutCome.jsx";
+import Transaction from "../Profiles/Transaction";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
@@ -118,6 +119,11 @@ export default function HealthSection({ navigation }) {
         options={TransitionFromBottom}
         name="AddOutcomeHealth"
         component={AddOutcomeView}
+      />
+      <Stack.Screen
+        options={TransitionFromBottom}
+        name="HealthTransaction"
+        component={Transaction}
       />
       </Stack.Navigator>
     </>

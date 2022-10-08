@@ -78,6 +78,8 @@ export default function ActivitiesSectionBottomBar(props) {
               navigator: "activities",
               incomeRoute: "AddIncomeActivities",
               outcomeRoute: "AddOutcomeActivities",
+              transaction: "ActivitiesTransaction",
+
             }) }
             >
             

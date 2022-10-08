@@ -22,6 +22,7 @@ import AddProgramItem from "../../Forms/AddProgramItem.jsx";
 import FinanceView from "../FinanceViews/Finance.jsx";
 import AddIncomeView from "../FinanceViews/addIncome.jsx";
 import AddOutcomeView from "../FinanceViews/addOutCome.jsx";
+import Transaction from "../Profiles/Transaction.jsx";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
@@ -109,6 +110,11 @@ export default function KofaSection({ navigation }) {
         options={TransitionFromBottom}
         name="AddOutcomekofa"
         component={AddOutcomeView}
+      />
+      <Stack.Screen
+        options={TransitionFromBottom}
+        name="KofaTransaction"
+        component={Transaction}
       />
     </Stack.Navigator>
   );

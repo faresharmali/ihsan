@@ -84,6 +84,8 @@ export default function WidowSectionBottomBar({ navigation }) {
                 navigator: "Widow",
                 incomeRoute: "AddIncomeWidow",
                 outcomeRoute: "AddOutcomeWidow",
+                transaction: "WidowTransaction",
+
               })
             }
           >

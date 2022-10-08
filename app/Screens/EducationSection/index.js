@@ -19,6 +19,7 @@ import AddReservation from "../../Forms/AddReservation.jsx";
 import FinanceView from "../FinanceViews/Finance.jsx";
 import AddIncomeView from "../FinanceViews/addIncome.jsx";
 import AddOutcomeView from "../FinanceViews/addOutCome.jsx";
+import Transaction from "../Profiles/Transaction.jsx";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
@@ -107,6 +108,11 @@ export default function EducationSection({ navigation }) {
         options={TransitionFromBottom}
         name="AddOutcomeEducation"
         component={AddOutcomeView}
+      />
+      <Stack.Screen
+        options={TransitionFromBottom}
+        name="EducationTransaction"
+        component={Transaction}
       />
     </Stack.Navigator>
   );

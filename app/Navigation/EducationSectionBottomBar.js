@@ -90,6 +90,9 @@ export default function EducationSectionBottomBar(props) {
                 navigator: "Education",
                 incomeRoute: "AddIncomeEducation",
                 outcomeRoute: "AddOutcomeEducation",
+                transaction: "EducationTransaction",
+
+                
               })
             }
           >

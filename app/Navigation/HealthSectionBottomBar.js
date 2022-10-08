@@ -90,6 +90,7 @@ export default function HealthSectionBottomBar(props) {
                 navigator: "Health",
                 incomeRoute: "AddIncomeHealth",
                 outcomeRoute: "AddOutcomeHealth",
+                transaction: "HealthTransaction",
               })
             }
           >

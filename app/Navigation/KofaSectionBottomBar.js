@@ -91,6 +91,8 @@ export default function KofaSectionBottomBar(props) {
                 navigator: "kofa",
                 incomeRoute: "AddIncomeKofa",
                 outcomeRoute: "AddOutcomekofa",
+                transaction: "KofaTransaction",
+
               })
             }
           >

@@ -9,7 +9,7 @@ import {
 import React, { useState, useEffect } from "react";
 import BottomBar from "../../../Navigation/BottomBar";
 import { Icon } from "native-base";
-import { FontAwesome5, Entypo, MaterialIcons } from "@expo/vector-icons";
+import { FontAwesome5, Entypo, AntDesign } from "@expo/vector-icons";
 import { Input, Stack } from "native-base";
 import { useSelector } from "react-redux";
 import toastConfig from "../../../Components/ToastConfiguration";
@@ -17,7 +17,8 @@ import Toast from "react-native-toast-message";
 import Kids from "../Famillies/Kids";
 import { useDispatch } from "react-redux";
 import { getFamilies } from "../../../api/family";
-
+import { PrintData } from "../../../Components/Print";
+import { getAge } from "../../../Components/Print";
 export default function Orphans({ navigation, drawer }) {
   const dispatch = useDispatch();
   const [kids, setKids] = useState([]);
@@ -69,6 +70,24 @@ export default function Orphans({ navigation, drawer }) {
     const res = await getFamilies();
     dispatch(updateState(res.data.result));
   };
+
+  const print = async () => {
+    console.log(Displayedkids)
+    let headings = [
+     
+      "المستوى الدراسي",
+      "العمر",
+      "الجنس",
+      " اليتيم",
+
+    ]
+    PrintData("قائمة اللأيتام ", headings, Displayedkids.map((t) => (
+      {
+        scolarity: t.scolarity,age: getAge(t.year + "-" + t.month + "-" + t.day),gender: t.gender, name: t.title
+      })))
+
+  }
+
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />
@@ -79,11 +98,18 @@ export default function Orphans({ navigation, drawer }) {
           style={styles.menuContainer}
         >
           <Icon as={Entypo} name="menu" size={8} color="#fff" />
+          
         </TouchableOpacity>
 
         <View style={styles.containerTitle}>
           <Text style={styles.ScreenEntityTitle}>الأيتام </Text>
           <FontAwesome5 name="child" size={25} color="#fff" />
+          <TouchableOpacity
+            onPress={() => print()}
+            style={styles.menuContainer}
+          >
+            <Icon as={AntDesign} name="printer" size={8} color="#fff" />
+          </TouchableOpacity>
         </View>
       </View>
       <View style={styles.Section}>

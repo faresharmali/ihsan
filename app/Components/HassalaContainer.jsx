@@ -2,9 +2,9 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React from "react";
 import { Icon } from "native-base";
 import { MaterialIcons, FontAwesome5, FontAwesome,MaterialCommunityIcons } from "@expo/vector-icons";
-export default function HassalaContainer({data}) {
+export default function HassalaContainer({data,navigation}) {
   return (
-    <TouchableOpacity style={styles.DataContainer}>
+    <TouchableOpacity onPress={()=>navigation.navigate("HassalaInfos",{data})} style={styles.DataContainer}>
       <MaterialCommunityIcons
         style={{ marginLeft: 10 }}
         name="piggy-bank"

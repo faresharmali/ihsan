@@ -6,37 +6,28 @@ import {
   Keyboard,
   BackHandler,
 } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Input, Stack, Icon } from "native-base";
-import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
 import { Button } from "react-native-paper";
-
-import { CreateHassala } from "../api/Finance";
-import uuid from "react-native-uuid";
-export default function AddHassala({ route, navigation }) {
+import { UpdateHassalaTransaction } from "../api/Finance";
+export default function UpdateHassala({ route, navigation }) {
   const [ErrorMessageVisible, setErrorMessageVisible] = useState(false);
+
   const [ErrorMessage, setErrorMessage] = useState("");
 
   const [errors, SetErrors] = useState({
     name: false,
     location: false,
-    amount: false,
-    receiver: false,
   });
-  const [TransactionInfos, SetTransactionInfos] = useState({
-    identifier: uuid.v4(),
-    date: new Date(),
-    name: "",
-    location: "",
-    amount: "",
-    receiver: "",
+  const [ActivityInfos, setuserInfos] = useState({
+    ...route.params.infos,
   });
-
 
   const handleUserInput = (text, name) => {
     setErrorMessageVisible(false);
     SetErrors({ ...errors, [name]: false });
-    SetTransactionInfos({ ...TransactionInfos, [name]: text });
+    setuserInfos({ ...ActivityInfos, [name]: text });
   };
   const styling = {
     borderColor: "#000",
@@ -49,26 +40,24 @@ export default function AddHassala({ route, navigation }) {
   const validate = () => {
     let valid = true;
     let FieldErrors = { ...errors };
-
-    if (TransactionInfos.name.trim() == "") {
+    if (ActivityInfos.name.trim() == "") {
       (FieldErrors.name = true), (valid = false);
     }
-    if (TransactionInfos.location.trim() == "") {
+    if (ActivityInfos.location.trim() == "") {
       (FieldErrors.location = true), (valid = false);
     }
-    console.log("errors", FieldErrors)
+
     SetErrors(FieldErrors);
     return valid;
   };
-  const AddHassala = async () => {
+  const AddActivity = async () => {
     Keyboard.dismiss();
     if (validate()) {
-      const res = await CreateHassala({
-        ...TransactionInfos,
+      const res = await UpdateHassalaTransaction({
+        ...ActivityInfos,
       });
       if (res.ok) {
-        route.params.showToast();
-        navigation.goBack();
+        navigation.navigate("Hassalat");
       } else {
       }
     } else {
@@ -77,14 +66,17 @@ export default function AddHassala({ route, navigation }) {
     }
   };
 
+
+
   return (
     <View style={styles.Container}>
       <View style={styles.TitleContainer}>
         <View style={{ flexDirection: "row-reverse" }}>
           <Icon as={FontAwesome} name="user-plus" size={7} color="#348578" />
-          <Text style={styles.PageTitile}>اضافة حصالة</Text>
+
+          <Text style={styles.PageTitile}>تعديل حصالة</Text>
         </View>
-        <TouchableWithoutFeedback onPress={() => navigation.navigate("Kofal")}>
+        <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
           <Icon
             style={styles.back}
             as={FontAwesome}
@@ -96,6 +88,11 @@ export default function AddHassala({ route, navigation }) {
       </View>
 
       <Stack space={4} w="100%" alignItems="center">
+        <Text
+          style={{ width: "95%", fontSize: 17, fontFamily: "Tajawal-Medium" }}
+        >
+          اسم الحصالة
+        </Text>
         <Input
           InputRightElement={
             <Icon
@@ -116,9 +113,15 @@ export default function AddHassala({ route, navigation }) {
           placeholder="اسم الحصالة"
           {...styling}
           borderWidth={1}
+          value={ActivityInfos.name}
           borderColor={errors.name ? "#c21a0e" : "grey"}
           onChangeText={(text) => handleUserInput(text, "name")}
         />
+        <Text
+          style={{ width: "95%", fontSize: 17, fontFamily: "Tajawal-Medium" }}
+        >
+          مكان الحصالة
+        </Text>
         <Input
           InputRightElement={
             <Icon
@@ -136,12 +139,14 @@ export default function AddHassala({ route, navigation }) {
           h={50}
           name="name"
           textAlign="right"
-          placeholder="المكان "
+          placeholder="مكان الحصالة"
           {...styling}
           borderWidth={1}
+          value={ActivityInfos.location}
           borderColor={errors.location ? "#c21a0e" : "grey"}
           onChangeText={(text) => handleUserInput(text, "location")}
         />
+
 
 
       </Stack>
@@ -152,8 +157,8 @@ export default function AddHassala({ route, navigation }) {
         </View>
       )}
 
-      <Button style={styles.Button} mode="contained" onPress={AddHassala}>
-        <Text style={{ fontSize: 16, marginLeft: 10 }}> اضافة حصالة</Text>
+      <Button style={styles.Button} mode="contained" onPress={AddActivity}>
+        <Text style={{ fontSize: 16, marginLeft: 10 }}>تعديل</Text>
       </Button>
 
 
@@ -239,10 +244,5 @@ const styles = StyleSheet.create({
     fontFamily: "Tajawal-Medium",
     marginRight: 10,
     fontSize: 13,
-  },
-  radioContainer: {
-    padding: 0,
-    width: "90%",
-    alignItems: "center",
   },
 });

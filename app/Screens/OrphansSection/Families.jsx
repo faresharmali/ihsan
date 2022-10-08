@@ -63,7 +63,9 @@ export default function Families({ navigation, drawer }) {
         </View>
       </View>
       <View style={styles.Section}>
-        <ScrollView style={styles.Content}>
+        <ScrollView contentContainerStyle={{
+          paddingBottom: 25,
+        }} style={styles.Content}>
           {MyFamilies.map((f) => (
             <FamilyInfosContainer
               key={f._id}
@@ -122,7 +124,7 @@ const styles = StyleSheet.create({
   },
   Content: {
     width: "100%",
-    maxHeight: "78%",
+    maxHeight: "93%",
     backgroundColor: "#f5f5f5",
     display: "flex",
     paddingTop: 10,

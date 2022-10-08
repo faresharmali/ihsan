@@ -16,13 +16,16 @@ import AdminProfile from "../Profiles/adminProfile";
 import Information from "../InformationsSection/information";
 import UpdateInformation from "../../UpdateForms/UpdateInformation";
 import Transaction from "../Profiles/Transaction";
+import HassalaInfos from "./hassalaInfo";
+import UpdateHassala from "../../UpdateForms/UpdateHassala";
+import CloseHassala from "../../UpdateForms/CloseHassala";
 const Stack = createStackNavigator();
 const TransitionFromBottom = { ...TransitionPresets.ModalSlideFromBottomIOS };
 const slideFromRight = { ...TransitionPresets.SlideFromRightIOS };
 export default function FinanceSection({ navigation }) {
   return (
     <Stack.Navigator
-      initialRouteName="FinancePage"
+      initialRouteName="Hassalat"
       screenOptions={{
         gestureEnabled: true,
         gestureDirection: "vertical",
@@ -58,6 +61,16 @@ export default function FinanceSection({ navigation }) {
       />
       <Stack.Screen
         options={TransitionFromBottom}
+        name="HassalaInfos"
+        component={HassalaInfos}
+      />
+      <Stack.Screen
+       
+        name="UpdateHassala"
+        component={UpdateHassala}
+      />
+      <Stack.Screen
+        options={TransitionFromBottom}
         name="AddOutcome"
         component={AddOutcome}
       />
@@ -70,6 +83,10 @@ export default function FinanceSection({ navigation }) {
         options={TransitionFromBottom}
         name="FinanceMemberProfile"
         component={AdminProfile}
+      />
+      <Stack.Screen
+        name="CloseHassala"
+        component={CloseHassala}
       />
   
       <Stack.Screen options={TransitionFromBottom} name="InformationAdmin">

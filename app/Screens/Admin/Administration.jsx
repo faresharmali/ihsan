@@ -36,7 +36,7 @@ export default function Administration({ navigation }) {
   return (
     <>
       <Stack.Navigator
-        initialRouteName="Users"
+        initialRouteName="Famillies"
         screenOptions={{
           gestureEnabled: true,
           gestureDirection: "vertical",

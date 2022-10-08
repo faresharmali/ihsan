@@ -26,8 +26,8 @@ import { UpdateFamilyInfos } from "../../../api/family";
 export default function KidProfile({ route, navigation }) {
   let Families = useSelector((state) => state.Families);
   let family = Families.filter((f) => f.id == route.params.kid.familyId)[0];
-  console.log("paramss",route.params)
-  console.log("familss",family)
+  console.log("paramss", route.params)
+  console.log("familss", family)
   let kid = family.kids.filter((k) => k.id == route.params.kid.id)[0];
   kid = { ...kid, lastName: family.fatherLastName, familyId: family.id };
   const [section, setSection] = useState("infos");
@@ -69,7 +69,14 @@ export default function KidProfile({ route, navigation }) {
 
       <View style={styles.pageEntity}>
         <View style={styles.IconsContainer}>
-          <Icon as={Ionicons} size={8} color="#fff" name="md-chevron-back" />
+          <TouchableOpacity
+            onPress={() =>
+              navigation.goBack()
+            }
+          >
+            <Icon as={Ionicons} size={8} color="#fff" name="md-chevron-back" />
+
+          </TouchableOpacity>
           <TouchableOpacity
             onPress={() =>
               navigation.navigate("UpdateOrphan", { infos: kid, updateInfos })

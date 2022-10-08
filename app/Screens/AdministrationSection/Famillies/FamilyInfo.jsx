@@ -37,18 +37,12 @@ export default function FamilyInfo({ navigation, title, data }) {
         <Text style={styles.InfoText}> مبلغ الكفالة : {data.donation} </Text>
         <Icon as={FontAwesome5} size={6} color="#348578" name="wallet" />
       </View>
-      <View style={styles.Info}>
-        <Text style={styles.InfoText}>موزع القفة : فلان بن فلان</Text>
-        <Icon as={FontAwesome5} size={6} color="#348578" name="shopping-bag" />
-      </View>
+    
       <View style={styles.Info}>
         <Text style={styles.InfoText}>الوسيط الاجتماعي : {data.wasseet} </Text>
         <Icon as={FontAwesome} size={6} color="#348578" name="users" />
       </View>
-      <View style={styles.Info}>
-        <Text style={styles.InfoText}>عدد الأفراد : 5</Text>
-        <Icon as={FontAwesome} size={6} color="#348578" name="users" />
-      </View>
+      
       <View style={styles.Info}>
         <Text style={styles.InfoText}>
           تاريخ التسجيل :{" "}

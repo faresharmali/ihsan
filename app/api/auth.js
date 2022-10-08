@@ -1,4 +1,4 @@
-const api = "https://ihsanapp.herokuapp.com/auth/login";
+const api = "http://192.168.100.222:3000/auth/login";
 const axios = require("axios");
 export const LogUser = async (data) => {
   try {

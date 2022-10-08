@@ -25,7 +25,6 @@ export default function AddUser({ route, navigation }) {
   const [FamilliesPlaceholder, setFamilliesPlaceHolder] = useState("العائلات");
   const [selectedFamillies, setselectedFamillies] = useState([]);
 
-  console.log("selece",selectedFamillies)
   const Famillies = useSelector((state) => state.Families);
   const [errors, SetErrors] = useState({
     username: false,
@@ -131,7 +130,7 @@ export default function AddUser({ route, navigation }) {
       (FieldErrors.job = true), (valid = false);
     }
     if (
-      (job == "موزع القفة" || job == "وسيط اجتماعي") &&
+      (job == "موزع القفة") &&
       selectedFamillies.length == 0
     ) {
       (FieldErrors.famillies = true), (valid = false);

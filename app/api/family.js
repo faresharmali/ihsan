@@ -1,4 +1,4 @@
-const api = "https://ihsanapp.herokuapp.com/families";
+const api = "http://192.168.100.222:3000/families";
 const axios = require("axios");
 export const getFamilies = async () => {
   try {

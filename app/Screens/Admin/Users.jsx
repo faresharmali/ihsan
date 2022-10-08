@@ -10,7 +10,7 @@ import {
 import React, { useState, useEffect } from "react";
 import BottomBar from "../../Navigation/BottomBar";
 import { Icon } from "native-base";
-import { MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
+import { MaterialCommunityIcons, Entypo, AntDesign } from "@expo/vector-icons";
 import DataContainer from "../../Components/DataContainer";
 import { useSelector } from "react-redux";
 import { LogBox } from "react-native";
@@ -18,7 +18,7 @@ import Toast from "react-native-toast-message";
 import toastConfig from "../../Components/ToastConfiguration";
 import { useDispatch } from "react-redux";
 import { getUsers } from "../../api/user";
-
+import { PrintData } from "../../Components/Print";
 import Man from "../../../assets/avatars/man.png";
 LogBox.ignoreAllLogs();
 export default function Users({ navigation, drawer }) {
@@ -100,6 +100,19 @@ export default function Users({ navigation, drawer }) {
     }
   };
 
+  const print = async () => {
+    let headings = [
+      " الهاتف",
+      " الدور",
+      " العضو",
+
+    ]
+    PrintData("قائمة الأعضاء", headings, UsersList.map((t) => (
+      {
+        phone: t.phone, job: t.job, name: t.name
+      })))
+
+  }
 
   return (
     <View style={styles.container}>
@@ -116,6 +129,12 @@ export default function Users({ navigation, drawer }) {
         <View style={styles.containerTitle}>
           <Text style={styles.ScreenEntityTitle}>الأعضاء </Text>
           <MaterialCommunityIcons name="account-group" size={30} color="#fff" />
+          <TouchableOpacity
+            onPress={() => print()}
+            style={styles.menuContainer}
+          >
+            <Icon as={AntDesign} name="printer" size={8} color="#fff" />
+          </TouchableOpacity>
         </View>
       </View>
       <View style={styles.containerFilter}>

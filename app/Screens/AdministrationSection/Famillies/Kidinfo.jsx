@@ -3,8 +3,9 @@ import React from "react";
 
 import { Icon } from "native-base";
 import { FontAwesome } from "@expo/vector-icons";
-
+import { getAge } from "../../../Components/Print";
 export default function KidInfo({ data }) {
+ 
 
   return (
     <View style={styles.InfosContainer}>
@@ -19,7 +20,7 @@ export default function KidInfo({ data }) {
         <Icon as={FontAwesome} size={6} color="#348578" name="users" />
       </View>
       <View style={styles.Info}>
-        <Text style={styles.InfoText}>العمر : {data.age} </Text>
+        <Text style={styles.InfoText}>العمر : {getAge(data.year + "-" + data.month + "-" + data.day)} </Text>
         <Icon as={FontAwesome} size={6} color="#348578" name="users" />
       </View>
       <View style={styles.Info}>
@@ -28,7 +29,7 @@ export default function KidInfo({ data }) {
       </View>
       <View style={styles.Info}>
         <Text style={styles.InfoText}>
-          تعاني من مرض مزمن : {data.sick ? "نعم" : "لا"}{" "}
+          يعاني من مرض مزمن : {data.sick ? "نعم" : "لا"}{" "}
         </Text>
         <Icon as={FontAwesome} size={6} color="#348578" name="users" />
       </View>

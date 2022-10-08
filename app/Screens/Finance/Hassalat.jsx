@@ -1,7 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import { Text, View, ScrollView, TouchableOpacity } from "react-native";
 import React, { useState, useEffect } from "react";
-import { FontAwesome5, Entypo, MaterialIcons } from "@expo/vector-icons";
+import { AntDesign, Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Icon } from "native-base";
 import { useSelector, useDispatch } from "react-redux";
 import toastConfig from "../../Components/ToastConfiguration";
@@ -9,17 +9,20 @@ import Toast from "react-native-toast-message";
 import { getHassalat } from "../../api/Finance";
 import FinanceSectionBottomBar from "../../Navigation/FinanceSectionBottomBar";
 import styles from "./styles";
-import TransactionContainer from "../../Components/TransactionContainer";
 import HassalaContainer from "../../Components/HassalaContainer";
+import { PrintData } from "../../Components/Print";
+
+
 export default function Hassalat({ navigation, drawer }) {
-  const dispatch = useDispatch();
   const showToast = () => {
     Toast.show({
       type: "success",
       text1: "نجحت العملية",
-      text2: " تمت اضافة الكفالة بنجاح  👋",
+      text2: " تمت اضافة الحصالة بنجاح  👋",
     });
   };
+  const dispatch = useDispatch();
+
   const updateState = (data) => {
     return {
       type: "UpdateHassalat",
@@ -34,8 +37,19 @@ export default function Hassalat({ navigation, drawer }) {
 
     return unsubscribe;
   }, [navigation]);
-
   let Transactions = useSelector((state) => state.Finance).hassalat;
+
+  const print = () => {
+    let headings = [
+      "المبلغ",
+      "المكان",
+      "المسؤول",
+      "الحصالة",
+
+    ]
+   
+    PrintData("قائمة الحصالات", headings, Transactions.map((t) => ({ amount: t.amount, location: t.location, receiver: t.receiver, name: t.name })))
+  }
 
   return (
     <View style={styles.container}>
@@ -50,14 +64,21 @@ export default function Hassalat({ navigation, drawer }) {
 
         <View style={styles.containerTitle}>
           <Text style={styles.ScreenEntityTitle}>حصالات : قسم المالية </Text>
-          <FontAwesome5 name="hand-holding-heart" size={25} color="#fff" />
+
+          <MaterialCommunityIcons name="piggy-bank" size={25} color="#fff" />
+          <TouchableOpacity
+          onPress={() => print()}
+          style={styles.menuContainer}
+          >
+          <Icon as={AntDesign} name="printer" size={8} color="#fff" />
+        </TouchableOpacity>
         </View>
       </View>
       <View style={{ ...styles.containerFilter, paddingTop: 0 }}></View>
       <View style={styles.Section}>
         <ScrollView style={styles.Content}>
           {Transactions.map((transaction) => (
-            <HassalaContainer data={transaction} />
+            <HassalaContainer navigation={navigation} data={transaction} />
           ))}
         </ScrollView>
       </View>

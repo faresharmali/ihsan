@@ -101,7 +101,7 @@ export default function AddOrphan({ route, navigation }) {
 
           <Text style={styles.PageTitile}>اضافة أيتام</Text>
         </View>
-        <TouchableWithoutFeedback onPress={() => navigation.navigate("Users")}>
+        <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
           <Icon
             style={styles.back}
             as={FontAwesome}

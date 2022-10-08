@@ -12,6 +12,7 @@ import { Icon } from "native-base";
 import {
   MaterialCommunityIcons,
   Entypo,
+  AntDesign ,
   MaterialIcons,
 } from "@expo/vector-icons";
 import FamilyInfosContainer from "../../Components/Containers/FamilyInfosContainer";
@@ -22,6 +23,7 @@ import toastConfig from "../../Components/ToastConfiguration";
 import Toast from "react-native-toast-message";
 import { getFamilies } from "../../api/family";
 import { useDispatch } from "react-redux";
+import { PrintData } from "../../Components/Print";
 
 export default function Families({ navigation, drawer }) {
   const dispatch = useDispatch();
@@ -37,12 +39,12 @@ export default function Families({ navigation, drawer }) {
   const styling = {
     backgroundColor: "#fff",
     marginTop: 5,
-    fontSize:15,
+    fontSize: 15,
     fontFamily: "Tajawal-Medium",
 
   };
   const openModal = (data) => {
-    navigation.navigate("Family", {...data});
+    navigation.navigate("Family", { ...data });
   };
   let MyFamilies = useSelector((state) => state.Families);
   const updateState = (data) => {
@@ -80,6 +82,20 @@ export default function Families({ navigation, drawer }) {
   const handleSearch = (text) => {
     setDisplayedfamillies(famillies.filter((k) => k.title.includes(text)));
   };
+
+  const print = async () => {
+    let headings = [
+      "الأم",
+      "الأب",
+      "العنوان",
+      " الهاتف",
+      " الكفالة",
+      " الوسيط",
+
+    ]
+    PrintData("قائمة العائلات", headings, Displayedfamillies.map((t) => ({ name: t.motherFullName, father: t.fatherFirstName + " " + t.fatherLastName, address: t.adresse, phone: t.phone, donation: t.donation, wasset: t.wasseet })))
+
+  }
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />
@@ -88,13 +104,20 @@ export default function Families({ navigation, drawer }) {
         <TouchableOpacity
           onPress={() => drawer.openDrawer()}
           style={styles.menuContainer}
-        >
+          >
           <Icon as={Entypo} name="menu" size={8} color="#fff" />
         </TouchableOpacity>
+      
 
         <View style={styles.containerTitle}>
           <Text style={styles.ScreenEntityTitle}>العائلات </Text>
           <MaterialCommunityIcons name="account-group" size={30} color="#fff" />
+          <TouchableOpacity
+          onPress={() => print()}
+          style={styles.menuContainer}
+          >
+          <Icon as={AntDesign} name="printer" size={8} color="#fff" />
+        </TouchableOpacity>
         </View>
       </View>
       <View style={styles.Section}>
@@ -120,7 +143,9 @@ export default function Families({ navigation, drawer }) {
           onChangeText={(text) => handleSearch(text)}
         />
 
-        <ScrollView style={styles.Content}>
+        <ScrollView contentContainerStyle={{
+          paddingBottom: 25,
+        }} style={styles.Content}>
           {Displayedfamillies.map((f) => (
             <FamilyInfosContainer
               key={f._id}
@@ -210,7 +235,7 @@ const styles = StyleSheet.create({
   },
   Content: {
     width: "100%",
-    maxHeight: "78%",
+    maxHeight: "85%",
     backgroundColor: "#f5f5f5",
     display: "flex",
     paddingTop: 10,

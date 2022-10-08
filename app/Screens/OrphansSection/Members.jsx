@@ -4,7 +4,6 @@ import {
   Text,
   View,
   ScrollView,
-  TouchableWithoutFeedback,
   TouchableOpacity,
 } from "react-native";
 import React, { useEffect } from "react";
@@ -27,10 +26,10 @@ export default function Members({ navigation, drawer }) {
     });
   };
   let users = useSelector((state) => state.users).filter(
-    (u) => u[2].trim() == "قسم الأيتام"
+    (u) => u[2].trim() == "قسم الأيتام" || u[2].trim() == "وسيط اجتماعي"
   );
 
-  
+
   const dispatch = useDispatch();
   const updateState = (data) => {
     return {

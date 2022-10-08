@@ -23,9 +23,9 @@ export default function UpdateOrphan({ route, navigation }) {
   const [ModulesPlaceHolder, setModulesPlaceHolder] = useState(
     route.params.infos.modules
       ? JSON.parse(route.params.infos.modules)
-          .map((d) => d.title + " ")
-          .slice(0, 2)
-          .join(",")
+        .map((d) => d.title + " ")
+        .slice(0, 2)
+        .join(",")
       : "المواد"
   );
   const [gender, setgender] = useState("ذكر");
@@ -171,7 +171,7 @@ export default function UpdateOrphan({ route, navigation }) {
 
           <Text style={styles.PageTitile}>تعديل المعلومات</Text>
         </View>
-        <TouchableWithoutFeedback onPress={() => navigation.navigate("Users")}>
+        <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
           <Icon
             style={styles.back}
             as={FontAwesome}

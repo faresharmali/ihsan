@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import BottomBar from "../../../Navigation/BottomBar";
-import { FontAwesome5, Entypo, MaterialIcons } from "@expo/vector-icons";
+import { FontAwesome5, Entypo, AntDesign } from "@expo/vector-icons";
 import Family from "../../../../assets/icons/user.png";
 import { Input, Icon } from "native-base";
 import { useSelector } from "react-redux";
@@ -18,7 +18,7 @@ import Toast from "react-native-toast-message";
 import DataContainer from "../../../Components/DataContainer";
 import { getDonators } from "../../../api/user";
 import { useDispatch } from "react-redux";
-
+import { PrintData } from "../../../Components/Print";
 export default function Kofal({ navigation, drawer }) {
   const dispatch = useDispatch();
 
@@ -72,6 +72,23 @@ export default function Kofal({ navigation, drawer }) {
       setDonatorList(AllDonatorList.filter((info) => info.type == type));
     }
   };
+  
+  const print = async () => {
+    let headings = [
+     
+      " مبلغ الكفالة",
+      "الدور",
+      " رقم الهاتف",
+      " الكافل",
+
+    ]
+    PrintData("قائمة الكفال و المحسنين", headings, DonatorList.map((t) => (
+      {
+      donation: t.donationAmount,job: t.job,phone: t.phone, name: t.name
+      })))
+
+  }
+
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />
@@ -87,6 +104,12 @@ export default function Kofal({ navigation, drawer }) {
         <View style={styles.containerTitle}>
           <Text style={styles.ScreenEntityTitle}>الكفال و المحسنين </Text>
           <FontAwesome5 name="hand-holding-heart" size={25} color="#fff" />
+          <TouchableOpacity
+            onPress={() => print()}
+            style={styles.menuContainer}
+          >
+            <Icon as={AntDesign} name="printer" size={8} color="#fff" />
+          </TouchableOpacity>
         </View>
       </View>
       <View style={styles.containerFilter}>

@@ -7,6 +7,7 @@ import {
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import Kid from "../../../../assets/icons/kid.png";
+import { getAge } from "../../../Components/Print";
 export default function Kids(props) {
   return (
     <View>
@@ -36,7 +37,7 @@ export default function Kids(props) {
                 size={4}
                 color="#348578"
               />
-              <Text style={styles.kidInfo}>العمر : {k.age} سنة </Text>
+              <Text style={styles.kidInfo}>العمر :  {getAge(k.year + "-" + k.month + "-" + k.day)} سنة </Text>
             </View>
           </View>
         </TouchableOpacity>

@@ -15,9 +15,12 @@ import { AddKid } from "../api/family";
 import uuid from "react-native-uuid";
 import ScolaritySwipeable from "../Components/Containers/ScolaritySwipable";
 import MultipleOptionSwipable from "../Components/Containers/MultipleOptionSwipable";
+import Swipable from "../Components/Containers/swipable";
+
 export default function AddChild({ route, navigation }) {
-  console.log("paramssss", route.params.id);
   const dispatch = useDispatch();
+  const [isPanelActive, setIsPanelActive] = useState(false);
+
   const [ErrorMessageVisible, setErrorMessageVisible] = useState(false);
   const [LevelChoiceVisible, setLevelChoiceVisible] = useState(false);
   const [ErrorMessage, setErrorMessage] = useState("");
@@ -29,10 +32,14 @@ export default function AddChild({ route, navigation }) {
   const [SelectedModules, setSelectedModules] = useState([]);
   const [sick, setSickness] = useState(false);
   const [showButton, setshowButton] = useState(true);
+  const [month, setMonth] = useState("الشهر");
+
   const [ChildData, setChildData] = useState({
     id: uuid.v4(),
     name: "",
-    age: "",
+    day: "",
+    month: "",
+    year: "",
     scolarity: "",
     sickness: "",
   });
@@ -50,13 +57,20 @@ export default function AddChild({ route, navigation }) {
     setLevelChoiceVisible(false);
   };
   const validate = () => {
+    console.log(ChildData)
     let valid = true;
     let FieldErrors = { ...errors };
     if (ChildData.name.trim() == "") {
       (FieldErrors.name = true), (valid = false);
     }
-    if (ChildData.age.trim() == "") {
-      (FieldErrors.age = true), (valid = false);
+    if (ChildData.day.trim() == "" || (parseInt(ChildData.day) < 0)|| (parseInt(ChildData.day) > 31)) {
+      (FieldErrors.day = true), (valid = false);
+    }
+    if (ChildData.month.trim() == "") {
+      (FieldErrors.month = true), (valid = false);
+    }
+    if (ChildData.year.trim() == "") {
+      (FieldErrors.year = true), (valid = false);
     }
     if (ChildData.scolarity.trim() == "") {
       (FieldErrors.scolarity = true), (valid = false);
@@ -73,6 +87,7 @@ export default function AddChild({ route, navigation }) {
   const styling = {
     borderColor: "#000",
     borderWidth: 0.5,
+    fontSize: 15,
   };
   const addkid = (data) => {
     return {
@@ -88,6 +103,7 @@ export default function AddChild({ route, navigation }) {
         id: route.params.id,
         kid: {
           ...ChildData,
+          day: ChildData.day.length >1 ? ChildData.day : "0"+ChildData.day,
           gender,
           Education,
           sick,
@@ -118,9 +134,15 @@ export default function AddChild({ route, navigation }) {
   };
 
   const inputHandler = (e, name) => {
-    setErrorMessageVisible(false);
-    SetErrors({ ...errors, [name]: false });
-    setChildData({ ...ChildData, [name]: e });
+    if (name == "age") {
+
+
+    } else {
+      setErrorMessageVisible(false);
+      SetErrors({ ...errors, [name]: false });
+      setChildData({ ...ChildData, [name]: e });
+    }
+
   };
   const openUsersPanel = () => {
     Keyboard.dismiss();
@@ -170,6 +192,33 @@ export default function AddChild({ route, navigation }) {
     { title: "اللغة الفرنسية", id: 3 },
     { title: "اللغة الانجليزية", id: 4 },
   ];
+  const ChooseMonth = (dp, value) => {
+    SetErrors({ ...errors, job: false });
+    setErrorMessageVisible(false);
+    setChildData({ ...ChildData, month: value });
+    setMonth(dp);
+    setIsPanelActive(false);
+    setshowButton(true);
+  };
+  let months = [
+    { title: "جانفي ", value: "01" },
+    { title: "فيفري", value: "02" },
+    { title: "مارس ", value: "03" },
+    { title: "أفريل ", value: "04" },
+    { title: " ماي", value: "05" },
+    { title: " جوان", value: "06" },
+    { title: "جويلية ", value: "07" },
+    { title: " أوت", value: "08" },
+    { title: " سبتمبر", value: "09" },
+    { title: " أكتوبر", value: "10" },
+    { title: " نوفمبر ", value: "11" },
+    { title: " ديسمبر ", value: "12" },
+  ];
+  const openPanel = () => {
+    Keyboard.dismiss();
+    setIsPanelActive(true);
+    setshowButton(false);
+  };
   return (
     <View style={styles.Container}>
       <View style={styles.TitleContainer}>
@@ -188,8 +237,8 @@ export default function AddChild({ route, navigation }) {
           />
         </TouchableWithoutFeedback>
       </View>
-
       <Stack space={4} w="100%" alignItems="center">
+
         <Input
           InputRightElement={
             <Icon
@@ -212,28 +261,52 @@ export default function AddChild({ route, navigation }) {
           borderColor={errors.name ? "#c21a0e" : "grey"}
           onChangeText={(text) => inputHandler(text, "name")}
         />
-        <Input
-          InputRightElement={
-            <Icon
-              style={{ marginRight: 10 }}
-              as={<FontAwesome name="birthday-cake" />}
-              size={5}
-              ml="2"
-              color="#348578"
-            />
-          }
-          w={{
-            base: "95%",
-            md: "25%",
-          }}
-          h={50}
-          textAlign="right"
-          placeholder="العمر "
-          {...styling}
-          borderWidth={1}
-          borderColor={errors.age ? "#c21a0e" : "grey"}
-          onChangeText={(text) => inputHandler(text, "age")}
-        />
+
+
+        <Text style={styles.Datetext}>تاريخ الميلاد</Text>
+
+        <View style={styles.birthdayContainer}>
+          <Input
+            w={{
+              base: "30%",
+              md: "25%",
+            }}
+            h={50}
+            textAlign="right"
+            placeholder="السنة"
+            {...styling}
+            borderWidth={1}
+            borderColor={errors.year ? "#c21a0e" : "grey"}
+            onChangeText={(text) => inputHandler(text, "year")}
+          />
+
+          <TouchableWithoutFeedback onPress={() => openPanel()}>
+            <View
+              style={{
+                ...styles.dateContainer,
+                borderColor: errors.job ? "#c21a0e" : "grey",
+                width: "30%"
+              }}
+            >
+
+              <Text style={styles.InputText}> {month}</Text>
+            </View>
+          </TouchableWithoutFeedback>
+          <Input
+            w={{
+              base: "30%",
+              md: "25%",
+            }}
+            h={50}
+            textAlign="right"
+            placeholder="اليوم"
+            {...styling}
+            borderWidth={1}
+            borderColor={errors.day ? "#c21a0e" : "grey"}
+            onChangeText={(text) => inputHandler(text, "day")}
+          />
+        </View>
+
 
         <TouchableWithoutFeedback onPress={() => openUsersPanel()}>
           <View
@@ -355,6 +428,14 @@ export default function AddChild({ route, navigation }) {
         isPanelActive={LevelChoiceVisible}
         setIsPanelActive={setLevelChoiceVisible}
       />
+      <Swipable
+        title="اختيار القسم"
+        ChooseJob={ChooseMonth}
+        data={months}
+        isPanelActive={isPanelActive}
+        setIsPanelActive={setIsPanelActive}
+        setshowButton={setshowButton}
+      />
       <MultipleOptionSwipable
         type={"family"}
         title="المواد"
@@ -438,4 +519,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingLeft: 10,
   },
+  birthdayContainer: {
+    width: "95%",
+    display: "flex",
+    justifyContent: "space-between",
+    flexDirection: "row",
+  },
+  Datetext: {
+    fontFamily: "Tajawal-Medium",
+    width: "95%",
+    fontSize: 15
+  }
 });
